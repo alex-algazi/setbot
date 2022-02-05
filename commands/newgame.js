@@ -34,7 +34,7 @@ module.exports = {
     if (!fs.existsSync('./temp/gameData.json')) {
       let curDeck = baseDeck;
       let board = genBoard([], curDeck);
-  
+
       const gameData = {
         "curDeck": curDeck,
         "board": board,
@@ -48,12 +48,14 @@ module.exports = {
           console.log('Successfully wrote file');
         }
       });
-  
-      const row1 = await interaction.reply({files: ['./temp/row1.jpeg'], fetchReply: true});
-      const row2 = await interaction.followUp({files: ['./temp/row2.jpeg']});
-      const row3 = await interaction.followUp({files: ['./temp/row3.jpeg']});
-      const row4 = await interaction.followUp({files: ['./temp/row4.jpeg']});
-  
+
+      await interaction.reply('New game!');
+
+      const row1 = await interaction.channel.send({files: ['./temp/row1.jpeg']});
+      const row2 = await interaction.channel.send({files: ['./temp/row2.jpeg']});
+      const row3 = await interaction.channel.send({files: ['./temp/row3.jpeg']});
+      const row4 = await interaction.channel.send({files: ['./temp/row4.jpeg']});
+
       try {
         await row1.react('1️⃣');
         await row1.react('2️⃣');
