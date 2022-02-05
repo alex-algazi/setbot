@@ -26,6 +26,30 @@ function genBoard(b, d) {
   return b;
 }
 
+function isSet(c1, c2, c3) {
+  const total = c1+c2+c3;
+  if (Math.floor((total/1)%10)%3==0 &&
+      Math.floor((total/10)%10)%3==0 &&
+      Math.floor((total/100)%10)%3==0 &&
+      Math.floor((total/1000)%10)%3==0)
+    return true;
+  else
+    return false;
+}
+
+function checkBoard(b) {
+  for (let i = 0; i < b.length; i++) {
+    for (let j = i+1; j < b.length; j++) {
+      for (let k = j+1; k < b.length; k++) {
+        if (isSet(b[i],b[j],b[k])) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('newgame')
@@ -34,6 +58,13 @@ module.exports = {
     if (!fs.existsSync('./temp/gameData.json')) {
       let curDeck = baseDeck;
       let board = genBoard([], curDeck);
+
+      if (checkBoard(board)) {
+        console.log('set found');
+      }
+      else {
+        console.log('no set found');
+      }
 
       const gameData = {
         "curDeck": curDeck,

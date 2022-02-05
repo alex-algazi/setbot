@@ -31,7 +31,6 @@ function getRand() {
 
 genBoard();
 
-/*
 function isSet(card1, card2, card3) {
   const total = card1+card2+card3;
   if (Math.floor((total/1)%10)%3==0 &&
@@ -42,4 +41,3 @@ function isSet(card1, card2, card3) {
   else
     return false;
 }
-*/
