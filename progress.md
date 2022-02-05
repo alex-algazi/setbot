@@ -1,15 +1,15 @@
 # Week 1
 ### A. Weekly Accomplishments:
-a. asdf
-b. asdf
-c. asdf
+1. 
+2. 
+3. 
 ### B. Problems/Issues:
-a. asdf
-b. asdf
-c. asdf
+1. 
+2. 
+3. 
 ### C. Next Week's Planned Work:
-a. asdf
-b. asdf
-c. asdf
+1. 
+2. 
+3. 
 ### Total Number of Hours
 Algazi: 4 hrs, Teka: 2 hrs
