@@ -72,27 +72,55 @@ module.exports = {
 
       await interaction.reply('New game!');
 
-      const row1 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row1.jpeg`]});
-      const row2 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row2.jpeg`]});
-      const row3 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row3.jpeg`]});
-      const row4 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row4.jpeg`]});
+      //while (true) {
+        const row1 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row1.jpeg`]});
+        const row2 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row2.jpeg`]});
+        const row3 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row3.jpeg`]});
+        const row4 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row4.jpeg`]});
 
-      try {
-        await row1.react('1️⃣');
-        await row1.react('2️⃣');
-        await row1.react('3️⃣');
-        await row2.react('1️⃣');
-        await row2.react('2️⃣');
-        await row2.react('3️⃣');
-        await row3.react('1️⃣');
-        await row3.react('2️⃣');
-        await row3.react('3️⃣');
-        await row4.react('1️⃣');
-        await row4.react('2️⃣');
-        await row4.react('3️⃣');
-      } catch (error) {
-        console.error('One of the emojis failed to react:', error);
-      }
+        try {
+          await row1.react('1️⃣');
+          await row1.react('2️⃣');
+          await row1.react('3️⃣');
+          await row2.react('1️⃣');
+          await row2.react('2️⃣');
+          await row2.react('3️⃣');
+          await row3.react('1️⃣');
+          await row3.react('2️⃣');
+          await row3.react('3️⃣');
+          await row4.react('1️⃣');
+          await row4.react('2️⃣');
+          await row4.react('3️⃣');
+        } catch (error) {
+          console.error('One of the emojis failed to react:', error);
+        }
+
+        const filter = (reaction, user) => {
+          return ['1️⃣','2️⃣','3️⃣'].includes(reaction.emoji.name) && user.id === interaction.user.id;
+        };
+
+        const collector1 = row1.createReactionCollector({filter});
+        const collector2 = row2.createReactionCollector({filter});
+        const collector3 = row3.createReactionCollector({filter});
+        const collector4 = row4.createReactionCollector({filter});
+
+        collector1.on('collect', (reaction, user) => {
+          console.log(`Collected ${reaction.emoji.name} from ${user.tag} on ${collector1.message.id}`);
+          reaction.users.remove(user.id);
+        });
+        collector2.on('collect', (reaction, user) => {
+          console.log(`Collected ${reaction.emoji.name} from ${user.tag} on ${collector2.message.id}`);
+          reaction.users.remove(user.id);
+        });
+        collector3.on('collect', (reaction, user) => {
+          console.log(`Collected ${reaction.emoji.name} from ${user.tag} on ${collector3.message.id}`);
+          reaction.users.remove(user.id);
+        });
+        collector4.on('collect', (reaction, user) => {
+          console.log(`Collected ${reaction.emoji.name} from ${user.tag} on ${collector4.message.id}`);
+          reaction.users.remove(user.id);
+        });
+      //}
     }
     else {
       await interaction.reply('Game is already active');

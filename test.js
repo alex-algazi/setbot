@@ -41,3 +41,27 @@ function isSet(card1, card2, card3) {
   else
     return false;
 }
+
+/*
+if (!gameActive) {
+  curDeck = [1111...3333]
+  board = newBoard()
+
+  reply('new game')
+
+  while (gameActive && (checkBoard(board) || !curDeck.isEmpty)) {
+    check board, add rows
+
+    send images, add reacts
+
+    listen for reactions till player finds a set
+
+    replace cards with new ones
+  }
+
+  display scores
+}
+else {
+  'game active'
+}
+*/
