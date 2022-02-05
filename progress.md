@@ -10,4 +10,4 @@
 1. Diana will make it so that the board is checked for sets. This will enable my task listed below.
 2. When there are no sets on the board, rows need to be added. Alex will determine the best way to do this and work towards implementing it.
 ### Total Number of Hours
-Alex: 4 hrs, Diana: 2 hrs
+Alex: 3 hrs, Diana: 2 hrs
