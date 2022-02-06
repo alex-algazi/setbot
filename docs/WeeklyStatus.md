@@ -1,9 +1,12 @@
 Spring 2022 Senior Project
-Weekly Status Report
-Discord SET Bot
-https://github.com/alex-algazi/setbot
-Alex Algazi (asa10@hood.edu); Diana Teka (dyt1@hood.edu)
 
+Weekly Status Report
+
+Discord SET Bot
+
+https://github.com/alex-algazi/setbot
+
+Alex Algazi (asa10@hood.edu); Diana Teka (dyt1@hood.edu)
 ## Week 1 (Jan 31 - Feb 7)
 ### A. Weekly Accomplishments:
 1. "/newgame" command file now includes majority of the game's logic. (Alex)
