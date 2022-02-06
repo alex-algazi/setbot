@@ -6,7 +6,7 @@
 
 https://github.com/alex-algazi/setbot
 
-Alex Algazi (asa10@hood.edu); Diana Teka (dyt1@hood.edu)
+*Alex Algazi (asa10@hood.edu); Diana Teka (dyt1@hood.edu)*
 
 ## Week 1 (Jan 31 - Feb 7)
 ### A. Weekly Accomplishments:
