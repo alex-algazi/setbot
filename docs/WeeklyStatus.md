@@ -8,7 +8,7 @@ https://github.com/alex-algazi/setbot
 
 *Alex Algazi (asa10@hood.edu); Diana Teka (dyt1@hood.edu)*
 
-## Week 1 (Jan 31 - Feb 7)
+## WEEK 1 (JAN 31 - FEB 7)
 ### A. Weekly Accomplishments
 1. "/newgame" command file now includes majority of the game's logic. (Alex)
 2. Can create a board of 4 messages, and emoji reactions are then displayed on those messages. This is done by first setting the "current deck" array to a full deck (commands/newgame.js line 57), then generating a board by selecting 12 random cards and converting them to images, one per row (commands/newgame.js lines 12-25). Current deck and board states are then saved to a temp JSON file (commands/newgame.js lines 60-71). Emojis are then added, three per message (commands/newgame.js lines 81-96). (Alex)
