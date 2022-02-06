@@ -19,5 +19,6 @@ https://github.com/alex-algazi/setbot
 ### C. Next Week's Planned Work
 1. Diana will make it so that the board is checked for sets. This will enable my task listed below.
 2. When there are no sets on the board, rows need to be added. Alex will determine the best way to do this and work towards implementing it.
+3. We need to figure out what our database solution is going to be, and figure out what operating system we want the bot to be hosted on. 
 ### D. Time Log
 Alex: 3 hrs, Diana: 2 hrs
