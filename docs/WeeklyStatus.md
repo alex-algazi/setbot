@@ -1,7 +1,7 @@
-# Spring 2022 Senior Project
-# Weekly Status Report
-# Discord SET Bot
-# https://github.com/alex-algazi/setbot
+Spring 2022 Senior Project
+Weekly Status Report
+Discord SET Bot
+https://github.com/alex-algazi/setbot
 Alex Algazi (asa10@hood.edu); Diana Teka (dyt1@hood.edu)
 
 ## Week 1 (Jan 31 - Feb 7)
