@@ -1,4 +1,4 @@
-### **Spring 2022 Senior Project**
+# **Spring 2022 Senior Project**
 
 ### **Weekly Status Report**
 
