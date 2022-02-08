@@ -1,5 +1,4 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { Message } = require('discord.js');
 const images = require('images');
 const fs = require('fs');
 
