@@ -55,6 +55,7 @@ module.exports = {
     if (!fs.existsSync('./temp/gameData.json')) {
       let curDeck = [1111,1112,1113,1121,1122,1123,1131,1132,1133,1211,1212,1213,1221,1222,1223,1231,1232,1233,1311,1312,1313,1321,1322,1323,1331,1332,1333,2111,2112,2113,2121,2122,2123,2131,2132,2133,2211,2212,2213,2221,2222,2223,2231,2232,2233,2311,2312,2313,2321,2322,2323,2331,2332,2333,3111,3112,3113,3121,3122,3123,3131,3132,3133,3211,3212,3213,3221,3222,3223,3231,3232,3233,3311,3312,3313,3321,3322,3323,3331,3332,3333];
       let board = newBoard([], curDeck, interaction.guild.id);
+      let setFound = false;
 
       const gameData = {
         "curDeck": curDeck,
@@ -71,55 +72,53 @@ module.exports = {
 
       await interaction.reply('New game!');
 
-      //while (true) {
-        const row1 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row1.jpeg`]});
-        const row2 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row2.jpeg`]});
-        const row3 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row3.jpeg`]});
-        const row4 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row4.jpeg`]});
+      const row1 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row1.jpeg`]});
+      const row2 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row2.jpeg`]});
+      const row3 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row3.jpeg`]});
+      const row4 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row4.jpeg`]});
 
-        try {
-          await row1.react('1️⃣');
-          await row1.react('2️⃣');
-          await row1.react('3️⃣');
-          await row2.react('1️⃣');
-          await row2.react('2️⃣');
-          await row2.react('3️⃣');
-          await row3.react('1️⃣');
-          await row3.react('2️⃣');
-          await row3.react('3️⃣');
-          await row4.react('1️⃣');
-          await row4.react('2️⃣');
-          await row4.react('3️⃣');
-        } catch (error) {
-          console.error('One of the emojis failed to react:', error);
-        }
+      try {
+        await row1.react('1️⃣');
+        await row1.react('2️⃣');
+        await row1.react('3️⃣');
+        await row2.react('1️⃣');
+        await row2.react('2️⃣');
+        await row2.react('3️⃣');
+        await row3.react('1️⃣');
+        await row3.react('2️⃣');
+        await row3.react('3️⃣');
+        await row4.react('1️⃣');
+        await row4.react('2️⃣');
+        await row4.react('3️⃣');
+      } catch (error) {
+        console.error('One of the emojis failed to react:', error);
+      }
 
-        const filter = (reaction, user) => {
-          return ['1️⃣','2️⃣','3️⃣'].includes(reaction.emoji.name) && user.id === interaction.user.id;
-        };
+      const filter = (reaction, user) => {
+        return ['1️⃣','2️⃣','3️⃣'].includes(reaction.emoji.name) && user.id === interaction.user.id;
+      };
 
-        const collector1 = row1.createReactionCollector({filter});
-        const collector2 = row2.createReactionCollector({filter});
-        const collector3 = row3.createReactionCollector({filter});
-        const collector4 = row4.createReactionCollector({filter});
+      const collector1 = row1.createReactionCollector({filter});
+      const collector2 = row2.createReactionCollector({filter});
+      const collector3 = row3.createReactionCollector({filter});
+      const collector4 = row4.createReactionCollector({filter});
 
-        collector1.on('collect', (reaction, user) => {
-          console.log(`Collected ${reaction.emoji.name} from ${user.tag} on ${collector1.message.id}`);
-          reaction.users.remove(user.id);
-        });
-        collector2.on('collect', (reaction, user) => {
-          console.log(`Collected ${reaction.emoji.name} from ${user.tag} on ${collector2.message.id}`);
-          reaction.users.remove(user.id);
-        });
-        collector3.on('collect', (reaction, user) => {
-          console.log(`Collected ${reaction.emoji.name} from ${user.tag} on ${collector3.message.id}`);
-          reaction.users.remove(user.id);
-        });
-        collector4.on('collect', (reaction, user) => {
-          console.log(`Collected ${reaction.emoji.name} from ${user.tag} on ${collector4.message.id}`);
-          reaction.users.remove(user.id);
-        });
-      //}
+      collector1.on('collect', (reaction, user) => {
+        console.log(`Collected ${reaction.emoji.name} from ${user.tag} on ${collector1.message.id}`);
+        reaction.users.remove(user.id);
+      });
+      collector2.on('collect', (reaction, user) => {
+        console.log(`Collected ${reaction.emoji.name} from ${user.tag} on ${collector2.message.id}`);
+        reaction.users.remove(user.id);
+      });
+      collector3.on('collect', (reaction, user) => {
+        console.log(`Collected ${reaction.emoji.name} from ${user.tag} on ${collector3.message.id}`);
+        reaction.users.remove(user.id);
+      });
+      collector4.on('collect', (reaction, user) => {
+        console.log(`Collected ${reaction.emoji.name} from ${user.tag} on ${collector4.message.id}`);
+        reaction.users.remove(user.id);
+      });
     }
     else {
       await interaction.reply('Game is already active');
