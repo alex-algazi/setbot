@@ -47,6 +47,12 @@ function checkBoard(b) {
   return false;
 }
 
+function emojiNum(e) {
+  if (e === '1️⃣') return 1;
+  if (e === '2️⃣') return 2;
+  if (e === '3️⃣') return 3;
+}
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('newgame')
@@ -103,21 +109,35 @@ module.exports = {
       const collector3 = row3.createReactionCollector({filter});
       const collector4 = row4.createReactionCollector({filter});
 
+      let playerInputs = {}
+
       collector1.on('collect', (reaction, user) => {
-        console.log(`Collected ${reaction.emoji.name} from ${user.tag} on ${collector1.message.id}`);
+        if (!playerInputs.hasOwnProperty(`${user.tag}`))
+          playerInputs[`${user.tag}`] = [];
+        playerInputs[`${user.tag}`].push(emojiNum(reaction.emoji.name)-1);
         reaction.users.remove(user.id);
+        console.log(playerInputs);
       });
       collector2.on('collect', (reaction, user) => {
-        console.log(`Collected ${reaction.emoji.name} from ${user.tag} on ${collector2.message.id}`);
+        if (!playerInputs.hasOwnProperty(`${user.tag}`))
+          playerInputs[`${user.tag}`] = [];
+        playerInputs[`${user.tag}`].push(emojiNum(reaction.emoji.name)+2);
         reaction.users.remove(user.id);
+        console.log(playerInputs);
       });
       collector3.on('collect', (reaction, user) => {
-        console.log(`Collected ${reaction.emoji.name} from ${user.tag} on ${collector3.message.id}`);
+        if (!playerInputs.hasOwnProperty(`${user.tag}`))
+          playerInputs[`${user.tag}`] = [];
+        playerInputs[`${user.tag}`].push(emojiNum(reaction.emoji.name)+5);
         reaction.users.remove(user.id);
+        console.log(playerInputs);
       });
       collector4.on('collect', (reaction, user) => {
-        console.log(`Collected ${reaction.emoji.name} from ${user.tag} on ${collector4.message.id}`);
+        if (!playerInputs.hasOwnProperty(`${user.tag}`))
+          playerInputs[`${user.tag}`] = [];
+        playerInputs[`${user.tag}`].push(emojiNum(reaction.emoji.name)+8);
         reaction.users.remove(user.id);
+        console.log(playerInputs);
       });
     }
     else {
