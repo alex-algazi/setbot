@@ -253,7 +253,7 @@ async function continueGame(board, curDeck, interaction) {
             }
           }
           else {
-            interaction.channel.send(`User ${user.tag} found a set! Deck is now empty.`);
+            interaction.channel.send(`User ${user.tag} found a set!`);
             board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1],1);
             board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2],1);
             board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3],1);
@@ -352,7 +352,7 @@ async function continueGame(board, curDeck, interaction) {
               }
             }
             else {
-              interaction.channel.send(`User ${user.tag} found a set! Deck is now empty.`);
+              interaction.channel.send(`User ${user.tag} found a set!`);
               board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1],1);
               board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2],1);
               board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3],1);
@@ -451,7 +451,7 @@ async function continueGame(board, curDeck, interaction) {
               }
             }
             else {
-              interaction.channel.send(`User ${user.tag} found a set! Deck is now empty.`);
+              interaction.channel.send(`User ${user.tag} found a set!`);
               board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1],1);
               board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2],1);
               board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3],1);
@@ -550,7 +550,7 @@ async function continueGame(board, curDeck, interaction) {
               }
             }
             else {
-              interaction.channel.send(`User ${user.tag} found a set! Deck is now empty.`);
+              interaction.channel.send(`User ${user.tag} found a set!`);
               board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1],1);
               board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2],1);
               board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3],1);
@@ -649,7 +649,7 @@ async function continueGame(board, curDeck, interaction) {
               }
             }
             else {
-              interaction.channel.send(`User ${user.tag} found a set! Deck is now empty.`);
+              interaction.channel.send(`User ${user.tag} found a set!`);
               board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1],1);
               board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2],1);
               board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3],1);
@@ -748,7 +748,7 @@ async function continueGame(board, curDeck, interaction) {
               }
             }
             else {
-              interaction.channel.send(`User ${user.tag} found a set! Deck is now empty.`);
+              interaction.channel.send(`User ${user.tag} found a set!`);
               board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1],1);
               board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2],1);
               board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3],1);
