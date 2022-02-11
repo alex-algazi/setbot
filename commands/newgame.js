@@ -195,8 +195,16 @@ module.exports = {
               board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]] = getRand(curDeck);
             }
             else {
-              // figure out how to fix the board after extra rows
-              board.splice(board.length-3,3);
+              let cards = playerInputs[`${user.tag}`].slice(-3).sort((a,b)=>{return a-b;}).reverse();
+              for (let i = 0; i < 3; i++) {
+                if (cards[i] >= 12) {
+                  board.splice(cards[i],1);
+                }
+                else {
+                  board[cards[i]] = board[board.length-1];
+                  board.splice(board.length-1,1);
+                }
+              }
             }
             continueGame(board, curDeck, interaction);
           }
@@ -227,8 +235,16 @@ module.exports = {
               board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]] = getRand(curDeck);
             }
             else {
-              // figure out how to fix the board after extra rows
-              board.splice(board.length-3,3);
+              let cards = playerInputs[`${user.tag}`].slice(-3).sort((a,b)=>{return a-b;}).reverse();
+              for (let i = 0; i < 3; i++) {
+                if (cards[i] >= 12) {
+                  board.splice(cards[i],1);
+                }
+                else {
+                  board[cards[i]] = board[board.length-1];
+                  board.splice(board.length-1,1);
+                }
+              }
             }
             continueGame(board, curDeck, interaction);
           }
@@ -259,8 +275,16 @@ module.exports = {
               board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]] = getRand(curDeck);
             }
             else {
-              // figure out how to fix the board after extra rows
-              board.splice(board.length-3,3);
+              let cards = playerInputs[`${user.tag}`].slice(-3).sort((a,b)=>{return a-b;}).reverse();
+              for (let i = 0; i < 3; i++) {
+                if (cards[i] >= 12) {
+                  board.splice(cards[i],1);
+                }
+                else {
+                  board[cards[i]] = board[board.length-1];
+                  board.splice(board.length-1,1);
+                }
+              }
             }
             continueGame(board, curDeck, interaction);
           }
@@ -291,8 +315,16 @@ module.exports = {
               board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]] = getRand(curDeck);
             }
             else {
-              // figure out how to fix the board after extra rows
-              board.splice(board.length-3,3);
+              let cards = playerInputs[`${user.tag}`].slice(-3).sort((a,b)=>{return a-b;}).reverse();
+              for (let i = 0; i < 3; i++) {
+                if (cards[i] >= 12) {
+                  board.splice(cards[i],1);
+                }
+                else {
+                  board[cards[i]] = board[board.length-1];
+                  board.splice(board.length-1,1);
+                }
+              }
             }
             continueGame(board, curDeck, interaction);
           }
@@ -324,8 +356,16 @@ module.exports = {
                 board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]] = getRand(curDeck);
               }
               else {
-                // figure out how to fix the board after extra rows
-                board.splice(board.length-3,3);
+                let cards = playerInputs[`${user.tag}`].slice(-3).sort((a,b)=>{return a-b;}).reverse();
+                for (let i = 0; i < 3; i++) {
+                  if (cards[i] >= 12) {
+                    board.splice(cards[i],1);
+                  }
+                  else {
+                    board[cards[i]] = board[board.length-1];
+                    board.splice(board.length-1,1);
+                  }
+                }
               }
               continueGame(board, curDeck, interaction);
             }
@@ -358,8 +398,16 @@ module.exports = {
                 board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]] = getRand(curDeck);
               }
               else {
-                // figure out how to fix the board after extra rows
-                board.splice(board.length-3,3);
+                let cards = playerInputs[`${user.tag}`].slice(-3).sort((a,b)=>{return a-b;}).reverse();
+                for (let i = 0; i < 3; i++) {
+                  if (cards[i] >= 12) {
+                    board.splice(cards[i],1);
+                  }
+                  else {
+                    board[cards[i]] = board[board.length-1];
+                    board.splice(board.length-1,1);
+                  }
+                }
               }
               continueGame(board, curDeck, interaction);
             }
