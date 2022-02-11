@@ -177,7 +177,7 @@ async function continueGame(board, curDeck, interaction) {
           if (board.length >= 18) {
             row6.reactions.removeAll()
           }
-          let raw = fs.readFileSync('./temp/gameData.json');
+          let raw = fs.readFileSync(`./temp/${interaction.guild.id}data.json`);
           let data = JSON.parse(raw);
           if (!data.hasOwnProperty(`${user.tag}`)) {
             data[`${user.tag}`] = 1;
@@ -186,7 +186,7 @@ async function continueGame(board, curDeck, interaction) {
             data[`${user.tag}`] += 1;
           }
           let str = JSON.stringify(data);
-          fs.writeFile('./temp/gameData.json', str, err => {
+          fs.writeFile(`./temp/${interaction.guild.id}data.json`, str, err => {
             if (err) {
               console.log('Error writing file', err);
             }
@@ -242,7 +242,7 @@ async function continueGame(board, curDeck, interaction) {
           if (board.length >= 18) {
             row6.reactions.removeAll()
           }
-          let raw = fs.readFileSync('./temp/gameData.json');
+          let raw = fs.readFileSync(`./temp/${interaction.guild.id}data.json`);
           let data = JSON.parse(raw);
           if (!data.hasOwnProperty(`${user.tag}`)) {
             data[`${user.tag}`] = 1;
@@ -251,7 +251,7 @@ async function continueGame(board, curDeck, interaction) {
             data[`${user.tag}`] += 1;
           }
           let str = JSON.stringify(data);
-          fs.writeFile('./temp/gameData.json', str, err => {
+          fs.writeFile(`./temp/${interaction.guild.id}data.json`, str, err => {
             if (err) {
               console.log('Error writing file', err);
             }
@@ -307,7 +307,7 @@ async function continueGame(board, curDeck, interaction) {
           if (board.length >= 18) {
             row6.reactions.removeAll()
           }
-          let raw = fs.readFileSync('./temp/gameData.json');
+          let raw = fs.readFileSync(`./temp/${interaction.guild.id}data.json`);
           let data = JSON.parse(raw);
           if (!data.hasOwnProperty(`${user.tag}`)) {
             data[`${user.tag}`] = 1;
@@ -316,7 +316,7 @@ async function continueGame(board, curDeck, interaction) {
             data[`${user.tag}`] += 1;
           }
           let str = JSON.stringify(data);
-          fs.writeFile('./temp/gameData.json', str, err => {
+          fs.writeFile(`./temp/${interaction.guild.id}data.json`, str, err => {
             if (err) {
               console.log('Error writing file', err);
             }
@@ -372,7 +372,7 @@ async function continueGame(board, curDeck, interaction) {
           if (board.length >= 18) {
             row6.reactions.removeAll()
           }
-          let raw = fs.readFileSync('./temp/gameData.json');
+          let raw = fs.readFileSync(`./temp/${interaction.guild.id}data.json`);
           let data = JSON.parse(raw);
           if (!data.hasOwnProperty(`${user.tag}`)) {
             data[`${user.tag}`] = 1;
@@ -381,7 +381,7 @@ async function continueGame(board, curDeck, interaction) {
             data[`${user.tag}`] += 1;
           }
           let str = JSON.stringify(data);
-          fs.writeFile('./temp/gameData.json', str, err => {
+          fs.writeFile(`./temp/${interaction.guild.id}data.json`, str, err => {
             if (err) {
               console.log('Error writing file', err);
             }
@@ -438,7 +438,7 @@ async function continueGame(board, curDeck, interaction) {
             if (board.length >= 18) {
               row6.reactions.removeAll()
             }
-            let raw = fs.readFileSync('./temp/gameData.json');
+            let raw = fs.readFileSync(`./temp/${interaction.guild.id}data.json`);
             let data = JSON.parse(raw);
             if (!data.hasOwnProperty(`${user.tag}`)) {
               data[`${user.tag}`] = 1;
@@ -447,7 +447,7 @@ async function continueGame(board, curDeck, interaction) {
               data[`${user.tag}`] += 1;
             }
             let str = JSON.stringify(data);
-            fs.writeFile('./temp/gameData.json', str, err => {
+            fs.writeFile(`./temp/${interaction.guild.id}data.json`, str, err => {
               if (err) {
                 console.log('Error writing file', err);
               }
@@ -505,7 +505,7 @@ async function continueGame(board, curDeck, interaction) {
             if (board.length >= 18) {
               row6.reactions.removeAll()
             }
-            let raw = fs.readFileSync('./temp/gameData.json');
+            let raw = fs.readFileSync(`./temp/${interaction.guild.id}data.json`);
             let data = JSON.parse(raw);
             if (!data.hasOwnProperty(`${user.tag}`)) {
               data[`${user.tag}`] = 1;
@@ -514,7 +514,7 @@ async function continueGame(board, curDeck, interaction) {
               data[`${user.tag}`] += 1;
             }
             let str = JSON.stringify(data);
-            fs.writeFile('./temp/gameData.json', str, err => {
+            fs.writeFile(`./temp/${interaction.guild.id}data.json`, str, err => {
               if (err) {
                 console.log('Error writing file', err);
               }
@@ -567,8 +567,8 @@ async function continueGame(board, curDeck, interaction) {
     if (board.length >= 18) {
       row6.reactions.removeAll()
     }
-    if(fs.existsSync('./temp/gameData.json')) {
-      fs.unlinkSync('./temp/gameData.json');
+    if(fs.existsSync(`./temp/${interaction.guild.id}data.json`)) {
+      fs.unlinkSync(`./temp/${interaction.guild.id}data.json`);
     }
     interaction.channel.send('Game canceled.');
   });
@@ -579,7 +579,7 @@ module.exports = {
     .setName('newgame')
     .setDescription('Starts a new game of SET'),
   async execute(interaction) {
-    if (!fs.existsSync('./temp/gameData.json')) {
+    if (!fs.existsSync(`./temp/${interaction.guild.id}data.json`)) {
       let curDeck = [1111,1112,1113,1121,1122,1123,1131,1132,1133,1211,1212,1213,1221,1222,1223,1231,1232,1233,1311,1312,1313,1321,1322,1323,1331,1332,1333,2111,2112,2113,2121,2122,2123,2131,2132,2133,2211,2212,2213,2221,2222,2223,2231,2232,2233,2311,2312,2313,2321,2322,2323,2331,2332,2333,3111,3112,3113,3121,3122,3123,3131,3132,3133,3211,3212,3213,3221,3222,3223,3231,3232,3233,3311,3312,3313,3321,3322,3323,3331,3332,3333];
       let board = newBoard([], curDeck, interaction.guild.id);
 
@@ -587,7 +587,7 @@ module.exports = {
 
       let gameData = {}
       let str = JSON.stringify(gameData);
-      fs.writeFile('./temp/gameData.json', str, err => {
+      fs.writeFile(`./temp/${interaction.guild.id}data.json`, str, err => {
         if (err) {
           console.log('Error writing file', err);
         }
