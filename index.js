@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const { Client, Collection, Intents } = require('discord.js');
 const { token } = require('./config.json');
 
@@ -20,6 +21,15 @@ for (const file of commandFiles) {
 }
 
 client.once('ready', () => {
+  const directory = 'temp';
+  fs.readdir(directory, (err, files) => {
+    if (err) throw err;
+    for (const file of files) {
+      fs.unlink(path.join(directory, file), err => {
+        if (err) throw err;
+      });
+    }
+  });
   console.log('Ready!');
 });
 
