@@ -23,17 +23,6 @@ function newBoard(b, d, id) {
   return b;
 }
 
-function isSet(c1, c2, c3) {
-  const total = c1+c2+c3;
-  if (Math.floor((total/1)%10)%3==0 &&
-      Math.floor((total/10)%10)%3==0 &&
-      Math.floor((total/100)%10)%3==0 &&
-      Math.floor((total/1000)%10)%3==0)
-    return true;
-  else
-    return false;
-}
-
 function checkBoard(b) {
   for (let i = 0; i < b.length; i++) {
     for (let j = i+1; j < b.length; j++) {
@@ -47,12 +36,6 @@ function checkBoard(b) {
   return false;
 }
 
-function emojiNum(e) {
-  if (e === '1️⃣') return 1;
-  if (e === '2️⃣') return 2;
-  if (e === '3️⃣') return 3;
-}
-
 function addRow(b, d, id) {
   b.push(getRand(d));
   b.push(getRand(d));
@@ -62,6 +45,23 @@ function addRow(b, d, id) {
     .draw(images(`images/${b[(b.length/3-1)*3+1]}.jpeg`),305,0)
     .draw(images(`images/${b[(b.length/3-1)*3+2]}.jpeg`),610,0)
     .save(`temp/${id}row${b.length/3}.jpeg`);
+}
+
+function emojiNum(e) {
+  if (e === '1️⃣') return 1;
+  if (e === '2️⃣') return 2;
+  if (e === '3️⃣') return 3;
+}
+
+function isSet(c1, c2, c3) {
+  let total = c1+c2+c3;
+  if (Math.floor((total/1)%10)%3==0 &&
+      Math.floor((total/10)%10)%3==0 &&
+      Math.floor((total/100)%10)%3==0 &&
+      Math.floor((total/1000)%10)%3==0)
+    return true;
+  else
+    return false;
 }
 
 const badBoard = [1323,1123,1213,1232,1312,1112,1321,1121,1211,2222,2212,3223];
@@ -91,17 +91,16 @@ module.exports = {
     if (!fs.existsSync('./temp/gameData.json')) {
       let curDeck = [1111,1112,1113,1121,1122,1123,1131,1132,1133,1211,1212,1213,1221,1222,1223,1231,1232,1233,1311,1312,1313,1321,1322,1323,1331,1332,1333,2111,2112,2113,2121,2122,2123,2131,2132,2133,2211,2212,2213,2221,2222,2223,2231,2232,2233,2311,2312,2313,2321,2322,2323,2331,2332,2333,3111,3112,3113,3121,3122,3123,3131,3132,3133,3211,3212,3213,3221,3222,3223,3231,3232,3233,3311,3312,3313,3321,3322,3323,3331,3332,3333];
       let board = newBoard([], curDeck, interaction.guild.id);
-      let setFound = false;
 
       while (!checkBoard(board)) {
         addRow(board, curDeck, interaction.guild.id);
       }
 
-      const gameData = {
+      let gameData = {
         "curDeck": curDeck,
         "board": board
       }
-      const str = JSON.stringify(gameData);
+      let str = JSON.stringify(gameData);
       fs.writeFile('./temp/gameData.json', str, err => {
         if (err) {
           console.log('Error writing file', err);
@@ -143,7 +142,6 @@ module.exports = {
           await row5.react('2️⃣');
           await row5.react('3️⃣'); 
         }
-
         if (board.length >= 18) {
           await row6.react('1️⃣');
           await row6.react('2️⃣');
@@ -153,45 +151,155 @@ module.exports = {
         console.error('One of the emojis failed to react:', error);
       }
 
-      const filter = (reaction, user) => {
+      let filter = (reaction, user) => {
         return ['1️⃣','2️⃣','3️⃣'].includes(reaction.emoji.name) && user.id === interaction.user.id;
       };
 
-      const collector1 = row1.createReactionCollector({filter});
-      const collector2 = row2.createReactionCollector({filter});
-      const collector3 = row3.createReactionCollector({filter});
-      const collector4 = row4.createReactionCollector({filter});
+      let collector1 = row1.createReactionCollector({filter});
+      let collector2 = row2.createReactionCollector({filter});
+      let collector3 = row3.createReactionCollector({filter});
+      let collector4 = row4.createReactionCollector({filter});
+      let collector5;
+      let collector6;
+      if (board.length >= 15) {
+        collector5 = row5.createReactionCollector({filter});
+      }
+      if (board.length >= 18) {
+        collector6 = row6.createReactionCollector({filter});
+      }
 
       let playerInputs = {}
 
       collector1.on('collect', (reaction, user) => {
+        reaction.users.remove(user.id);
         if (!playerInputs.hasOwnProperty(`${user.tag}`))
           playerInputs[`${user.tag}`] = [];
         playerInputs[`${user.tag}`].push(emojiNum(reaction.emoji.name)-1);
-        reaction.users.remove(user.id);
-        console.log(playerInputs);
+        if (playerInputs[`${user.tag}`].length >= 3) {
+          if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
+            if (board.length >= 18) {
+              row6.delete();
+            }
+            if (board.length >= 15) {
+              row5.delete();
+            }
+            row4.delete();
+            row3.delete();
+            row2.delete();
+            row1.delete();
+            interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
+          }
+        }
       });
       collector2.on('collect', (reaction, user) => {
+        reaction.users.remove(user.id);
         if (!playerInputs.hasOwnProperty(`${user.tag}`))
           playerInputs[`${user.tag}`] = [];
         playerInputs[`${user.tag}`].push(emojiNum(reaction.emoji.name)+2);
-        reaction.users.remove(user.id);
-        console.log(playerInputs);
+        if (playerInputs[`${user.tag}`].length >= 3) {
+          if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
+            if (board.length >= 18) {
+              row6.delete();
+            }
+            if (board.length >= 15) {
+              row5.delete();
+            }
+            row4.delete();
+            row3.delete();
+            row2.delete();
+            row1.delete();
+            interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
+          }
+        }
       });
       collector3.on('collect', (reaction, user) => {
+        reaction.users.remove(user.id);
         if (!playerInputs.hasOwnProperty(`${user.tag}`))
           playerInputs[`${user.tag}`] = [];
         playerInputs[`${user.tag}`].push(emojiNum(reaction.emoji.name)+5);
-        reaction.users.remove(user.id);
-        console.log(playerInputs);
+        if (playerInputs[`${user.tag}`].length >= 3) {
+          if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
+            if (board.length >= 18) {
+              row6.delete();
+            }
+            if (board.length >= 15) {
+              row5.delete();
+            }
+            row4.delete();
+            row3.delete();
+            row2.delete();
+            row1.delete();
+            interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
+          }
+        }
       });
       collector4.on('collect', (reaction, user) => {
+        reaction.users.remove(user.id);
         if (!playerInputs.hasOwnProperty(`${user.tag}`))
           playerInputs[`${user.tag}`] = [];
         playerInputs[`${user.tag}`].push(emojiNum(reaction.emoji.name)+8);
-        reaction.users.remove(user.id);
-        console.log(playerInputs);
+        if (playerInputs[`${user.tag}`].length >= 3) {
+          if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
+            if (board.length >= 18) {
+              row6.delete();
+            }
+            if (board.length >= 15) {
+              row5.delete();
+            }
+            row4.delete();
+            row3.delete();
+            row2.delete();
+            row1.delete();
+            interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
+          }
+        }
       });
+      if (board.length >= 15) {
+        collector5.on('collect', (reaction, user) => {
+          reaction.users.remove(user.id);
+          if (!playerInputs.hasOwnProperty(`${user.tag}`))
+            playerInputs[`${user.tag}`] = [];
+          playerInputs[`${user.tag}`].push(emojiNum(reaction.emoji.name)+11);
+          if (playerInputs[`${user.tag}`].length >= 3) {
+            if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
+              if (board.length >= 18) {
+                row6.delete();
+              }
+              if (board.length >= 15) {
+                row5.delete();
+              }
+              row4.delete();
+              row3.delete();
+              row2.delete();
+              row1.delete();
+              interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
+            }
+          }
+        });
+      }
+      if (board.length >= 18) {
+        collector6.on('collect', (reaction, user) => {
+          reaction.users.remove(user.id);
+          if (!playerInputs.hasOwnProperty(`${user.tag}`))
+            playerInputs[`${user.tag}`] = [];
+          playerInputs[`${user.tag}`].push(emojiNum(reaction.emoji.name)+14);
+          if (playerInputs[`${user.tag}`].length >= 3) {
+            if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
+              if (board.length >= 18) {
+                row6.delete();
+              }
+              if (board.length >= 15) {
+                row5.delete();
+              }
+              row4.delete();
+              row3.delete();
+              row2.delete();
+              row1.delete();
+              interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
+            }
+          }
+        });
+      }
     }
     else {
       await interaction.reply('Game is already active');
