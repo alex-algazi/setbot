@@ -154,8 +154,9 @@ async function continueGame(board, curDeck, interaction) {
   collector1.on('collect', (reaction, user) => {
     if (!setFound) {
       reaction.users.remove(user.id);
-      if (!playerInputs.hasOwnProperty(`${user.tag}`))
+      if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
         playerInputs[`${user.tag}`] = [];
+      }
       playerInputs[`${user.tag}`].push(emojiNum(reaction.emoji.name)-1);
       if (playerInputs[`${user.tag}`].length >= 3) {
         if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
@@ -171,6 +172,20 @@ async function continueGame(board, curDeck, interaction) {
           if (board.length >= 18) {
             row6.reactions.removeAll()
           }
+          let raw = fs.readFileSync('./temp/gameData.json');
+          let data = JSON.parse(raw);
+          if (!data.hasOwnProperty(`${user.tag}`)) {
+            data[`${user.tag}`] = 1;
+          }
+          else {
+            data[`${user.tag}`] += 1;
+          }
+          let str = JSON.stringify(data);
+          fs.writeFile('./temp/gameData.json', str, err => {
+            if (err) {
+              console.log('Error writing file', err);
+            }
+          });
           interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
           if (board.length < 15) {
             board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]] = getRand(curDeck);
@@ -204,8 +219,9 @@ async function continueGame(board, curDeck, interaction) {
   collector2.on('collect', (reaction, user) => {
     if (!setFound) {
       reaction.users.remove(user.id);
-      if (!playerInputs.hasOwnProperty(`${user.tag}`))
+      if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
         playerInputs[`${user.tag}`] = [];
+      }
       playerInputs[`${user.tag}`].push(emojiNum(reaction.emoji.name)+2);
       if (playerInputs[`${user.tag}`].length >= 3) {
         if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
@@ -221,6 +237,20 @@ async function continueGame(board, curDeck, interaction) {
           if (board.length >= 18) {
             row6.reactions.removeAll()
           }
+          let raw = fs.readFileSync('./temp/gameData.json');
+          let data = JSON.parse(raw);
+          if (!data.hasOwnProperty(`${user.tag}`)) {
+            data[`${user.tag}`] = 1;
+          }
+          else {
+            data[`${user.tag}`] += 1;
+          }
+          let str = JSON.stringify(data);
+          fs.writeFile('./temp/gameData.json', str, err => {
+            if (err) {
+              console.log('Error writing file', err);
+            }
+          });
           interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
           if (board.length < 15) {
             board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]] = getRand(curDeck);
@@ -254,8 +284,9 @@ async function continueGame(board, curDeck, interaction) {
   collector3.on('collect', (reaction, user) => {
     if (!setFound) {
       reaction.users.remove(user.id);
-      if (!playerInputs.hasOwnProperty(`${user.tag}`))
+      if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
         playerInputs[`${user.tag}`] = [];
+      }
       playerInputs[`${user.tag}`].push(emojiNum(reaction.emoji.name)+5);
       if (playerInputs[`${user.tag}`].length >= 3) {
         if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
@@ -271,6 +302,20 @@ async function continueGame(board, curDeck, interaction) {
           if (board.length >= 18) {
             row6.reactions.removeAll()
           }
+          let raw = fs.readFileSync('./temp/gameData.json');
+          let data = JSON.parse(raw);
+          if (!data.hasOwnProperty(`${user.tag}`)) {
+            data[`${user.tag}`] = 1;
+          }
+          else {
+            data[`${user.tag}`] += 1;
+          }
+          let str = JSON.stringify(data);
+          fs.writeFile('./temp/gameData.json', str, err => {
+            if (err) {
+              console.log('Error writing file', err);
+            }
+          });
           interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
           if (board.length < 15) {
             board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]] = getRand(curDeck);
@@ -304,8 +349,9 @@ async function continueGame(board, curDeck, interaction) {
   collector4.on('collect', (reaction, user) => {
     if (!setFound) {
       reaction.users.remove(user.id);
-      if (!playerInputs.hasOwnProperty(`${user.tag}`))
+      if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
         playerInputs[`${user.tag}`] = [];
+      }
       playerInputs[`${user.tag}`].push(emojiNum(reaction.emoji.name)+8);
       if (playerInputs[`${user.tag}`].length >= 3) {
         if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
@@ -321,6 +367,20 @@ async function continueGame(board, curDeck, interaction) {
           if (board.length >= 18) {
             row6.reactions.removeAll()
           }
+          let raw = fs.readFileSync('./temp/gameData.json');
+          let data = JSON.parse(raw);
+          if (!data.hasOwnProperty(`${user.tag}`)) {
+            data[`${user.tag}`] = 1;
+          }
+          else {
+            data[`${user.tag}`] += 1;
+          }
+          let str = JSON.stringify(data);
+          fs.writeFile('./temp/gameData.json', str, err => {
+            if (err) {
+              console.log('Error writing file', err);
+            }
+          });
           interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
           if (board.length < 15) {
             board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]] = getRand(curDeck);
@@ -355,8 +415,9 @@ async function continueGame(board, curDeck, interaction) {
     collector5.on('collect', (reaction, user) => {
       if (!setFound) {
         reaction.users.remove(user.id);
-        if (!playerInputs.hasOwnProperty(`${user.tag}`))
+        if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
           playerInputs[`${user.tag}`] = [];
+        }
         playerInputs[`${user.tag}`].push(emojiNum(reaction.emoji.name)+11);
         if (playerInputs[`${user.tag}`].length >= 3) {
           if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
@@ -372,6 +433,20 @@ async function continueGame(board, curDeck, interaction) {
             if (board.length >= 18) {
               row6.reactions.removeAll()
             }
+            let raw = fs.readFileSync('./temp/gameData.json');
+            let data = JSON.parse(raw);
+            if (!data.hasOwnProperty(`${user.tag}`)) {
+              data[`${user.tag}`] = 1;
+            }
+            else {
+              data[`${user.tag}`] += 1;
+            }
+            let str = JSON.stringify(data);
+            fs.writeFile('./temp/gameData.json', str, err => {
+              if (err) {
+                console.log('Error writing file', err);
+              }
+            });
             interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
             if (board.length < 15) {
               board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]] = getRand(curDeck);
@@ -407,8 +482,9 @@ async function continueGame(board, curDeck, interaction) {
     collector6.on('collect', (reaction, user) => {
       if (!setFound) {
         reaction.users.remove(user.id);
-        if (!playerInputs.hasOwnProperty(`${user.tag}`))
+        if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
           playerInputs[`${user.tag}`] = [];
+        }
         playerInputs[`${user.tag}`].push(emojiNum(reaction.emoji.name)+14);
         if (playerInputs[`${user.tag}`].length >= 3) {
           if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
@@ -424,6 +500,20 @@ async function continueGame(board, curDeck, interaction) {
             if (board.length >= 18) {
               row6.reactions.removeAll()
             }
+            let raw = fs.readFileSync('./temp/gameData.json');
+            let data = JSON.parse(raw);
+            if (!data.hasOwnProperty(`${user.tag}`)) {
+              data[`${user.tag}`] = 1;
+            }
+            else {
+              data[`${user.tag}`] += 1;
+            }
+            let str = JSON.stringify(data);
+            fs.writeFile('./temp/gameData.json', str, err => {
+              if (err) {
+                console.log('Error writing file', err);
+              }
+            });
             interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
             if (board.length < 15) {
               board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]] = getRand(curDeck);
