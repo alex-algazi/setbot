@@ -104,12 +104,12 @@ module.exports = {
       fs.writeFile('./temp/gameData.json', str, err => {
         if (err) {
           console.log('Error writing file', err);
-        } else {
-          console.log('Successfully wrote file');
         }
       });
 
       await interaction.reply('New game!');
+      let stopsign = await interaction.channel.send('To cancel current game, press the stop sign');
+      stopsign.react('🛑');
 
       let row1 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row1.jpeg`]});
       let row2 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row2.jpeg`]});
@@ -152,7 +152,7 @@ module.exports = {
       }
 
       let filter = (reaction, user) => {
-        return ['1️⃣','2️⃣','3️⃣'].includes(reaction.emoji.name) && user.id === interaction.user.id;
+        return ['1️⃣','2️⃣','3️⃣'].includes(reaction.emoji.name) && user.id != 917630979659685908;
       };
 
       let collector1 = row1.createReactionCollector({filter});
@@ -187,6 +187,7 @@ module.exports = {
             row3.delete();
             row2.delete();
             row1.delete();
+            stopsign.delete();
             interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
           }
         }
@@ -208,6 +209,7 @@ module.exports = {
             row3.delete();
             row2.delete();
             row1.delete();
+            stopsign.delete();
             interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
           }
         }
@@ -229,6 +231,7 @@ module.exports = {
             row3.delete();
             row2.delete();
             row1.delete();
+            stopsign.delete();
             interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
           }
         }
@@ -250,6 +253,7 @@ module.exports = {
             row3.delete();
             row2.delete();
             row1.delete();
+            stopsign.delete();
             interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
           }
         }
@@ -272,6 +276,7 @@ module.exports = {
               row3.delete();
               row2.delete();
               row1.delete();
+              stopsign.delete();
               interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
             }
           }
@@ -295,11 +300,34 @@ module.exports = {
               row3.delete();
               row2.delete();
               row1.delete();
+              stopsign.delete();
               interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
             }
           }
         });
       }
+
+      const gFilter = (reaction, user) => {
+        return reaction.emoji.name === '🛑' && user.id === interaction.user.id;
+      };
+      const gCollector = stopsign.createReactionCollector({gFilter});
+      gCollector.on('collect', () => {
+        if (board.length >= 18) {
+          row6.delete();
+        }
+        if (board.length >= 15) {
+          row5.delete();
+        }
+        row4.delete();
+        row3.delete();
+        row2.delete();
+        row1.delete();
+        stopsign.delete();
+        if(fs.existsSync('./temp/gameData.json')) {
+          fs.unlinkSync('./temp/gameData.json');
+        }
+        interaction.channel.send('Game canceled.');
+      });
     }
     else {
       await interaction.reply('Game is already active');
