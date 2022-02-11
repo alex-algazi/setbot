@@ -220,7 +220,7 @@ async function continueGame(board, curDeck, interaction) {
             data[`${user.tag}`] += 1;
           }
           let str = JSON.stringify(data);
-          fs.writeFile(`./temp/${interaction.guild.id}data.json`, str, err => {
+          fs.writeFileSync(`./temp/${interaction.guild.id}data.json`, str, err => {
             if (err) {
               console.log('Error writing file', err);
             }
@@ -254,9 +254,10 @@ async function continueGame(board, curDeck, interaction) {
           }
           else {
             interaction.channel.send(`User ${user.tag} found a set!`);
-            board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1],1);
-            board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2],1);
-            board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3],1);
+            let cards = playerInputs[`${user.tag}`].slice(-3).sort((a,b)=>{return a-b;}).reverse();
+            board.splice(cards[0],1);
+            board.splice(cards[1],1);
+            board.splice(cards[2],1);
             for (let i = 0; i < board.length/3; i++) {
               images(910,225)
                 .draw(images(`images/${board[i*3]}.jpeg`),0,0)
@@ -267,7 +268,6 @@ async function continueGame(board, curDeck, interaction) {
           }
           if (curDeck.length === 0 && !checkBoard(board)) {
             let raw = fs.readFileSync(`./temp/${interaction.guild.id}data.json`);
-            console.log(raw);
             let data = JSON.parse(raw);
             if(fs.existsSync(`./temp/${interaction.guild.id}data.json`)) {
               fs.unlinkSync(`./temp/${interaction.guild.id}data.json`);
@@ -319,7 +319,7 @@ async function continueGame(board, curDeck, interaction) {
               data[`${user.tag}`] += 1;
             }
             let str = JSON.stringify(data);
-            fs.writeFile(`./temp/${interaction.guild.id}data.json`, str, err => {
+            fs.writeFileSync(`./temp/${interaction.guild.id}data.json`, str, err => {
               if (err) {
                 console.log('Error writing file', err);
               }
@@ -353,9 +353,10 @@ async function continueGame(board, curDeck, interaction) {
             }
             else {
               interaction.channel.send(`User ${user.tag} found a set!`);
-              board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1],1);
-              board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2],1);
-              board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3],1);
+              let cards = playerInputs[`${user.tag}`].slice(-3).sort((a,b)=>{return a-b;}).reverse();
+              board.splice(cards[0],1);
+              board.splice(cards[1],1);
+              board.splice(cards[2],1);
               for (let i = 0; i < board.length/3; i++) {
                 images(910,225)
                   .draw(images(`images/${board[i*3]}.jpeg`),0,0)
@@ -418,7 +419,7 @@ async function continueGame(board, curDeck, interaction) {
               data[`${user.tag}`] += 1;
             }
             let str = JSON.stringify(data);
-            fs.writeFile(`./temp/${interaction.guild.id}data.json`, str, err => {
+            fs.writeFileSync(`./temp/${interaction.guild.id}data.json`, str, err => {
               if (err) {
                 console.log('Error writing file', err);
               }
@@ -452,9 +453,10 @@ async function continueGame(board, curDeck, interaction) {
             }
             else {
               interaction.channel.send(`User ${user.tag} found a set!`);
-              board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1],1);
-              board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2],1);
-              board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3],1);
+              let cards = playerInputs[`${user.tag}`].slice(-3).sort((a,b)=>{return a-b;}).reverse();
+              board.splice(cards[0],1);
+              board.splice(cards[1],1);
+              board.splice(cards[2],1);
               for (let i = 0; i < board.length/3; i++) {
                 images(910,225)
                   .draw(images(`images/${board[i*3]}.jpeg`),0,0)
@@ -517,7 +519,7 @@ async function continueGame(board, curDeck, interaction) {
               data[`${user.tag}`] += 1;
             }
             let str = JSON.stringify(data);
-            fs.writeFile(`./temp/${interaction.guild.id}data.json`, str, err => {
+            fs.writeFileSync(`./temp/${interaction.guild.id}data.json`, str, err => {
               if (err) {
                 console.log('Error writing file', err);
               }
@@ -551,9 +553,10 @@ async function continueGame(board, curDeck, interaction) {
             }
             else {
               interaction.channel.send(`User ${user.tag} found a set!`);
-              board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1],1);
-              board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2],1);
-              board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3],1);
+              let cards = playerInputs[`${user.tag}`].slice(-3).sort((a,b)=>{return a-b;}).reverse();
+              board.splice(cards[0],1);
+              board.splice(cards[1],1);
+              board.splice(cards[2],1);
               for (let i = 0; i < board.length/3; i++) {
                 images(910,225)
                   .draw(images(`images/${board[i*3]}.jpeg`),0,0)
@@ -616,7 +619,7 @@ async function continueGame(board, curDeck, interaction) {
               data[`${user.tag}`] += 1;
             }
             let str = JSON.stringify(data);
-            fs.writeFile(`./temp/${interaction.guild.id}data.json`, str, err => {
+            fs.writeFileSync(`./temp/${interaction.guild.id}data.json`, str, err => {
               if (err) {
                 console.log('Error writing file', err);
               }
@@ -650,9 +653,10 @@ async function continueGame(board, curDeck, interaction) {
             }
             else {
               interaction.channel.send(`User ${user.tag} found a set!`);
-              board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1],1);
-              board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2],1);
-              board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3],1);
+              let cards = playerInputs[`${user.tag}`].slice(-3).sort((a,b)=>{return a-b;}).reverse();
+              board.splice(cards[0],1);
+              board.splice(cards[1],1);
+              board.splice(cards[2],1);
               for (let i = 0; i < board.length/3; i++) {
                 images(910,225)
                   .draw(images(`images/${board[i*3]}.jpeg`),0,0)
@@ -715,7 +719,7 @@ async function continueGame(board, curDeck, interaction) {
               data[`${user.tag}`] += 1;
             }
             let str = JSON.stringify(data);
-            fs.writeFile(`./temp/${interaction.guild.id}data.json`, str, err => {
+            fs.writeFileSync(`./temp/${interaction.guild.id}data.json`, str, err => {
               if (err) {
                 console.log('Error writing file', err);
               }
@@ -749,9 +753,10 @@ async function continueGame(board, curDeck, interaction) {
             }
             else {
               interaction.channel.send(`User ${user.tag} found a set!`);
-              board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1],1);
-              board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2],1);
-              board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3],1);
+              let cards = playerInputs[`${user.tag}`].slice(-3).sort((a,b)=>{return a-b;}).reverse();
+              board.splice(cards[0],1);
+              board.splice(cards[1],1);
+              board.splice(cards[2],1);
               for (let i = 0; i < board.length/3; i++) {
                 images(910,225)
                   .draw(images(`images/${board[i*3]}.jpeg`),0,0)
@@ -818,7 +823,7 @@ module.exports = {
 
       let gameData = {}
       let str = JSON.stringify(gameData);
-      fs.writeFile(`./temp/${interaction.guild.id}data.json`, str, err => {
+      fs.writeFileSync(`./temp/${interaction.guild.id}data.json`, str, err => {
         if (err) {
           console.log('Error writing file', err);
         }
