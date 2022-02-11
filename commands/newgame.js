@@ -69,6 +69,10 @@ function isSet(c1, c2, c3) {
     return false;
 }
 
+function printScores(d, i) {
+  i.channel.send('scores');
+}
+
 const badBoard = [1323,1123,1213,1232,1312,1112,1321,1121,1211,2222,2212,3223];
 
 function newBadBoard(b, d, id) {
@@ -93,15 +97,24 @@ async function continueGame(board, curDeck, interaction) {
     addRow(board, curDeck, interaction.guild.id);
   }
 
-  let stopsign = await interaction.channel.send('To cancel current game, press the stop sign');
+  let stopsign = await interaction.channel.send(`${curDeck.length} cards remaining. To cancel current game, press the stop sign.`);
   stopsign.react('🛑');
 
   let row1 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row1.jpeg`]});
-  let row2 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row2.jpeg`]});
-  let row3 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row3.jpeg`]});
-  let row4 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row4.jpeg`]});
+  let row2;
+  let row3;
+  let row4;
   let row5;
   let row6;
+  if (board.length >= 6) {
+    row2 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row2.jpeg`]});
+  }
+  if (board.length >= 9) {
+    row3 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row3.jpeg`]});
+  }
+  if (board.length >= 12) {
+    row4 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row4.jpeg`]});
+  }
   if (board.length >= 15) {
     row5 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row5.jpeg`]});
   }
@@ -113,15 +126,21 @@ async function continueGame(board, curDeck, interaction) {
     await row1.react('1️⃣');
     await row1.react('2️⃣');
     await row1.react('3️⃣');
-    await row2.react('1️⃣');
-    await row2.react('2️⃣');
-    await row2.react('3️⃣');
-    await row3.react('1️⃣');
-    await row3.react('2️⃣');
-    await row3.react('3️⃣');
-    await row4.react('1️⃣');
-    await row4.react('2️⃣');
-    await row4.react('3️⃣');
+    if (board.length >= 6) {
+      await row2.react('1️⃣');
+      await row2.react('2️⃣');
+      await row2.react('3️⃣');
+    }
+    if (board.length >= 9) {
+      await row3.react('1️⃣');
+      await row3.react('2️⃣');
+      await row3.react('3️⃣');
+    }
+    if (board.length >= 12) {
+      await row4.react('1️⃣');
+      await row4.react('2️⃣');
+      await row4.react('3️⃣');
+    }
     if (board.length >= 15) {
       await row5.react('1️⃣');
       await row5.react('2️⃣');
@@ -141,11 +160,20 @@ async function continueGame(board, curDeck, interaction) {
   };
 
   let collector1 = row1.createReactionCollector({filter});
-  let collector2 = row2.createReactionCollector({filter});
-  let collector3 = row3.createReactionCollector({filter});
-  let collector4 = row4.createReactionCollector({filter});
+  let collector2;
+  let collector3;
+  let collector4;
   let collector5;
   let collector6;
+  if (board.length >= 6) {
+    collector2 = row2.createReactionCollector({filter});
+  }
+  if (board.length >= 9) {
+    collector3 = row3.createReactionCollector({filter});
+  }
+  if (board.length >= 12) {
+    collector4 = row4.createReactionCollector({filter});
+  }
   if (board.length >= 15) {
     collector5 = row5.createReactionCollector({filter});
   }
@@ -168,290 +196,36 @@ async function continueGame(board, curDeck, interaction) {
           setFound = true;
           stopsign.reactions.removeAll()
           row1.reactions.removeAll()
-          row2.reactions.removeAll()
-          row3.reactions.removeAll()
-          row4.reactions.removeAll()
-          if (board.length >= 15) {
-            row5.reactions.removeAll()
-          }
-          if (board.length >= 18) {
-            row6.reactions.removeAll()
-          }
-          let raw = fs.readFileSync(`./temp/${interaction.guild.id}data.json`);
-          let data = JSON.parse(raw);
-          if (!data.hasOwnProperty(`${user.tag}`)) {
-            data[`${user.tag}`] = 1;
-          }
-          else {
-            data[`${user.tag}`] += 1;
-          }
-          let str = JSON.stringify(data);
-          fs.writeFile(`./temp/${interaction.guild.id}data.json`, str, err => {
-            if (err) {
-              console.log('Error writing file', err);
-            }
-          });
-          interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
-          if (board.length < 15) {
-            board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]] = getRand(curDeck);
-            board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]] = getRand(curDeck);
-            board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]] = getRand(curDeck);
-          }
-          else {
-            let cards = playerInputs[`${user.tag}`].slice(-3).sort((a,b)=>{return a-b;}).reverse();
-            for (let i = 0; i < 3; i++) {
-              if (cards[i] >= 12) {
-                board.splice(cards[i],1);
-              }
-              else {
-                board[cards[i]] = board[board.length-1];
-                board.splice(board.length-1,1);
-              }
-            }
-          }
-          for (let i = 0; i < 4; i++) {
-            images(910,225)
-              .draw(images(`images/${board[i*3]}.jpeg`),0,0)
-              .draw(images(`images/${board[i*3+1]}.jpeg`),305,0)
-              .draw(images(`images/${board[i*3+2]}.jpeg`),610,0)
-              .save(`temp/${interaction.guild.id}row${i+1}.jpeg`);
-          }
-          continueGame(board, curDeck, interaction);
-        }
-      }
-    }
-  });
-  collector2.on('collect', (reaction, user) => {
-    if (!setFound) {
-      reaction.users.remove(user.id);
-      if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
-        playerInputs[`${user.tag}`] = [];
-      }
-      playerInputs[`${user.tag}`].push(emojiNum(reaction.emoji.name)+2);
-      if (playerInputs[`${user.tag}`].length >= 3) {
-        if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
-          setFound = true;
-          stopsign.reactions.removeAll()
-          row1.reactions.removeAll()
-          row2.reactions.removeAll()
-          row3.reactions.removeAll()
-          row4.reactions.removeAll()
-          if (board.length >= 15) {
-            row5.reactions.removeAll()
-          }
-          if (board.length >= 18) {
-            row6.reactions.removeAll()
-          }
-          let raw = fs.readFileSync(`./temp/${interaction.guild.id}data.json`);
-          let data = JSON.parse(raw);
-          if (!data.hasOwnProperty(`${user.tag}`)) {
-            data[`${user.tag}`] = 1;
-          }
-          else {
-            data[`${user.tag}`] += 1;
-          }
-          let str = JSON.stringify(data);
-          fs.writeFile(`./temp/${interaction.guild.id}data.json`, str, err => {
-            if (err) {
-              console.log('Error writing file', err);
-            }
-          });
-          interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
-          if (board.length < 15) {
-            board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]] = getRand(curDeck);
-            board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]] = getRand(curDeck);
-            board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]] = getRand(curDeck);
-          }
-          else {
-            let cards = playerInputs[`${user.tag}`].slice(-3).sort((a,b)=>{return a-b;}).reverse();
-            for (let i = 0; i < 3; i++) {
-              if (cards[i] >= 12) {
-                board.splice(cards[i],1);
-              }
-              else {
-                board[cards[i]] = board[board.length-1];
-                board.splice(board.length-1,1);
-              }
-            }
-          }
-          for (let i = 0; i < 4; i++) {
-            images(910,225)
-              .draw(images(`images/${board[i*3]}.jpeg`),0,0)
-              .draw(images(`images/${board[i*3+1]}.jpeg`),305,0)
-              .draw(images(`images/${board[i*3+2]}.jpeg`),610,0)
-              .save(`temp/${interaction.guild.id}row${i+1}.jpeg`);
-          }
-          continueGame(board, curDeck, interaction);
-        }
-      }
-    }
-  });
-  collector3.on('collect', (reaction, user) => {
-    if (!setFound) {
-      reaction.users.remove(user.id);
-      if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
-        playerInputs[`${user.tag}`] = [];
-      }
-      playerInputs[`${user.tag}`].push(emojiNum(reaction.emoji.name)+5);
-      if (playerInputs[`${user.tag}`].length >= 3) {
-        if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
-          setFound = true;
-          stopsign.reactions.removeAll()
-          row1.reactions.removeAll()
-          row2.reactions.removeAll()
-          row3.reactions.removeAll()
-          row4.reactions.removeAll()
-          if (board.length >= 15) {
-            row5.reactions.removeAll()
-          }
-          if (board.length >= 18) {
-            row6.reactions.removeAll()
-          }
-          let raw = fs.readFileSync(`./temp/${interaction.guild.id}data.json`);
-          let data = JSON.parse(raw);
-          if (!data.hasOwnProperty(`${user.tag}`)) {
-            data[`${user.tag}`] = 1;
-          }
-          else {
-            data[`${user.tag}`] += 1;
-          }
-          let str = JSON.stringify(data);
-          fs.writeFile(`./temp/${interaction.guild.id}data.json`, str, err => {
-            if (err) {
-              console.log('Error writing file', err);
-            }
-          });
-          interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
-          if (board.length < 15) {
-            board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]] = getRand(curDeck);
-            board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]] = getRand(curDeck);
-            board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]] = getRand(curDeck);
-          }
-          else {
-            let cards = playerInputs[`${user.tag}`].slice(-3).sort((a,b)=>{return a-b;}).reverse();
-            for (let i = 0; i < 3; i++) {
-              if (cards[i] >= 12) {
-                board.splice(cards[i],1);
-              }
-              else {
-                board[cards[i]] = board[board.length-1];
-                board.splice(board.length-1,1);
-              }
-            }
-          }
-          for (let i = 0; i < 4; i++) {
-            images(910,225)
-              .draw(images(`images/${board[i*3]}.jpeg`),0,0)
-              .draw(images(`images/${board[i*3+1]}.jpeg`),305,0)
-              .draw(images(`images/${board[i*3+2]}.jpeg`),610,0)
-              .save(`temp/${interaction.guild.id}row${i+1}.jpeg`);
-          }
-          continueGame(board, curDeck, interaction);
-        }
-      }
-    }
-  });
-  collector4.on('collect', (reaction, user) => {
-    if (!setFound) {
-      reaction.users.remove(user.id);
-      if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
-        playerInputs[`${user.tag}`] = [];
-      }
-      playerInputs[`${user.tag}`].push(emojiNum(reaction.emoji.name)+8);
-      if (playerInputs[`${user.tag}`].length >= 3) {
-        if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
-          setFound = true;
-          stopsign.reactions.removeAll()
-          row1.reactions.removeAll()
-          row2.reactions.removeAll()
-          row3.reactions.removeAll()
-          row4.reactions.removeAll()
-          if (board.length >= 15) {
-            row5.reactions.removeAll()
-          }
-          if (board.length >= 18) {
-            row6.reactions.removeAll()
-          }
-          let raw = fs.readFileSync(`./temp/${interaction.guild.id}data.json`);
-          let data = JSON.parse(raw);
-          if (!data.hasOwnProperty(`${user.tag}`)) {
-            data[`${user.tag}`] = 1;
-          }
-          else {
-            data[`${user.tag}`] += 1;
-          }
-          let str = JSON.stringify(data);
-          fs.writeFile(`./temp/${interaction.guild.id}data.json`, str, err => {
-            if (err) {
-              console.log('Error writing file', err);
-            }
-          });
-          interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
-          if (board.length < 15) {
-            board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]] = getRand(curDeck);
-            board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]] = getRand(curDeck);
-            board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]] = getRand(curDeck);
-          }
-          else {
-            let cards = playerInputs[`${user.tag}`].slice(-3).sort((a,b)=>{return a-b;}).reverse();
-            for (let i = 0; i < 3; i++) {
-              if (cards[i] >= 12) {
-                board.splice(cards[i],1);
-              }
-              else {
-                board[cards[i]] = board[board.length-1];
-                board.splice(board.length-1,1);
-              }
-            }
-          }
-          for (let i = 0; i < 4; i++) {
-            images(910,225)
-              .draw(images(`images/${board[i*3]}.jpeg`),0,0)
-              .draw(images(`images/${board[i*3+1]}.jpeg`),305,0)
-              .draw(images(`images/${board[i*3+2]}.jpeg`),610,0)
-              .save(`temp/${interaction.guild.id}row${i+1}.jpeg`);
-          }
-          continueGame(board, curDeck, interaction);
-        }
-      }
-    }
-  });
-  if (board.length >= 15) {
-    collector5.on('collect', (reaction, user) => {
-      if (!setFound) {
-        reaction.users.remove(user.id);
-        if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
-          playerInputs[`${user.tag}`] = [];
-        }
-        playerInputs[`${user.tag}`].push(emojiNum(reaction.emoji.name)+11);
-        if (playerInputs[`${user.tag}`].length >= 3) {
-          if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
-            setFound = true;
-            stopsign.reactions.removeAll()
-            row1.reactions.removeAll()
+          if (board.length >= 6) {
             row2.reactions.removeAll()
+          }
+          if (board.length >= 9) {
             row3.reactions.removeAll()
+          }
+          if (board.length >= 12) {
             row4.reactions.removeAll()
-            if (board.length >= 15) {
-              row5.reactions.removeAll()
+          }
+          if (board.length >= 15) {
+            row5.reactions.removeAll()
+          }
+          if (board.length >= 18) {
+            row6.reactions.removeAll()
+          }
+          let raw = fs.readFileSync(`./temp/${interaction.guild.id}data.json`);
+          let data = JSON.parse(raw);
+          if (!data.hasOwnProperty(`${user.tag}`)) {
+            data[`${user.tag}`] = 1;
+          }
+          else {
+            data[`${user.tag}`] += 1;
+          }
+          let str = JSON.stringify(data);
+          fs.writeFile(`./temp/${interaction.guild.id}data.json`, str, err => {
+            if (err) {
+              console.log('Error writing file', err);
             }
-            if (board.length >= 18) {
-              row6.reactions.removeAll()
-            }
-            let raw = fs.readFileSync(`./temp/${interaction.guild.id}data.json`);
-            let data = JSON.parse(raw);
-            if (!data.hasOwnProperty(`${user.tag}`)) {
-              data[`${user.tag}`] = 1;
-            }
-            else {
-              data[`${user.tag}`] += 1;
-            }
-            let str = JSON.stringify(data);
-            fs.writeFile(`./temp/${interaction.guild.id}data.json`, str, err => {
-              if (err) {
-                console.log('Error writing file', err);
-              }
-            });
+          });
+          if (curDeck.length !== 0) {
             interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
             if (board.length < 15) {
               board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]] = getRand(curDeck);
@@ -477,7 +251,387 @@ async function continueGame(board, curDeck, interaction) {
                 .draw(images(`images/${board[i*3+2]}.jpeg`),610,0)
                 .save(`temp/${interaction.guild.id}row${i+1}.jpeg`);
             }
+          }
+          else {
+            interaction.channel.send(`User ${user.tag} found a set! Deck is now empty.`);
+            board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1],1);
+            board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2],1);
+            board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3],1);
+          }
+          if (curDeck.length === 0 && !checkBoard(board)) {
+            let raw = fs.readFileSync(`./temp/${interaction.guild.id}data.json`);
+            console.log(raw);
+            let data = JSON.parse(raw);
+            if(fs.existsSync(`./temp/${interaction.guild.id}data.json`)) {
+              fs.unlinkSync(`./temp/${interaction.guild.id}data.json`);
+            }
+            interaction.channel.send('Game over!');
+            printScores(data, interaction);
+          }
+          else {
             continueGame(board, curDeck, interaction);
+          }
+        }
+      }
+    }
+  });
+  collector2.on('collect', (reaction, user) => {
+    if (!setFound) {
+      reaction.users.remove(user.id);
+      if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
+        playerInputs[`${user.tag}`] = [];
+      }
+      playerInputs[`${user.tag}`].push(emojiNum(reaction.emoji.name)+2);
+      if (playerInputs[`${user.tag}`].length >= 3) {
+        if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
+          setFound = true;
+          stopsign.reactions.removeAll()
+          row1.reactions.removeAll()
+          if (board.length >= 6) {
+            row2.reactions.removeAll()
+          }
+          if (board.length >= 9) {
+            row3.reactions.removeAll()
+          }
+          if (board.length >= 12) {
+            row4.reactions.removeAll()
+          }
+          if (board.length >= 15) {
+            row5.reactions.removeAll()
+          }
+          if (board.length >= 18) {
+            row6.reactions.removeAll()
+          }
+          let raw = fs.readFileSync(`./temp/${interaction.guild.id}data.json`);
+          let data = JSON.parse(raw);
+          if (!data.hasOwnProperty(`${user.tag}`)) {
+            data[`${user.tag}`] = 1;
+          }
+          else {
+            data[`${user.tag}`] += 1;
+          }
+          let str = JSON.stringify(data);
+          fs.writeFile(`./temp/${interaction.guild.id}data.json`, str, err => {
+            if (err) {
+              console.log('Error writing file', err);
+            }
+          });
+          if (curDeck.length !== 0) {
+            interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
+            if (board.length < 15) {
+              board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]] = getRand(curDeck);
+              board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]] = getRand(curDeck);
+              board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]] = getRand(curDeck);
+            }
+            else {
+              let cards = playerInputs[`${user.tag}`].slice(-3).sort((a,b)=>{return a-b;}).reverse();
+              for (let i = 0; i < 3; i++) {
+                if (cards[i] >= 12) {
+                  board.splice(cards[i],1);
+                }
+                else {
+                  board[cards[i]] = board[board.length-1];
+                  board.splice(board.length-1,1);
+                }
+              }
+            }
+            for (let i = 0; i < 4; i++) {
+              images(910,225)
+                .draw(images(`images/${board[i*3]}.jpeg`),0,0)
+                .draw(images(`images/${board[i*3+1]}.jpeg`),305,0)
+                .draw(images(`images/${board[i*3+2]}.jpeg`),610,0)
+                .save(`temp/${interaction.guild.id}row${i+1}.jpeg`);
+            }
+          }
+          else {
+            interaction.channel.send(`User ${user.tag} found a set! Deck is now empty.`);
+            board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1],1);
+            board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2],1);
+            board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3],1);
+          }
+          if (curDeck.length === 0 && !checkBoard(board)) {
+            let raw = fs.readFileSync(`./temp/${interaction.guild.id}data.json`);
+            let data = JSON.parse(raw);
+            if(fs.existsSync(`./temp/${interaction.guild.id}data.json`)) {
+              fs.unlinkSync(`./temp/${interaction.guild.id}data.json`);
+            }
+            interaction.channel.send('Game over!');
+            printScores(data, interaction);
+          }
+          else {
+            continueGame(board, curDeck, interaction);
+          }
+        }
+      }
+    }
+  });
+  collector3.on('collect', (reaction, user) => {
+    if (!setFound) {
+      reaction.users.remove(user.id);
+      if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
+        playerInputs[`${user.tag}`] = [];
+      }
+      playerInputs[`${user.tag}`].push(emojiNum(reaction.emoji.name)+5);
+      if (playerInputs[`${user.tag}`].length >= 3) {
+        if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
+          setFound = true;
+          stopsign.reactions.removeAll()
+          row1.reactions.removeAll()
+          if (board.length >= 6) {
+            row2.reactions.removeAll()
+          }
+          if (board.length >= 9) {
+            row3.reactions.removeAll()
+          }
+          if (board.length >= 12) {
+            row4.reactions.removeAll()
+          }
+          if (board.length >= 15) {
+            row5.reactions.removeAll()
+          }
+          if (board.length >= 18) {
+            row6.reactions.removeAll()
+          }
+          let raw = fs.readFileSync(`./temp/${interaction.guild.id}data.json`);
+          let data = JSON.parse(raw);
+          if (!data.hasOwnProperty(`${user.tag}`)) {
+            data[`${user.tag}`] = 1;
+          }
+          else {
+            data[`${user.tag}`] += 1;
+          }
+          let str = JSON.stringify(data);
+          fs.writeFile(`./temp/${interaction.guild.id}data.json`, str, err => {
+            if (err) {
+              console.log('Error writing file', err);
+            }
+          });
+          if (curDeck.length !== 0) {
+            interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
+            if (board.length < 15) {
+              board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]] = getRand(curDeck);
+              board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]] = getRand(curDeck);
+              board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]] = getRand(curDeck);
+            }
+            else {
+              let cards = playerInputs[`${user.tag}`].slice(-3).sort((a,b)=>{return a-b;}).reverse();
+              for (let i = 0; i < 3; i++) {
+                if (cards[i] >= 12) {
+                  board.splice(cards[i],1);
+                }
+                else {
+                  board[cards[i]] = board[board.length-1];
+                  board.splice(board.length-1,1);
+                }
+              }
+            }
+            for (let i = 0; i < 4; i++) {
+              images(910,225)
+                .draw(images(`images/${board[i*3]}.jpeg`),0,0)
+                .draw(images(`images/${board[i*3+1]}.jpeg`),305,0)
+                .draw(images(`images/${board[i*3+2]}.jpeg`),610,0)
+                .save(`temp/${interaction.guild.id}row${i+1}.jpeg`);
+            }
+          }
+          else {
+            interaction.channel.send(`User ${user.tag} found a set! Deck is now empty.`);
+            board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1],1);
+            board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2],1);
+            board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3],1);
+          }
+          if (curDeck.length === 0 && !checkBoard(board)) {
+            let raw = fs.readFileSync(`./temp/${interaction.guild.id}data.json`);
+            let data = JSON.parse(raw);
+            if(fs.existsSync(`./temp/${interaction.guild.id}data.json`)) {
+              fs.unlinkSync(`./temp/${interaction.guild.id}data.json`);
+            }
+            interaction.channel.send('Game over!');
+            printScores(data, interaction);
+          }
+          else {
+            continueGame(board, curDeck, interaction);
+          }
+        }
+      }
+    }
+  });
+  collector4.on('collect', (reaction, user) => {
+    if (!setFound) {
+      reaction.users.remove(user.id);
+      if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
+        playerInputs[`${user.tag}`] = [];
+      }
+      playerInputs[`${user.tag}`].push(emojiNum(reaction.emoji.name)+8);
+      if (playerInputs[`${user.tag}`].length >= 3) {
+        if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
+          setFound = true;
+          stopsign.reactions.removeAll()
+          row1.reactions.removeAll()
+          if (board.length >= 6) {
+            row2.reactions.removeAll()
+          }
+          if (board.length >= 9) {
+            row3.reactions.removeAll()
+          }
+          if (board.length >= 12) {
+            row4.reactions.removeAll()
+          }
+          if (board.length >= 15) {
+            row5.reactions.removeAll()
+          }
+          if (board.length >= 18) {
+            row6.reactions.removeAll()
+          }
+          let raw = fs.readFileSync(`./temp/${interaction.guild.id}data.json`);
+          let data = JSON.parse(raw);
+          if (!data.hasOwnProperty(`${user.tag}`)) {
+            data[`${user.tag}`] = 1;
+          }
+          else {
+            data[`${user.tag}`] += 1;
+          }
+          let str = JSON.stringify(data);
+          fs.writeFile(`./temp/${interaction.guild.id}data.json`, str, err => {
+            if (err) {
+              console.log('Error writing file', err);
+            }
+          });
+          if (curDeck.length !== 0) {
+            interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
+            if (board.length < 15) {
+              board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]] = getRand(curDeck);
+              board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]] = getRand(curDeck);
+              board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]] = getRand(curDeck);
+            }
+            else {
+              let cards = playerInputs[`${user.tag}`].slice(-3).sort((a,b)=>{return a-b;}).reverse();
+              for (let i = 0; i < 3; i++) {
+                if (cards[i] >= 12) {
+                  board.splice(cards[i],1);
+                }
+                else {
+                  board[cards[i]] = board[board.length-1];
+                  board.splice(board.length-1,1);
+                }
+              }
+            }
+            for (let i = 0; i < 4; i++) {
+              images(910,225)
+                .draw(images(`images/${board[i*3]}.jpeg`),0,0)
+                .draw(images(`images/${board[i*3+1]}.jpeg`),305,0)
+                .draw(images(`images/${board[i*3+2]}.jpeg`),610,0)
+                .save(`temp/${interaction.guild.id}row${i+1}.jpeg`);
+            }
+          }
+          else {
+            interaction.channel.send(`User ${user.tag} found a set! Deck is now empty.`);
+            board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1],1);
+            board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2],1);
+            board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3],1);
+          }
+          if (curDeck.length === 0 && !checkBoard(board)) {
+            let raw = fs.readFileSync(`./temp/${interaction.guild.id}data.json`);
+            let data = JSON.parse(raw);
+            if(fs.existsSync(`./temp/${interaction.guild.id}data.json`)) {
+              fs.unlinkSync(`./temp/${interaction.guild.id}data.json`);
+            }
+            interaction.channel.send('Game over!');
+            printScores(data, interaction);
+          }
+          else {
+            continueGame(board, curDeck, interaction);
+          }
+        }
+      }
+    }
+  });
+  if (board.length >= 15) {
+    collector5.on('collect', (reaction, user) => {
+      if (!setFound) {
+        reaction.users.remove(user.id);
+        if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
+          playerInputs[`${user.tag}`] = [];
+        }
+        playerInputs[`${user.tag}`].push(emojiNum(reaction.emoji.name)+11);
+        if (playerInputs[`${user.tag}`].length >= 3) {
+          if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
+            setFound = true;
+            stopsign.reactions.removeAll()
+            row1.reactions.removeAll()
+            if (board.length >= 6) {
+              row2.reactions.removeAll()
+            }
+            if (board.length >= 9) {
+              row3.reactions.removeAll()
+            }
+            if (board.length >= 12) {
+              row4.reactions.removeAll()
+            }
+            if (board.length >= 15) {
+              row5.reactions.removeAll()
+            }
+            if (board.length >= 18) {
+              row6.reactions.removeAll()
+            }
+            let raw = fs.readFileSync(`./temp/${interaction.guild.id}data.json`);
+            let data = JSON.parse(raw);
+            if (!data.hasOwnProperty(`${user.tag}`)) {
+              data[`${user.tag}`] = 1;
+            }
+            else {
+              data[`${user.tag}`] += 1;
+            }
+            let str = JSON.stringify(data);
+            fs.writeFile(`./temp/${interaction.guild.id}data.json`, str, err => {
+              if (err) {
+                console.log('Error writing file', err);
+              }
+            });
+            if (curDeck.length !== 0) {
+              interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
+              if (board.length < 15) {
+                board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]] = getRand(curDeck);
+                board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]] = getRand(curDeck);
+                board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]] = getRand(curDeck);
+              }
+              else {
+                let cards = playerInputs[`${user.tag}`].slice(-3).sort((a,b)=>{return a-b;}).reverse();
+                for (let i = 0; i < 3; i++) {
+                  if (cards[i] >= 12) {
+                    board.splice(cards[i],1);
+                  }
+                  else {
+                    board[cards[i]] = board[board.length-1];
+                    board.splice(board.length-1,1);
+                  }
+                }
+              }
+              for (let i = 0; i < 4; i++) {
+                images(910,225)
+                  .draw(images(`images/${board[i*3]}.jpeg`),0,0)
+                  .draw(images(`images/${board[i*3+1]}.jpeg`),305,0)
+                  .draw(images(`images/${board[i*3+2]}.jpeg`),610,0)
+                  .save(`temp/${interaction.guild.id}row${i+1}.jpeg`);
+              }
+            }
+            else {
+              interaction.channel.send(`User ${user.tag} found a set! Deck is now empty.`);
+              board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1],1);
+              board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2],1);
+              board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3],1);
+            }
+            if (curDeck.length === 0 && !checkBoard(board)) {
+              let raw = fs.readFileSync(`./temp/${interaction.guild.id}data.json`);
+              let data = JSON.parse(raw);
+              if(fs.existsSync(`./temp/${interaction.guild.id}data.json`)) {
+                fs.unlinkSync(`./temp/${interaction.guild.id}data.json`);
+              }
+              interaction.channel.send('Game over!');
+              printScores(data, interaction);
+            }
+            else {
+              continueGame(board, curDeck, interaction);
+            }
           }
         }
       }
@@ -496,9 +650,15 @@ async function continueGame(board, curDeck, interaction) {
             setFound = true;
             stopsign.reactions.removeAll()
             row1.reactions.removeAll()
-            row2.reactions.removeAll()
-            row3.reactions.removeAll()
-            row4.reactions.removeAll()
+            if (board.length >= 6) {
+              row2.reactions.removeAll()
+            }
+            if (board.length >= 9) {
+              row3.reactions.removeAll()
+            }
+            if (board.length >= 12) {
+              row4.reactions.removeAll()
+            }
             if (board.length >= 15) {
               row5.reactions.removeAll()
             }
@@ -519,32 +679,51 @@ async function continueGame(board, curDeck, interaction) {
                 console.log('Error writing file', err);
               }
             });
-            interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
-            if (board.length < 15) {
-              board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]] = getRand(curDeck);
-              board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]] = getRand(curDeck);
-              board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]] = getRand(curDeck);
-            }
-            else {
-              let cards = playerInputs[`${user.tag}`].slice(-3).sort((a,b)=>{return a-b;}).reverse();
-              for (let i = 0; i < 3; i++) {
-                if (cards[i] >= 12) {
-                  board.splice(cards[i],1);
-                }
-                else {
-                  board[cards[i]] = board[board.length-1];
-                  board.splice(board.length-1,1);
+            if (curDeck.length !== 0) {
+              interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
+              if (board.length < 15) {
+                board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]] = getRand(curDeck);
+                board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]] = getRand(curDeck);
+                board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]] = getRand(curDeck);
+              }
+              else {
+                let cards = playerInputs[`${user.tag}`].slice(-3).sort((a,b)=>{return a-b;}).reverse();
+                for (let i = 0; i < 3; i++) {
+                  if (cards[i] >= 12) {
+                    board.splice(cards[i],1);
+                  }
+                  else {
+                    board[cards[i]] = board[board.length-1];
+                    board.splice(board.length-1,1);
+                  }
                 }
               }
+              for (let i = 0; i < 4; i++) {
+                images(910,225)
+                  .draw(images(`images/${board[i*3]}.jpeg`),0,0)
+                  .draw(images(`images/${board[i*3+1]}.jpeg`),305,0)
+                  .draw(images(`images/${board[i*3+2]}.jpeg`),610,0)
+                  .save(`temp/${interaction.guild.id}row${i+1}.jpeg`);
+              }
             }
-            for (let i = 0; i < 4; i++) {
-              images(910,225)
-                .draw(images(`images/${board[i*3]}.jpeg`),0,0)
-                .draw(images(`images/${board[i*3+1]}.jpeg`),305,0)
-                .draw(images(`images/${board[i*3+2]}.jpeg`),610,0)
-                .save(`temp/${interaction.guild.id}row${i+1}.jpeg`);
+            else {
+              interaction.channel.send(`User ${user.tag} found a set! Deck is now empty.`);
+              board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1],1);
+              board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2],1);
+              board.splice(playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3],1);
             }
-            continueGame(board, curDeck, interaction);
+            if (curDeck.length === 0 && !checkBoard(board)) {
+              let raw = fs.readFileSync(`./temp/${interaction.guild.id}data.json`);
+              let data = JSON.parse(raw);
+              if(fs.existsSync(`./temp/${interaction.guild.id}data.json`)) {
+                fs.unlinkSync(`./temp/${interaction.guild.id}data.json`);
+              }
+              interaction.channel.send('Game over!');
+              printScores(data, interaction);
+            }
+            else {
+              continueGame(board, curDeck, interaction);
+            }
           }
         }
       }
@@ -567,10 +746,13 @@ async function continueGame(board, curDeck, interaction) {
     if (board.length >= 18) {
       row6.reactions.removeAll()
     }
+    let raw = fs.readFileSync(`./temp/${interaction.guild.id}data.json`);
+    let data = JSON.parse(raw);
     if(fs.existsSync(`./temp/${interaction.guild.id}data.json`)) {
       fs.unlinkSync(`./temp/${interaction.guild.id}data.json`);
     }
     interaction.channel.send('Game canceled.');
+    printScores(data, interaction);
   });
 }
 
