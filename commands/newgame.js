@@ -90,7 +90,7 @@ module.exports = {
   async execute(interaction) {
     if (!fs.existsSync('./temp/gameData.json')) {
       let curDeck = [1111,1112,1113,1121,1122,1123,1131,1132,1133,1211,1212,1213,1221,1222,1223,1231,1232,1233,1311,1312,1313,1321,1322,1323,1331,1332,1333,2111,2112,2113,2121,2122,2123,2131,2132,2133,2211,2212,2213,2221,2222,2223,2231,2232,2233,2311,2312,2313,2321,2322,2323,2331,2332,2333,3111,3112,3113,3121,3122,3123,3131,3132,3133,3211,3212,3213,3221,3222,3223,3231,3232,3233,3311,3312,3313,3321,3322,3323,3331,3332,3333];
-      let board = newBoard([], curDeck, interaction.guild.id);
+      let board = newBadBoard([], curDeck, interaction.guild.id);
 
       while (!checkBoard(board)) {
         addRow(board, curDeck, interaction.guild.id);
@@ -177,18 +177,28 @@ module.exports = {
         playerInputs[`${user.tag}`].push(emojiNum(reaction.emoji.name)-1);
         if (playerInputs[`${user.tag}`].length >= 3) {
           if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
-            if (board.length >= 18) {
-              row6.delete();
-            }
+            stopsign.reactions.removeAll()
+            row1.reactions.removeAll()
+            row2.reactions.removeAll()
+            row3.reactions.removeAll()
+            row4.reactions.removeAll()
             if (board.length >= 15) {
-              row5.delete();
+              row5.reactions.removeAll()
             }
-            row4.delete();
-            row3.delete();
-            row2.delete();
-            row1.delete();
-            stopsign.delete();
+            if (board.length >= 18) {
+              row6.reactions.removeAll()
+            }
             interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
+            if (board.length < 15) {
+              board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]] = getRand(curDeck);
+              board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]] = getRand(curDeck);
+              board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]] = getRand(curDeck);
+            }
+            else {
+              // figure out how to fix the board after extra rows
+              board.splice(board.length-3,3);
+            }
+            continueGame(board, curDeck, interaction);
           }
         }
       });
@@ -199,18 +209,28 @@ module.exports = {
         playerInputs[`${user.tag}`].push(emojiNum(reaction.emoji.name)+2);
         if (playerInputs[`${user.tag}`].length >= 3) {
           if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
-            if (board.length >= 18) {
-              row6.delete();
-            }
+            stopsign.reactions.removeAll()
+            row1.reactions.removeAll()
+            row2.reactions.removeAll()
+            row3.reactions.removeAll()
+            row4.reactions.removeAll()
             if (board.length >= 15) {
-              row5.delete();
+              row5.reactions.removeAll()
             }
-            row4.delete();
-            row3.delete();
-            row2.delete();
-            row1.delete();
-            stopsign.delete();
+            if (board.length >= 18) {
+              row6.reactions.removeAll()
+            }
             interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
+            if (board.length < 15) {
+              board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]] = getRand(curDeck);
+              board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]] = getRand(curDeck);
+              board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]] = getRand(curDeck);
+            }
+            else {
+              // figure out how to fix the board after extra rows
+              board.splice(board.length-3,3);
+            }
+            continueGame(board, curDeck, interaction);
           }
         }
       });
@@ -221,18 +241,28 @@ module.exports = {
         playerInputs[`${user.tag}`].push(emojiNum(reaction.emoji.name)+5);
         if (playerInputs[`${user.tag}`].length >= 3) {
           if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
-            if (board.length >= 18) {
-              row6.delete();
-            }
+            stopsign.reactions.removeAll()
+            row1.reactions.removeAll()
+            row2.reactions.removeAll()
+            row3.reactions.removeAll()
+            row4.reactions.removeAll()
             if (board.length >= 15) {
-              row5.delete();
+              row5.reactions.removeAll()
             }
-            row4.delete();
-            row3.delete();
-            row2.delete();
-            row1.delete();
-            stopsign.delete();
+            if (board.length >= 18) {
+              row6.reactions.removeAll()
+            }
             interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
+            if (board.length < 15) {
+              board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]] = getRand(curDeck);
+              board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]] = getRand(curDeck);
+              board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]] = getRand(curDeck);
+            }
+            else {
+              // figure out how to fix the board after extra rows
+              board.splice(board.length-3,3);
+            }
+            continueGame(board, curDeck, interaction);
           }
         }
       });
@@ -243,18 +273,28 @@ module.exports = {
         playerInputs[`${user.tag}`].push(emojiNum(reaction.emoji.name)+8);
         if (playerInputs[`${user.tag}`].length >= 3) {
           if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
-            if (board.length >= 18) {
-              row6.delete();
-            }
+            stopsign.reactions.removeAll()
+            row1.reactions.removeAll()
+            row2.reactions.removeAll()
+            row3.reactions.removeAll()
+            row4.reactions.removeAll()
             if (board.length >= 15) {
-              row5.delete();
+              row5.reactions.removeAll()
             }
-            row4.delete();
-            row3.delete();
-            row2.delete();
-            row1.delete();
-            stopsign.delete();
+            if (board.length >= 18) {
+              row6.reactions.removeAll()
+            }
             interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
+            if (board.length < 15) {
+              board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]] = getRand(curDeck);
+              board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]] = getRand(curDeck);
+              board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]] = getRand(curDeck);
+            }
+            else {
+              // figure out how to fix the board after extra rows
+              board.splice(board.length-3,3);
+            }
+            continueGame(board, curDeck, interaction);
           }
         }
       });
@@ -266,18 +306,28 @@ module.exports = {
           playerInputs[`${user.tag}`].push(emojiNum(reaction.emoji.name)+11);
           if (playerInputs[`${user.tag}`].length >= 3) {
             if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
-              if (board.length >= 18) {
-                row6.delete();
-              }
+              stopsign.reactions.removeAll()
+              row1.reactions.removeAll()
+              row2.reactions.removeAll()
+              row3.reactions.removeAll()
+              row4.reactions.removeAll()
               if (board.length >= 15) {
-                row5.delete();
+                row5.reactions.removeAll()
               }
-              row4.delete();
-              row3.delete();
-              row2.delete();
-              row1.delete();
-              stopsign.delete();
+              if (board.length >= 18) {
+                row6.reactions.removeAll()
+              }
               interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
+              if (board.length < 15) {
+                board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]] = getRand(curDeck);
+                board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]] = getRand(curDeck);
+                board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]] = getRand(curDeck);
+              }
+              else {
+                // figure out how to fix the board after extra rows
+                board.splice(board.length-3,3);
+              }
+              continueGame(board, curDeck, interaction);
             }
           }
         });
@@ -290,18 +340,28 @@ module.exports = {
           playerInputs[`${user.tag}`].push(emojiNum(reaction.emoji.name)+14);
           if (playerInputs[`${user.tag}`].length >= 3) {
             if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
-              if (board.length >= 18) {
-                row6.delete();
-              }
+              stopsign.reactions.removeAll()
+              row1.reactions.removeAll()
+              row2.reactions.removeAll()
+              row3.reactions.removeAll()
+              row4.reactions.removeAll()
               if (board.length >= 15) {
-                row5.delete();
+                row5.reactions.removeAll()
               }
-              row4.delete();
-              row3.delete();
-              row2.delete();
-              row1.delete();
-              stopsign.delete();
+              if (board.length >= 18) {
+                row6.reactions.removeAll()
+              }
               interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
+              if (board.length < 15) {
+                board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]] = getRand(curDeck);
+                board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]] = getRand(curDeck);
+                board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]] = getRand(curDeck);
+              }
+              else {
+                // figure out how to fix the board after extra rows
+                board.splice(board.length-3,3);
+              }
+              continueGame(board, curDeck, interaction);
             }
           }
         });
@@ -312,17 +372,17 @@ module.exports = {
       };
       const gCollector = stopsign.createReactionCollector({gFilter});
       gCollector.on('collect', () => {
-        if (board.length >= 18) {
-          row6.delete();
-        }
+        stopsign.reactions.removeAll()
+        row1.reactions.removeAll()
+        row2.reactions.removeAll()
+        row3.reactions.removeAll()
+        row4.reactions.removeAll()
         if (board.length >= 15) {
-          row5.delete();
+          row5.reactions.removeAll()
         }
-        row4.delete();
-        row3.delete();
-        row2.delete();
-        row1.delete();
-        stopsign.delete();
+        if (board.length >= 18) {
+          row6.reactions.removeAll()
+        }
         if(fs.existsSync('./temp/gameData.json')) {
           fs.unlinkSync('./temp/gameData.json');
         }
@@ -334,3 +394,8 @@ module.exports = {
     }
   }
 };
+
+function continueGame(board, curDeck, interaction) {
+  console.log(board);
+  console.log(curDeck);
+}
