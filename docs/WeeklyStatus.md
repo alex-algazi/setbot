@@ -8,6 +8,22 @@ https://github.com/alex-algazi/setbot
 
 *Alex Algazi (asa10@hood.edu); Diana Teka (dyt1@hood.edu)*
 
+## WEEK 2 (FEB 7 - FEB 14)
+### A. Weekly Accomplishments
+1. 
+2. 
+3. 
+### B. Problems/Issues
+1. 
+2. 
+3. 
+### C. Next Week's Planned Work
+1. 
+2. 
+3. 
+### D. Time Log
+Alex:  hrs, Diana:  hrs
+
 ## WEEK 1 (JAN 31 - FEB 7)
 ### A. Weekly Accomplishments
 1. "/newgame" command file now includes majority of the game's logic. (Alex)
