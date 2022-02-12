@@ -13,7 +13,7 @@ https://github.com/alex-algazi/setbot
 1. Board is checked for sets, and when there are no sets, more cards are added. This is done using a while loop which then calls the helper function "addRow" if there are no sets. (Diana)
 2. Instead of using a while loop structure, we have transitioned to a recursive function call due to Discord API limitations. The main block (at the bottom of commands/newgame.js) only creates a deck, a board, and a basic reply, and then passes all that data into an asyncronous function called "continueGame". This allows the reaction collectors to opperate at the correct scope, which was not possible in a while loop structure, and also reduces repitition in the code overall. (Alex)
 3. Cancel game has been moved from being a seperate command to being a button on one of the reccuring messages. This was done primarily due to a technical limitation: the seperate command file had no access to game states and therefore could not reliably end the game. "cancelgame.js" has been removed. (Alex)
-4. Row opperations only occur if the rows actually exist. This was necessary to avoid game completion states with less than 12 cards on the board. (Alex)
+4. Row opperations only occur if the rows actually exist. This was necessary to avoid errors in game completion states with less than 12 cards on the board. (Alex)
 5. "gameData.json" has been changed to "\<guildId\>data.json", and now only contains player scoring information for individual games. (Alex)
 ### B. Problems/Issues
 1. New rows were not being added properly, and images were not being generated. This was fixed by modifying the "addRow" function to include image generation. (Diana)
