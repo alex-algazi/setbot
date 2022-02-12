@@ -10,19 +10,21 @@ https://github.com/alex-algazi/setbot
 
 ## WEEK 2 (FEB 7 - FEB 14)
 ### A. Weekly Accomplishments
-1. 
-2. 
-3. 
+1. Board is checked for sets, and when there are no sets, more cards are added. This is done using a while loop which then calls the helper function "addRow" if there are no sets. (Diana)
+2. Instead of using a while loop structure, we have transitioned to a recursive function call due to Discord API limitations. The main block (at the bottom of commands/newgame.js) only creates a deck, a board, and a basic reply, and then passes all that data into an asyncronous function called "continueGame". This allows the reaction collectors to opperate at the correct scope, which was not possible in a while loop structure, and also reduces repitition in the code overall. (Alex)
+3. Cancel game has been moved from being a seperate command to being a button on one of the reccuring messages. This was done primarily due to a technical limitation: the seperate command file had no access to game states and therefore could not reliably end the game. "cancelgame.js" has been removed. (Alex)
+4. Row opperations only occur if the rows actually exist. This was necessary to avoid game completion states with less than 12 cards on the board. (Alex)
+5. "gameData.json" has been changed to "<guildId>data.json", and now only contains player scoring information for individual games. (Alex)
 ### B. Problems/Issues
-1. 
-2. 
-3. 
+1. New rows were not being added properly, and images were not being generated. This was fixed by modifying the "addRow" function to include image generation. (Diana)
+2. Various end game states were impossible to reach without errors due to our previous assumption that the board would always have at least 4 rows. Now, every row except the first one (which is guaranteed) are checked for existence before being actioned upon. (Alex)
+3. Upon a player finding a set, several instances of the same bug appeared where the wrong cards were being removed. This was solved by sorting the board slots in descending order prior to operating on them. (Alex)
 ### C. Next Week's Planned Work
-1. 
-2. 
-3. 
+1. Player scores must be displayed if the game is canceled or finished. This will be done as a helper function (currently existing in minimal form at lines 72-74 of newgame.js) which takes in the player scores object and prints each players scores iteratively. (Diana)
+2. A new command, idealy called "/howtoplay", will be generated in order to introduce players to the rules of the game, since the existing set rulebook online contains rules that do not apply to a computer implementation. (i.e. "Players will then place cards on the board", etc.) This command will only show outputs to the user who requested it. (Diana)
+3. We need to figure out what sorts of elevated permissions a linux user needs in order to register a node.js runtime as a system background service. This will be done using a virtual machine. (Alex)
 ### D. Time Log
-Alex:  hrs, Diana:  hrs
+Alex: 6 hrs, Diana: 2 hrs
 
 ## WEEK 1 (JAN 31 - FEB 7)
 ### A. Weekly Accomplishments
