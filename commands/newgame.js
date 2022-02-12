@@ -60,10 +60,10 @@ function emojiNum(e) {
 
 function isSet(c1, c2, c3) {
   let total = c1+c2+c3;
-  if (Math.floor((total/1)%10)%3==0 &&
-      Math.floor((total/10)%10)%3==0 &&
-      Math.floor((total/100)%10)%3==0 &&
-      Math.floor((total/1000)%10)%3==0)
+  if (Math.floor((total/1)%10)%3===0 &&
+      Math.floor((total/10)%10)%3===0 &&
+      Math.floor((total/100)%10)%3===0 &&
+      Math.floor((total/1000)%10)%3===0)
     return true;
   else
     return false;
@@ -790,9 +790,15 @@ async function continueGame(board, curDeck, interaction) {
   gCollector.on('collect', () => {
     stopsign.reactions.removeAll()
     row1.reactions.removeAll()
-    row2.reactions.removeAll()
-    row3.reactions.removeAll()
-    row4.reactions.removeAll()
+    if (board.length >= 6) {
+      row2.reactions.removeAll()
+    }
+    if (board.length >= 9) {
+      row3.reactions.removeAll()
+    }
+    if (board.length >= 12) {
+      row4.reactions.removeAll()
+    }
     if (board.length >= 15) {
       row5.reactions.removeAll()
     }
