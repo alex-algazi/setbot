@@ -26,3 +26,5 @@ First, invite the bot to your server using [this link](https://discord.com/api/o
 <ins>Shading:</ins> all different.
 <ins>Color:</ins> all different.
 <ins>Shape:</ins> all different.
+
+When a user finds a set, the board will be regenerated with three new cards in place of the old ones. Play will continue until the deck is empty and there are no sets remaining on the board, or until the user who started the game cancels it.
