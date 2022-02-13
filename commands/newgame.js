@@ -190,7 +190,10 @@ async function continueGame(board, curDeck, interaction) {
       if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
         playerInputs[`${user.tag}`] = [];
       }
-      playerInputs[`${user.tag}`].push(emojiNum(reaction.emoji.name)-1);
+      let slot = emojiNum(reaction.emoji.name)-1;
+      if (slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1] && slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2] && slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]) {
+        playerInputs[`${user.tag}`].push(slot);
+      }
       if (playerInputs[`${user.tag}`].length >= 3) {
         if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
           setFound = true;
@@ -289,7 +292,10 @@ async function continueGame(board, curDeck, interaction) {
         if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
           playerInputs[`${user.tag}`] = [];
         }
-        playerInputs[`${user.tag}`].push(emojiNum(reaction.emoji.name)+2);
+        let slot = emojiNum(reaction.emoji.name)+2;
+        if (slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1] && slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2] && slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]) {
+          playerInputs[`${user.tag}`].push(slot);
+        }
         if (playerInputs[`${user.tag}`].length >= 3) {
           if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
             setFound = true;
@@ -389,7 +395,10 @@ async function continueGame(board, curDeck, interaction) {
         if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
           playerInputs[`${user.tag}`] = [];
         }
-        playerInputs[`${user.tag}`].push(emojiNum(reaction.emoji.name)+5);
+        let slot = emojiNum(reaction.emoji.name)+5;
+        if (slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1] && slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2] && slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]) {
+          playerInputs[`${user.tag}`].push(slot);
+        }
         if (playerInputs[`${user.tag}`].length >= 3) {
           if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
             setFound = true;
@@ -489,7 +498,10 @@ async function continueGame(board, curDeck, interaction) {
         if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
           playerInputs[`${user.tag}`] = [];
         }
-        playerInputs[`${user.tag}`].push(emojiNum(reaction.emoji.name)+8);
+        let slot = emojiNum(reaction.emoji.name)+8;
+        if (slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1] && slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2] && slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]) {
+          playerInputs[`${user.tag}`].push(slot);
+        }
         if (playerInputs[`${user.tag}`].length >= 3) {
           if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
             setFound = true;
@@ -589,7 +601,10 @@ async function continueGame(board, curDeck, interaction) {
         if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
           playerInputs[`${user.tag}`] = [];
         }
-        playerInputs[`${user.tag}`].push(emojiNum(reaction.emoji.name)+11);
+        let slot = emojiNum(reaction.emoji.name)+11;
+        if (slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1] && slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2] && slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]) {
+          playerInputs[`${user.tag}`].push(slot);
+        }
         if (playerInputs[`${user.tag}`].length >= 3) {
           if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
             setFound = true;
@@ -689,7 +704,10 @@ async function continueGame(board, curDeck, interaction) {
         if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
           playerInputs[`${user.tag}`] = [];
         }
-        playerInputs[`${user.tag}`].push(emojiNum(reaction.emoji.name)+14);
+        let slot = emojiNum(reaction.emoji.name)+14;
+        if (slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1] && slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2] && slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]) {
+          playerInputs[`${user.tag}`].push(slot);
+        }
         if (playerInputs[`${user.tag}`].length >= 3) {
           if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
             setFound = true;
