@@ -9,29 +9,20 @@ First, invite the bot to your server using [this link](https://discord.com/api/o
 ![set1](https://github.com/alex-algazi/setbot/blob/main//images/sets/1.jpeg?raw=true)
 
 Number of shapes: all different
-
 Shading: all the same
-
 Color: all the same
-
 Shape: all the same
 
 ![set2](https://github.com/alex-algazi/setbot/blob/main//images/sets/2.jpeg?raw=true)
 
-Number of shapes: all different
-
+<ins>Number of shapes:</ins> all different
 Shading: all different
-
 Color: all different
-
 Shape: all the same
 
 ![set3](https://github.com/alex-algazi/setbot/blob/main//images/sets/3.jpeg?raw=true)
 
 Number of shapes: all different
-
 Shading: all different
-
 Color: all different
-
 Shape: all different
