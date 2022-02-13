@@ -19,7 +19,7 @@ https://github.com/alex-algazi/setbot
 1. New rows were not being added properly, and images were not being generated. This was fixed by modifying the "addRow" function to include image generation. (Diana)
 2. Various end game states were impossible to reach without errors due to our previous assumption that the board would always have at least 4 rows. Now, every row except the first one (which is guaranteed) are checked for existence before being actioned upon. (Alex)
 3. Upon a player finding a set, several instances of the same bug appeared where the wrong cards were being removed. This was solved by sorting the board slots in descending order prior to operating on them. (Alex)
-4. Thanks to Jesus Lopez for discovering this one! Currently, if a user selects the same card three times in a row, the system thinks they have found a set. We will work on fixing this one in the coming days.
+4. Thanks to Jesus Lopez for discovering this one! Previously, if a user selected the same card three times in a row, the system thought they had found a set. Fixed by refusing duplicate inputs. (Alex)
 ### C. Next Week's Planned Work
 1. Player scores must be displayed if the game is canceled or finished. This will be done as a helper function (currently existing in minimal form at lines 72-74 of newgame.js) which takes in the player scores object and prints each players scores iteratively. (Diana)
 2. A new command, idealy called "/howtoplay", will be generated in order to introduce players to the rules of the game, since the existing set rulebook online contains rules that do not apply to a computer implementation. (i.e. "Players will then place cards on the board", etc.) This command will only show outputs to the user who requested it. (Diana)
