@@ -69,8 +69,12 @@ function isSet(c1, c2, c3) {
     return false;
 }
 
-function printScores(d, i) {
-  i.channel.send('scores');
+function printScores(d, int) {
+  let scores = '';
+  for(let i = 0; i < Object.keys(d).length; i++) {
+    scores += `${Object.keys(d)[i]} ended the game with ${d[Object.keys(d)[i]]}.\n`;
+  }
+  int.channel.send(scores);
 }
 
 const badBoard = [1323,1123,1213,1232,1312,1112,1321,1121,1211,2222,2212,3223];
