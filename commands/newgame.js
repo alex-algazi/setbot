@@ -72,7 +72,7 @@ function isSet(c1, c2, c3) {
 function printScores(d, int) {
   let scores = '';
   for(let i = 0; i < Object.keys(d).length; i++) {
-    scores += `${Object.keys(d)[i]} ended the game with ${d[Object.keys(d)[i]]}.\n`;
+    scores += `${Object.keys(d)[i]} ended the game with a score of ${d[Object.keys(d)[i]]}\n`;
   }
   int.channel.send(scores);
 }
