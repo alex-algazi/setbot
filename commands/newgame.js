@@ -79,25 +79,6 @@ function printScores(d, int) {
   }
 }
 
-const badBoard = [1323,1123,1213,1232,1312,1112,1321,1121,1211,2222,2212,3223];
-
-function newBadBoard(b, d, id) {
-  for (let i = 0; i < 4; i++) {
-    b.push(badBoard[i*3]);
-    b.push(badBoard[i*3+1]);
-    b.push(badBoard[i*3+2]);
-    d.splice(badBoard[i*3],1);
-    d.splice(badBoard[i*3+1],1);
-    d.splice(badBoard[i*3+2],1);
-    images(910,225)
-      .draw(images(`images/${b[i*3]}.jpeg`),0,0)
-      .draw(images(`images/${b[i*3+1]}.jpeg`),305,0)
-      .draw(images(`images/${b[i*3+2]}.jpeg`),610,0)
-      .save(`temp/${id}row${i+1}.jpeg`);
-  }
-  return b;
-}
-
 async function continueGame(board, curDeck, interaction) {
   while (!checkBoard(board)) {
     addRow(board, curDeck, interaction.guild.id);
@@ -847,7 +828,6 @@ module.exports = {
   async execute(interaction) {
     if (!fs.existsSync(`./temp/${interaction.guild.id}data.json`)) {
       let curDeck = [1111,1112,1113,1121,1122,1123,1131,1132,1133,1211,1212,1213,1221,1222,1223,1231,1232,1233,1311,1312,1313,1321,1322,1323,1331,1332,1333,2111,2112,2113,2121,2122,2123,2131,2132,2133,2211,2212,2213,2221,2222,2223,2231,2232,2233,2311,2312,2313,2321,2322,2323,2331,2332,2333,3111,3112,3113,3121,3122,3123,3131,3132,3133,3211,3212,3213,3221,3222,3223,3231,3232,3233,3311,3312,3313,3321,3322,3323,3331,3332,3333];
-      //let curDeck = [1111,1112,1113,1121,1122,1123,1131,1132,1133,1211,1212,1213,1221,1222,1223,1231,1232,1233,1311,1312,1313,1321,1322,1323,1331,1332,1333];
       let board = newBoard([], curDeck, interaction.guild.id);
 
       await interaction.reply('New game!');
