@@ -70,11 +70,13 @@ function isSet(c1, c2, c3) {
 }
 
 function printScores(d, int) {
-  let scores = '';
-  for(let i = 0; i < Object.keys(d).length; i++) {
-    scores += `${Object.keys(d)[i]} ended the game with a score of ${d[Object.keys(d)[i]]}\n`;
+  if (Object.keys(d).length !== 0) {
+    let scores = '';
+    for(let i = 0; i < Object.keys(d).length; i++) {
+      scores += `${Object.keys(d)[i]} ended the game with a score of ${d[Object.keys(d)[i]]}\n`;
+    }
+    int.channel.send(scores);
   }
-  int.channel.send(scores);
 }
 
 const badBoard = [1323,1123,1213,1232,1312,1112,1321,1121,1211,2222,2212,3223];
@@ -102,7 +104,6 @@ async function continueGame(board, curDeck, interaction) {
   }
 
   let stopsign = await interaction.channel.send(`${curDeck.length} cards remaining. To cancel current game, press the stop sign.`);
-  stopsign.react('🛑');
 
   let row1 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row1.jpeg`]});
   let row2;
@@ -125,6 +126,8 @@ async function continueGame(board, curDeck, interaction) {
   if (board.length >= 18) {
     row6 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row6.jpeg`]});
   }
+
+  stopsign.react('🛑');
 
   try {
     await row1.react('1️⃣');
