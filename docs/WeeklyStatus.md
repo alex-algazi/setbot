@@ -8,6 +8,22 @@ https://github.com/alex-algazi/setbot
 
 *Alex Algazi (asa10@hood.edu); Diana Teka (dyt1@hood.edu)*
 
+## WEEK 3 (FEB 14 - FEB 21)
+### A. Weekly Accomplishments
+1. 
+2. 
+3. 
+### B. Problems/Issues
+1. 
+2. 
+3. 
+### C. Next Week's Planned Work
+1. 
+2. 
+3. 
+### D. Time Log
+Alex: 5 hrs, Diana: 3 hrs
+
 ## WEEK 2 (FEB 7 - FEB 14)
 ### A. Weekly Accomplishments
 1. Board is checked for sets, and when there are no sets, more cards are added. This is done using a while loop which then calls the helper function "addRow" if there are no sets. (Diana)
