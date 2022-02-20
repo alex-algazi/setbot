@@ -10,17 +10,15 @@ https://github.com/alex-algazi/setbot
 
 ## WEEK 3 (FEB 14 - FEB 21)
 ### A. Weekly Accomplishments
-1. 
-2. 
-3. 
+1. PLayer scores are now displayed at the end of the game, or if a game is cancelled. (Diana)
+2. There is now a help command, called /howtoplay. It displays a rules message which will teach players how to play set.
+3. We have found a way to run the app via systemd, using a service file to run it via node. (Alex)
 ### B. Problems/Issues
-1. 
-2. 
-3. 
+1. Previously, when the game was cancelled before any player had found a set, the app would crash. Fixed by checking to see if the "scores" object was empty before operating on it. (Alex)
+2. Previously, the service file was giving an "exit-code" error. Fixed by adding a "User" field to the service file. (Alex)
 ### C. Next Week's Planned Work
-1. 
-2. 
-3. 
+1. Figure out a better way to display scores (like a table-style leaderboard) and declare a winner/winners. (Diana)
+2. Find out why the last row takes so long to generate, and try to fix it. (Alex)
 ### D. Time Log
 Alex: 5 hrs, Diana: 3 hrs
 
