@@ -10,7 +10,7 @@ https://github.com/alex-algazi/setbot
 
 ## WEEK 3 (FEB 14 - FEB 21)
 ### A. Weekly Accomplishments
-1. PLayer scores are now displayed at the end of the game, or if a game is cancelled. (Diana)
+1. Player scores are now displayed at the end of the game, or if a game is cancelled. (Diana)
 2. There is now a help command, called /howtoplay. It displays a rules message which will teach players how to play set. (Diana)
 3. We have found a way to run the app via systemd, using a service file to run it via node. (Alex)
 ### B. Problems/Issues
