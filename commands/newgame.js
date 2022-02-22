@@ -74,9 +74,14 @@ function printScores(d, int) {
     let sorted = Object.fromEntries(
       Object.entries(d).sort(([,a],[,b]) => b-a)
     );
-    let longestName = 37;
+    let longestName = 0;
+    for (const name in sorted) {
+      if (name.length > longestName) {
+        longestName = name.length;
+      }
+    }
     let scores = 'Scores:\n```User' + ' '.repeat(longestName-3) + '| Score' + '\n' + '-'.repeat(longestName+1) + '+------\n';
-    for(let i = 0; i < Object.keys(d).length; i++) {
+    for(let i = 0; i < Object.keys(sorted).length; i++) {
       scores += `${Object.keys(sorted)[i]}` + ' '.repeat(longestName-Object.keys(sorted)[i].length+1) + '| ' + ' '.repeat(2-sorted[Object.keys(sorted)[i]].toString().length) +  `${sorted[Object.keys(sorted)[i]]}\n`;
     }
     scores += '```';
