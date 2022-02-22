@@ -173,8 +173,8 @@ async function continueGame(board, curDeck, interaction) {
   let setFound = false;
 
   collector1.on('collect', (reaction, user) => {
+    reaction.users.remove(user.id);
     if (!setFound) {
-      reaction.users.remove(user.id);
       if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
         playerInputs[`${user.tag}`] = [];
       }
@@ -275,8 +275,8 @@ async function continueGame(board, curDeck, interaction) {
   });
   if (board.length >= 6) {
     collector2.on('collect', (reaction, user) => {
+      reaction.users.remove(user.id);
       if (!setFound) {
-        reaction.users.remove(user.id);
         if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
           playerInputs[`${user.tag}`] = [];
         }
@@ -378,8 +378,8 @@ async function continueGame(board, curDeck, interaction) {
   }
   if (board.length >= 9) {
     collector3.on('collect', (reaction, user) => {
+      reaction.users.remove(user.id);
       if (!setFound) {
-        reaction.users.remove(user.id);
         if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
           playerInputs[`${user.tag}`] = [];
         }
@@ -481,8 +481,8 @@ async function continueGame(board, curDeck, interaction) {
   }
   if (board.length >= 12) {
     collector4.on('collect', (reaction, user) => {
+      reaction.users.remove(user.id);
       if (!setFound) {
-        reaction.users.remove(user.id);
         if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
           playerInputs[`${user.tag}`] = [];
         }
@@ -584,8 +584,8 @@ async function continueGame(board, curDeck, interaction) {
   }
   if (board.length >= 15) {
     collector5.on('collect', (reaction, user) => {
+      reaction.users.remove(user.id);
       if (!setFound) {
-        reaction.users.remove(user.id);
         if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
           playerInputs[`${user.tag}`] = [];
         }
@@ -687,8 +687,8 @@ async function continueGame(board, curDeck, interaction) {
   }
   if (board.length >= 18) {
     collector6.on('collect', (reaction, user) => {
+      reaction.users.remove(user.id);
       if (!setFound) {
-        reaction.users.remove(user.id);
         if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
           playerInputs[`${user.tag}`] = [];
         }
