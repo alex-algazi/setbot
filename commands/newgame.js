@@ -74,10 +74,10 @@ function printScores(d, int) {
     let sorted = Object.fromEntries(
       Object.entries(d).sort(([,a],[,b]) => b-a)
     );
-    let scores = 'Scores:\n```\n';
     let longestName = 37;
+    let scores = 'Scores:\n```User' + ' '.repeat(longestName-3) + '| Score' + '\n' + '-'.repeat(longestName+1) + '+------\n';
     for(let i = 0; i < Object.keys(d).length; i++) {
-      scores += `${Object.keys(d)[i]}` + ' '.repeat(longestName-Object.keys(d)[i].length) + ' | ' + ' '.repeat(2-d[Object.keys(d)[i]].toString().length) +  `${d[Object.keys(d)[i]]}\n`;
+      scores += `${Object.keys(sorted)[i]}` + ' '.repeat(longestName-Object.keys(sorted)[i].length+1) + '| ' + ' '.repeat(2-sorted[Object.keys(sorted)[i]].toString().length) +  `${sorted[Object.keys(sorted)[i]]}\n`;
     }
     scores += '```';
     int.channel.send(scores);
