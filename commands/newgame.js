@@ -71,6 +71,9 @@ function isSet(c1, c2, c3) {
 
 function printScores(d, int) {
   if (Object.keys(d).length !== 0) {
+    let sorted = Object.fromEntries(
+      Object.entries(d).sort(([,a],[,b]) => b-a)
+    );
     let scores = 'Scores:\n```\n';
     let longestName = 37;
     for(let i = 0; i < Object.keys(d).length; i++) {
