@@ -71,9 +71,10 @@ function isSet(c1, c2, c3) {
 
 function printScores(d, int) {
   if (Object.keys(d).length !== 0) {
-    let scores = '```\n';
+    let scores = 'Scores:\n```\n';
+    let longestName = 37;
     for(let i = 0; i < Object.keys(d).length; i++) {
-      scores += `${Object.keys(d)[i]}` + ' '.repeat(38-Object.keys(d)[i].length) + '| ' + ' '.repeat(2-d[Object.keys(d)[i]].toString().length) +  `${d[Object.keys(d)[i]]}\n`;
+      scores += `${Object.keys(d)[i]}` + ' '.repeat(longestName-Object.keys(d)[i].length) + ' | ' + ' '.repeat(2-d[Object.keys(d)[i]].toString().length) +  `${d[Object.keys(d)[i]]}\n`;
     }
     scores += '```';
     int.channel.send(scores);
