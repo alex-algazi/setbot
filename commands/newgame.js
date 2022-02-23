@@ -95,93 +95,35 @@ async function continueGame(board, curDeck, interaction) {
   }
 
   let stopsign = await interaction.channel.send(`${curDeck.length} cards remaining. To cancel current game, press the stop sign.`);
+  stopsign.react('🛑');
 
-  let row1 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row1.jpeg`]});
+  let row1;
   let row2;
   let row3;
   let row4;
   let row5;
   let row6;
-  if (board.length >= 6) {
-    row2 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row2.jpeg`]});
-  }
-  if (board.length >= 9) {
-    row3 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row3.jpeg`]});
-  }
-  if (board.length >= 12) {
-    row4 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row4.jpeg`]});
-  }
-  if (board.length >= 15) {
-    row5 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row5.jpeg`]});
-  }
-  if (board.length >= 18) {
-    row6 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row6.jpeg`]});
-  }
-
-  stopsign.react('🛑');
-
-  try {
-    await row1.react('1️⃣');
-    await row1.react('2️⃣');
-    await row1.react('3️⃣');
-    if (board.length >= 6) {
-      await row2.react('1️⃣');
-      await row2.react('2️⃣');
-      await row2.react('3️⃣');
-    }
-    if (board.length >= 9) {
-      await row3.react('1️⃣');
-      await row3.react('2️⃣');
-      await row3.react('3️⃣');
-    }
-    if (board.length >= 12) {
-      await row4.react('1️⃣');
-      await row4.react('2️⃣');
-      await row4.react('3️⃣');
-    }
-    if (board.length >= 15) {
-      await row5.react('1️⃣');
-      await row5.react('2️⃣');
-      await row5.react('3️⃣'); 
-    }
-    if (board.length >= 18) {
-      await row6.react('1️⃣');
-      await row6.react('2️⃣');
-      await row6.react('3️⃣'); 
-    }
-  } catch (error) {
-    console.error('One of the emojis failed to react:', error);
-  }
-
-  let filter = (reaction, user) => {
-    return ['1️⃣','2️⃣','3️⃣'].includes(reaction.emoji.name) && user.id != 917630979659685908;
-  };
-
-  let collector1 = row1.createReactionCollector({filter});
+  let collector1;
   let collector2;
   let collector3;
   let collector4;
   let collector5;
   let collector6;
-  if (board.length >= 6) {
-    collector2 = row2.createReactionCollector({filter});
-  }
-  if (board.length >= 9) {
-    collector3 = row3.createReactionCollector({filter});
-  }
-  if (board.length >= 12) {
-    collector4 = row4.createReactionCollector({filter});
-  }
-  if (board.length >= 15) {
-    collector5 = row5.createReactionCollector({filter});
-  }
-  if (board.length >= 18) {
-    collector6 = row6.createReactionCollector({filter});
-  }
-
+  let filter = (reaction, user) => {
+    return ['1️⃣','2️⃣','3️⃣'].includes(reaction.emoji.name) && user.id != 917630979659685908;
+  };
   let playerInputs = {}
   let setFound = false;
 
+  row1 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row1.jpeg`]});
+  try {
+    await row1.react('1️⃣');
+    await row1.react('2️⃣');
+    await row1.react('3️⃣');
+  } catch (error) {
+    console.error('One of the emojis failed to react:', error);
+  }
+  collector1 = row1.createReactionCollector({filter});
   collector1.on('collect', (reaction, user) => {
     reaction.users.remove(user.id);
     if (!setFound) {
@@ -283,7 +225,17 @@ async function continueGame(board, curDeck, interaction) {
       }
     }
   });
+
   if (board.length >= 6) {
+    row2 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row2.jpeg`]});
+    try {
+      await row2.react('1️⃣');
+      await row2.react('2️⃣');
+      await row2.react('3️⃣');
+    } catch (error) {
+      console.error('One of the emojis failed to react:', error);
+    }
+    collector2 = row2.createReactionCollector({filter});
     collector2.on('collect', (reaction, user) => {
       reaction.users.remove(user.id);
       if (!setFound) {
@@ -386,7 +338,17 @@ async function continueGame(board, curDeck, interaction) {
       }
     });
   }
+
   if (board.length >= 9) {
+    row3 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row3.jpeg`]});
+    try {
+      await row3.react('1️⃣');
+      await row3.react('2️⃣');
+      await row3.react('3️⃣');
+    } catch (error) {
+      console.error('One of the emojis failed to react:', error);
+    }
+    collector3 = row3.createReactionCollector({filter});
     collector3.on('collect', (reaction, user) => {
       reaction.users.remove(user.id);
       if (!setFound) {
@@ -489,7 +451,17 @@ async function continueGame(board, curDeck, interaction) {
       }
     });
   }
+
   if (board.length >= 12) {
+    row4 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row4.jpeg`]});
+    try {
+      await row4.react('1️⃣');
+      await row4.react('2️⃣');
+      await row4.react('3️⃣');
+    } catch (error) {
+      console.error('One of the emojis failed to react:', error);
+    }
+    collector4 = row4.createReactionCollector({filter});
     collector4.on('collect', (reaction, user) => {
       reaction.users.remove(user.id);
       if (!setFound) {
@@ -592,7 +564,17 @@ async function continueGame(board, curDeck, interaction) {
       }
     });
   }
+
   if (board.length >= 15) {
+    row5 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row5.jpeg`]});
+    try {
+      await row5.react('1️⃣');
+      await row5.react('2️⃣');
+      await row5.react('3️⃣');
+    } catch (error) {
+      console.error('One of the emojis failed to react:', error);
+    }
+    collector5 = row5.createReactionCollector({filter});
     collector5.on('collect', (reaction, user) => {
       reaction.users.remove(user.id);
       if (!setFound) {
@@ -695,7 +677,17 @@ async function continueGame(board, curDeck, interaction) {
       }
     });
   }
+
   if (board.length >= 18) {
+    row6 = await interaction.channel.send({files: [`./temp/${interaction.guild.id}row6.jpeg`]});
+    try {
+      await row6.react('1️⃣');
+      await row6.react('2️⃣');
+      await row6.react('3️⃣');
+    } catch (error) {
+      console.error('One of the emojis failed to react:', error);
+    }
+    collector6 = row6.createReactionCollector({filter});
     collector6.on('collect', (reaction, user) => {
       reaction.users.remove(user.id);
       if (!setFound) {
@@ -802,8 +794,8 @@ async function continueGame(board, curDeck, interaction) {
   const gFilter = (reaction, user) => {
     return reaction.emoji.name === '🛑' && user.id === interaction.user.id;
   };
-  const gCollector = stopsign.createReactionCollector({gFilter});
-  gCollector.on('collect', () => {
+  const gCollector = stopsign.createReactionCollector({filter: gFilter});
+  gCollector.on('collect', (reaction, user) => {
     stopsign.reactions.removeAll()
     row1.reactions.removeAll()
     if (board.length >= 6) {
