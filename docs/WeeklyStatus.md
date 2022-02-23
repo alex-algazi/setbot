@@ -8,6 +8,17 @@ https://github.com/alex-algazi/setbot
 
 *Alex Algazi (asa10@hood.edu); Diana Teka (dyt1@hood.edu)*
 
+## WEEK 4 (FEB 21 - FEB 28)
+### A. Weekly Accomplishments
+1. Improved the scores display. Now it shows an ASCII table with all players' scores listed in descending order. (Alex/Diana)
+2. Circumvented the lagging fourth row bug by completely rearranging the structure of the program. Now, each row is generated, reacted, and a collector is made BEFORE the next row is processed. This allows time for whatever was causing the timing bug to sort itself out, and leads to less downtime during the game. (Alex)
+### B. Problems/Issues
+1. 
+### C. Next Week's Planned Work
+1. 
+### D. Time Log
+Alex:  hrs, Diana:  hrs
+
 ## WEEK 3 (FEB 14 - FEB 21)
 ### A. Weekly Accomplishments
 1. Player scores are now displayed at the end of the game, or if a game is cancelled. (Diana)
