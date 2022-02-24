@@ -134,25 +134,28 @@ async function continueGame(board, curDeck, interaction) {
       if (slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1] && slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2] && slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]) {
         playerInputs[`${user.tag}`].push(slot);
       }
+      let select1 = playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1];
+      let select2 = playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2];
+      let select3 = playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3];
       if (playerInputs[`${user.tag}`].length >= 3) {
-        if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
+        if (isSet(board[select1],board[select2],board[select3])) {
           setFound = true;
-          stopsign.reactions.removeAll()
-          row1.reactions.removeAll()
+          stopsign.reactions.removeAll();
+          row1.reactions.removeAll();
           if (board.length >= 6) {
-            row2.reactions.removeAll()
+            row2.reactions.removeAll();
           }
           if (board.length >= 9) {
-            row3.reactions.removeAll()
+            row3.reactions.removeAll();
           }
           if (board.length >= 12) {
-            row4.reactions.removeAll()
+            row4.reactions.removeAll();
           }
           if (board.length >= 15) {
-            row5.reactions.removeAll()
+            row5.reactions.removeAll();
           }
           if (board.length >= 18) {
-            row6.reactions.removeAll()
+            row6.reactions.removeAll();
           }
           let raw = fs.readFileSync(`./temp/${interaction.guild.id}data.json`);
           let data = JSON.parse(raw);
@@ -171,9 +174,9 @@ async function continueGame(board, curDeck, interaction) {
           if (curDeck.length !== 0) {
             interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
             if (board.length < 15) {
-              board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]] = getRand(curDeck);
-              board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]] = getRand(curDeck);
-              board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]] = getRand(curDeck);
+              board[select1] = getRand(curDeck);
+              board[select2] = getRand(curDeck);
+              board[select3] = getRand(curDeck);
             }
             else {
               let cards = playerInputs[`${user.tag}`].slice(-3).sort((a,b)=>{return a-b;}).reverse();
@@ -246,25 +249,28 @@ async function continueGame(board, curDeck, interaction) {
         if (slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1] && slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2] && slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]) {
           playerInputs[`${user.tag}`].push(slot);
         }
+        let select1 = playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1];
+        let select2 = playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2];
+        let select3 = playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3];
         if (playerInputs[`${user.tag}`].length >= 3) {
-          if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
+          if (isSet(board[select1],board[select2],board[select3])) {
             setFound = true;
-            stopsign.reactions.removeAll()
-            row1.reactions.removeAll()
+            stopsign.reactions.removeAll();
+            row1.reactions.removeAll();
             if (board.length >= 6) {
-              row2.reactions.removeAll()
+              row2.reactions.removeAll();
             }
             if (board.length >= 9) {
-              row3.reactions.removeAll()
+              row3.reactions.removeAll();
             }
             if (board.length >= 12) {
-              row4.reactions.removeAll()
+              row4.reactions.removeAll();
             }
             if (board.length >= 15) {
-              row5.reactions.removeAll()
+              row5.reactions.removeAll();
             }
             if (board.length >= 18) {
-              row6.reactions.removeAll()
+              row6.reactions.removeAll();
             }
             let raw = fs.readFileSync(`./temp/${interaction.guild.id}data.json`);
             let data = JSON.parse(raw);
@@ -283,9 +289,9 @@ async function continueGame(board, curDeck, interaction) {
             if (curDeck.length !== 0) {
               interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
               if (board.length < 15) {
-                board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]] = getRand(curDeck);
-                board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]] = getRand(curDeck);
-                board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]] = getRand(curDeck);
+                board[select1] = getRand(curDeck);
+                board[select2] = getRand(curDeck);
+                board[select3] = getRand(curDeck);
               }
               else {
                 let cards = playerInputs[`${user.tag}`].slice(-3).sort((a,b)=>{return a-b;}).reverse();
@@ -359,25 +365,28 @@ async function continueGame(board, curDeck, interaction) {
         if (slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1] && slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2] && slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]) {
           playerInputs[`${user.tag}`].push(slot);
         }
+        let select1 = playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1];
+        let select2 = playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2];
+        let select3 = playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3];
         if (playerInputs[`${user.tag}`].length >= 3) {
-          if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
+          if (isSet(board[select1],board[select2],board[select3])) {
             setFound = true;
-            stopsign.reactions.removeAll()
-            row1.reactions.removeAll()
+            stopsign.reactions.removeAll();
+            row1.reactions.removeAll();
             if (board.length >= 6) {
-              row2.reactions.removeAll()
+              row2.reactions.removeAll();
             }
             if (board.length >= 9) {
-              row3.reactions.removeAll()
+              row3.reactions.removeAll();
             }
             if (board.length >= 12) {
-              row4.reactions.removeAll()
+              row4.reactions.removeAll();
             }
             if (board.length >= 15) {
-              row5.reactions.removeAll()
+              row5.reactions.removeAll();
             }
             if (board.length >= 18) {
-              row6.reactions.removeAll()
+              row6.reactions.removeAll();
             }
             let raw = fs.readFileSync(`./temp/${interaction.guild.id}data.json`);
             let data = JSON.parse(raw);
@@ -396,9 +405,9 @@ async function continueGame(board, curDeck, interaction) {
             if (curDeck.length !== 0) {
               interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
               if (board.length < 15) {
-                board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]] = getRand(curDeck);
-                board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]] = getRand(curDeck);
-                board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]] = getRand(curDeck);
+                board[select1] = getRand(curDeck);
+                board[select2] = getRand(curDeck);
+                board[select3] = getRand(curDeck);
               }
               else {
                 let cards = playerInputs[`${user.tag}`].slice(-3).sort((a,b)=>{return a-b;}).reverse();
@@ -472,25 +481,28 @@ async function continueGame(board, curDeck, interaction) {
         if (slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1] && slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2] && slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]) {
           playerInputs[`${user.tag}`].push(slot);
         }
+        let select1 = playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1];
+        let select2 = playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2];
+        let select3 = playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3];
         if (playerInputs[`${user.tag}`].length >= 3) {
-          if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
+          if (isSet(board[select1],board[select2],board[select3])) {
             setFound = true;
-            stopsign.reactions.removeAll()
-            row1.reactions.removeAll()
+            stopsign.reactions.removeAll();
+            row1.reactions.removeAll();
             if (board.length >= 6) {
-              row2.reactions.removeAll()
+              row2.reactions.removeAll();
             }
             if (board.length >= 9) {
-              row3.reactions.removeAll()
+              row3.reactions.removeAll();
             }
             if (board.length >= 12) {
-              row4.reactions.removeAll()
+              row4.reactions.removeAll();
             }
             if (board.length >= 15) {
-              row5.reactions.removeAll()
+              row5.reactions.removeAll();
             }
             if (board.length >= 18) {
-              row6.reactions.removeAll()
+              row6.reactions.removeAll();
             }
             let raw = fs.readFileSync(`./temp/${interaction.guild.id}data.json`);
             let data = JSON.parse(raw);
@@ -509,9 +521,9 @@ async function continueGame(board, curDeck, interaction) {
             if (curDeck.length !== 0) {
               interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
               if (board.length < 15) {
-                board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]] = getRand(curDeck);
-                board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]] = getRand(curDeck);
-                board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]] = getRand(curDeck);
+                board[select1] = getRand(curDeck);
+                board[select2] = getRand(curDeck);
+                board[select3] = getRand(curDeck);
               }
               else {
                 let cards = playerInputs[`${user.tag}`].slice(-3).sort((a,b)=>{return a-b;}).reverse();
@@ -585,25 +597,28 @@ async function continueGame(board, curDeck, interaction) {
         if (slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1] && slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2] && slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]) {
           playerInputs[`${user.tag}`].push(slot);
         }
+        let select1 = playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1];
+        let select2 = playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2];
+        let select3 = playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3];
         if (playerInputs[`${user.tag}`].length >= 3) {
-          if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
+          if (isSet(board[select1],board[select2],board[select3])) {
             setFound = true;
-            stopsign.reactions.removeAll()
-            row1.reactions.removeAll()
+            stopsign.reactions.removeAll();
+            row1.reactions.removeAll();
             if (board.length >= 6) {
-              row2.reactions.removeAll()
+              row2.reactions.removeAll();
             }
             if (board.length >= 9) {
-              row3.reactions.removeAll()
+              row3.reactions.removeAll();
             }
             if (board.length >= 12) {
-              row4.reactions.removeAll()
+              row4.reactions.removeAll();
             }
             if (board.length >= 15) {
-              row5.reactions.removeAll()
+              row5.reactions.removeAll();
             }
             if (board.length >= 18) {
-              row6.reactions.removeAll()
+              row6.reactions.removeAll();
             }
             let raw = fs.readFileSync(`./temp/${interaction.guild.id}data.json`);
             let data = JSON.parse(raw);
@@ -622,9 +637,9 @@ async function continueGame(board, curDeck, interaction) {
             if (curDeck.length !== 0) {
               interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
               if (board.length < 15) {
-                board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]] = getRand(curDeck);
-                board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]] = getRand(curDeck);
-                board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]] = getRand(curDeck);
+                board[select1] = getRand(curDeck);
+                board[select2] = getRand(curDeck);
+                board[select3] = getRand(curDeck);
               }
               else {
                 let cards = playerInputs[`${user.tag}`].slice(-3).sort((a,b)=>{return a-b;}).reverse();
@@ -698,25 +713,28 @@ async function continueGame(board, curDeck, interaction) {
         if (slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1] && slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2] && slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]) {
           playerInputs[`${user.tag}`].push(slot);
         }
+        let select1 = playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1];
+        let select2 = playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2];
+        let select3 = playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3];
         if (playerInputs[`${user.tag}`].length >= 3) {
-          if (isSet(board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]],board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]])) {
+          if (isSet(board[select1],board[select2],board[select3])) {
             setFound = true;
-            stopsign.reactions.removeAll()
-            row1.reactions.removeAll()
+            stopsign.reactions.removeAll();
+            row1.reactions.removeAll();
             if (board.length >= 6) {
-              row2.reactions.removeAll()
+              row2.reactions.removeAll();
             }
             if (board.length >= 9) {
-              row3.reactions.removeAll()
+              row3.reactions.removeAll();
             }
             if (board.length >= 12) {
-              row4.reactions.removeAll()
+              row4.reactions.removeAll();
             }
             if (board.length >= 15) {
-              row5.reactions.removeAll()
+              row5.reactions.removeAll();
             }
             if (board.length >= 18) {
-              row6.reactions.removeAll()
+              row6.reactions.removeAll();
             }
             let raw = fs.readFileSync(`./temp/${interaction.guild.id}data.json`);
             let data = JSON.parse(raw);
@@ -735,9 +753,9 @@ async function continueGame(board, curDeck, interaction) {
             if (curDeck.length !== 0) {
               interaction.channel.send(`User ${user.tag} found a set! Adding new cards...`);
               if (board.length < 15) {
-                board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1]] = getRand(curDeck);
-                board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2]] = getRand(curDeck);
-                board[playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]] = getRand(curDeck);
+                board[select1] = getRand(curDeck);
+                board[select2] = getRand(curDeck);
+                board[select3] = getRand(curDeck);
               }
               else {
                 let cards = playerInputs[`${user.tag}`].slice(-3).sort((a,b)=>{return a-b;}).reverse();
