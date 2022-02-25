@@ -7,27 +7,27 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 // [beta]
 
 client.once('ready', () => {
-	// [gamma]
+  // [gamma]
 });
 
 client.on('interactionCreate', async interaction => {
-	if (!interaction.isCommand()) return;
+  if (!interaction.isCommand()) return;
 
-	const { commandName } = interaction;
+  const { commandName } = interaction;
 
-	if (commandName === 'addtag') {
-		// [delta]
-	} else if (commandName === 'tag') {
-		// [epsilon]
-	} else if (commandName === 'edittag') {
-		// [zeta]
-	} else if (commandName === 'taginfo') {
-		// [theta]
-	} else if (commandName === 'showtags') {
-		// [lambda]
-	} else if (commandName === 'removetag') {
-		// [mu]
-	}
+  if (commandName === 'addtag') {
+    // [delta]
+  } else if (commandName === 'tag') {
+    // [epsilon]
+  } else if (commandName === 'edittag') {
+    // [zeta]
+  } else if (commandName === 'taginfo') {
+    // [theta]
+  } else if (commandName === 'showtags') {
+    // [lambda]
+  } else if (commandName === 'removetag') {
+    // [mu]
+  }
 });
 
 client.login('your-token-goes-here');
