@@ -12,12 +12,14 @@ https://github.com/alex-algazi/setbot
 ### A. Weekly Accomplishments
 1. Improved the scores display. Now it shows an ASCII table with all players' scores listed in descending order. (Diana)
 2. Circumvented the lagging fourth row bug by completely rearranging the structure of the program. Now, each row is generated, reacted, and a collector is made BEFORE the next row is processed. This allows time for whatever was causing the timing bug to sort itself out, and leads to less downtime during the game. (Alex)
+3. Sets are now shown as the game is played, using green borders around the images to make them distinct from the board. (Alex)
 ### B. Problems/Issues
 1. Previously, the scoreboard would display whitespace in accordance with the longest possible discord username (37 characters). Now, we find the longest username among the players of the game, and scale the whitespace according to this longest name. (Diana)
 ### C. Next Week's Planned Work
-1. 
+1. Try to implement more efficient set finding algorithm that we found in a scholarly article. (Alex)
+2. Work on implementing database calls. (Diana)
 ### D. Time Log
-Alex:  hrs, Diana:  hrs
+Alex: 3 hrs, Diana: 3 hrs
 
 ## WEEK 3 (FEB 14 - FEB 21)
 ### A. Weekly Accomplishments
