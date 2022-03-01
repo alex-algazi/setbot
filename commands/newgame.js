@@ -29,7 +29,7 @@ function newBoard(b, d, id) {
 }
 
 function checkBoard(b) {
-  let half = Math.ceil(b.length / 2);
+  let half = Math.ceil(b.length/2);
   let b1 = b.slice(0, half);
   let b2 = b.slice(-half);
   for (let i = 0; i < b1.length; i++) {
@@ -156,7 +156,7 @@ async function continueGame(board, curDeck, interaction) {
     await interaction.channel.send({files: [`temp/${interaction.guild.id}set.jpeg`]});
   }
 
-  let stopsign = await interaction.channel.send(`${curDeck.length} cards remaining. To cancel current game, press the stop sign.`);
+  let stopsign = await interaction.channel.send(`${curDeck.length} cards remaining. To cancel current game, press the stop sign. (Only the user who started the game can cancel it)`);
   stopsign.react('🛑');
 
   let row1;
