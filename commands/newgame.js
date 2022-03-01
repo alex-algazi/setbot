@@ -29,9 +29,19 @@ function newBoard(b, d, id) {
 }
 
 function checkBoard(b) {
-  for (let i = 0; i < b.length; i++) {
-    for (let j = i+1; j < b.length; j++) {
-      if (b.includes(thirdCard(b[i],b[j]))) {
+  let half = Math.ceil(b.length / 2);
+  let b1 = b.slice(0, half);
+  let b2 = b.slice(-half);
+  for (let i = 0; i < b1.length; i++) {
+    for (let j = i+1; j < b1.length; j++) {
+      if (b.includes(thirdCard(b1[i],b1[j]))) {
+        return true;
+      }
+    }
+  }
+  for (let i = 0; i < b2.length; i++) {
+    for (let j = i+1; j < b2.length; j++) {
+      if (b.includes(thirdCard(b2[i],b2[j]))) {
         return true;
       }
     }
