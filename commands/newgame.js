@@ -28,7 +28,31 @@ function newBoard(b, d, id) {
   return b;
 }
 
-function checkBoard(b) {
+function checkBoardBruteForce(b) {
+  for (let i = 0; i < b.length; i++) {
+    for (let j = i+1; j < b.length; j++) {
+      for (let k = j+1; k < b.length; k++) {
+        if (isSet(b[i],b[j],b[k])) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}
+
+function checkBoardBetterBruteForce(b) {
+  for (let i = 0; i < b.length; i++) {
+    for (let j = i+1; j < b.length; j++) {
+      if (isSet(b[i],b[j],thirdCard(b[i],b[j]))) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+function checkBoardOptimum(b) {
   let half = Math.ceil(b.length/2);
   let b1 = b.slice(0, half);
   let b2 = b.slice(-half);
@@ -148,7 +172,7 @@ function printScores(d, int) {
 }
 
 async function continueGame(board, curDeck, interaction) {
-  while (!checkBoard(board)) {
+  while (!checkBoardOptimum(board)) {
     addRow(board, curDeck, interaction.guild.id);
   }
 
@@ -278,7 +302,7 @@ async function continueGame(board, curDeck, interaction) {
                 .save(`temp/${interaction.guild.id}row${i+1}.jpeg`);
             }
           }
-          if (curDeck.length === 0 && !checkBoard(board)) {
+          if (curDeck.length === 0 && !checkBoardOptimum(board)) {
             let raw = fs.readFileSync(`temp/${interaction.guild.id}data.json`);
             let data = JSON.parse(raw);
             if(fs.existsSync(`temp/${interaction.guild.id}data.json`)) {
@@ -397,7 +421,7 @@ async function continueGame(board, curDeck, interaction) {
                   .save(`temp/${interaction.guild.id}row${i+1}.jpeg`);
               }
             }
-            if (curDeck.length === 0 && !checkBoard(board)) {
+            if (curDeck.length === 0 && !checkBoardOptimum(board)) {
               let raw = fs.readFileSync(`temp/${interaction.guild.id}data.json`);
               let data = JSON.parse(raw);
               if(fs.existsSync(`temp/${interaction.guild.id}data.json`)) {
@@ -517,7 +541,7 @@ async function continueGame(board, curDeck, interaction) {
                   .save(`temp/${interaction.guild.id}row${i+1}.jpeg`);
               }
             }
-            if (curDeck.length === 0 && !checkBoard(board)) {
+            if (curDeck.length === 0 && !checkBoardOptimum(board)) {
               let raw = fs.readFileSync(`temp/${interaction.guild.id}data.json`);
               let data = JSON.parse(raw);
               if(fs.existsSync(`temp/${interaction.guild.id}data.json`)) {
@@ -637,7 +661,7 @@ async function continueGame(board, curDeck, interaction) {
                   .save(`temp/${interaction.guild.id}row${i+1}.jpeg`);
               }
             }
-            if (curDeck.length === 0 && !checkBoard(board)) {
+            if (curDeck.length === 0 && !checkBoardOptimum(board)) {
               let raw = fs.readFileSync(`temp/${interaction.guild.id}data.json`);
               let data = JSON.parse(raw);
               if(fs.existsSync(`temp/${interaction.guild.id}data.json`)) {
@@ -757,7 +781,7 @@ async function continueGame(board, curDeck, interaction) {
                   .save(`temp/${interaction.guild.id}row${i+1}.jpeg`);
               }
             }
-            if (curDeck.length === 0 && !checkBoard(board)) {
+            if (curDeck.length === 0 && !checkBoardOptimum(board)) {
               let raw = fs.readFileSync(`temp/${interaction.guild.id}data.json`);
               let data = JSON.parse(raw);
               if(fs.existsSync(`temp/${interaction.guild.id}data.json`)) {
@@ -877,7 +901,7 @@ async function continueGame(board, curDeck, interaction) {
                   .save(`temp/${interaction.guild.id}row${i+1}.jpeg`);
               }
             }
-            if (curDeck.length === 0 && !checkBoard(board)) {
+            if (curDeck.length === 0 && !checkBoardOptimum(board)) {
               let raw = fs.readFileSync(`temp/${interaction.guild.id}data.json`);
               let data = JSON.parse(raw);
               if(fs.existsSync(`temp/${interaction.guild.id}data.json`)) {
