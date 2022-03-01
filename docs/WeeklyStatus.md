@@ -17,7 +17,7 @@ https://github.com/alex-algazi/setbot
 1. Previously, the scoreboard would display whitespace in accordance with the longest possible discord username (37 characters). Now, we find the longest username among the players of the game, and scale the whitespace according to this longest name. (Diana)
 ### C. Next Week's Planned Work
 1. Try to implement more efficient set finding algorithm that we found in a scholarly article. (Alex)
-2. Work on implementing database calls. (Diana)
+2. Finalize our database's structure. (Diana)
 ### D. Time Log
 Alex: 3 hrs, Diana: 3 hrs
 
