@@ -8,6 +8,16 @@ https://github.com/alex-algazi/setbot
 
 *Alex Algazi (asa10@hood.edu); Diana Teka (dyt1@hood.edu)*
 
+## WEEK 5 (FEB 28 - MAR 7)
+### A. Weekly Accomplishments
+1. Implemented optimum pair search. Board is now split into two halves before being operated on, due to a graph theory theorem that shows that a board without sets can be tested in this way
+### B. Problems/Issues
+1. 
+### C. Next Week's Planned Work
+1. 
+### D. Time Log
+Alex:  hrs, Diana:  hrs
+
 ## WEEK 4 (FEB 21 - FEB 28)
 ### A. Weekly Accomplishments
 1. Improved the scores display. Now it shows an ASCII table with all players' scores listed in descending order. (Diana)
