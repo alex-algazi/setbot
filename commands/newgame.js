@@ -217,6 +217,8 @@ async function continueGame(board, curDeck, interaction) {
         playerInputs[`${user.tag}`] = [];
       }
       let slot = emojiNum(reaction.emoji.name)-1;
+      let ts = new Date();
+      console.log(ts.toISOString()+' '+user.tag+' selected card #'+(slot+1)+' in guild '+interaction.guild.id);
       if (slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1] && slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2] && slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]) {
         playerInputs[`${user.tag}`].push(slot);
       }
@@ -226,6 +228,8 @@ async function continueGame(board, curDeck, interaction) {
       if (playerInputs[`${user.tag}`].length >= 3) {
         if (isSet(board[select1],board[select2],board[select3])) {
           setFound = true;
+          let ts = new Date();
+          console.log(ts.toISOString()+' '+user.tag+' found a set in guild '+interaction.guild.id);
           stopsign.reactions.removeAll();
           row1.reactions.removeAll();
           if (board.length >= 6) {
@@ -308,6 +312,8 @@ async function continueGame(board, curDeck, interaction) {
             if(fs.existsSync(`temp/${interaction.guild.id}data.json`)) {
               fs.unlinkSync(`temp/${interaction.guild.id}data.json`);
             }
+            let ts = new Date();
+            console.log(ts.toISOString()+' game over in guild '+interaction.guild.id);
             interaction.channel.send('Game over!');
             printScores(data, interaction);
           }
@@ -336,6 +342,8 @@ async function continueGame(board, curDeck, interaction) {
           playerInputs[`${user.tag}`] = [];
         }
         let slot = emojiNum(reaction.emoji.name)+2;
+        let ts = new Date();
+        console.log(ts.toISOString()+' '+user.tag+' selected card #'+(slot+1)+' in guild '+interaction.guild.id);
         if (slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1] && slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2] && slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]) {
           playerInputs[`${user.tag}`].push(slot);
         }
@@ -345,6 +353,8 @@ async function continueGame(board, curDeck, interaction) {
         if (playerInputs[`${user.tag}`].length >= 3) {
           if (isSet(board[select1],board[select2],board[select3])) {
             setFound = true;
+            let ts = new Date();
+            console.log(ts.toISOString()+' '+user.tag+' found a set in guild '+interaction.guild.id);
             stopsign.reactions.removeAll();
             row1.reactions.removeAll();
             if (board.length >= 6) {
@@ -427,6 +437,8 @@ async function continueGame(board, curDeck, interaction) {
               if(fs.existsSync(`temp/${interaction.guild.id}data.json`)) {
                 fs.unlinkSync(`temp/${interaction.guild.id}data.json`);
               }
+              let ts = new Date();
+              console.log(ts.toISOString()+' game over in guild '+interaction.guild.id);
               interaction.channel.send('Game over!');
               printScores(data, interaction);
             }
@@ -456,6 +468,8 @@ async function continueGame(board, curDeck, interaction) {
           playerInputs[`${user.tag}`] = [];
         }
         let slot = emojiNum(reaction.emoji.name)+5;
+        let ts = new Date();
+        console.log(ts.toISOString()+' '+user.tag+' selected card #'+(slot+1)+' in guild '+interaction.guild.id);
         if (slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1] && slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2] && slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]) {
           playerInputs[`${user.tag}`].push(slot);
         }
@@ -465,6 +479,8 @@ async function continueGame(board, curDeck, interaction) {
         if (playerInputs[`${user.tag}`].length >= 3) {
           if (isSet(board[select1],board[select2],board[select3])) {
             setFound = true;
+            let ts = new Date();
+            console.log(ts.toISOString()+' '+user.tag+' found a set in guild '+interaction.guild.id);
             stopsign.reactions.removeAll();
             row1.reactions.removeAll();
             if (board.length >= 6) {
@@ -547,6 +563,8 @@ async function continueGame(board, curDeck, interaction) {
               if(fs.existsSync(`temp/${interaction.guild.id}data.json`)) {
                 fs.unlinkSync(`temp/${interaction.guild.id}data.json`);
               }
+              let ts = new Date();
+              console.log(ts.toISOString()+' game over in guild '+interaction.guild.id);
               interaction.channel.send('Game over!');
               printScores(data, interaction);
             }
@@ -576,6 +594,8 @@ async function continueGame(board, curDeck, interaction) {
           playerInputs[`${user.tag}`] = [];
         }
         let slot = emojiNum(reaction.emoji.name)+8;
+        let ts = new Date();
+        console.log(ts.toISOString()+' '+user.tag+' selected card #'+(slot+1)+' in guild '+interaction.guild.id);
         if (slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1] && slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2] && slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]) {
           playerInputs[`${user.tag}`].push(slot);
         }
@@ -585,6 +605,8 @@ async function continueGame(board, curDeck, interaction) {
         if (playerInputs[`${user.tag}`].length >= 3) {
           if (isSet(board[select1],board[select2],board[select3])) {
             setFound = true;
+            let ts = new Date();
+            console.log(ts.toISOString()+' '+user.tag+' found a set in guild '+interaction.guild.id);
             stopsign.reactions.removeAll();
             row1.reactions.removeAll();
             if (board.length >= 6) {
@@ -667,6 +689,8 @@ async function continueGame(board, curDeck, interaction) {
               if(fs.existsSync(`temp/${interaction.guild.id}data.json`)) {
                 fs.unlinkSync(`temp/${interaction.guild.id}data.json`);
               }
+              let ts = new Date();
+              console.log(ts.toISOString()+' game over in guild '+interaction.guild.id);
               interaction.channel.send('Game over!');
               printScores(data, interaction);
             }
@@ -696,6 +720,8 @@ async function continueGame(board, curDeck, interaction) {
           playerInputs[`${user.tag}`] = [];
         }
         let slot = emojiNum(reaction.emoji.name)+11;
+        let ts = new Date();
+        console.log(ts.toISOString()+' '+user.tag+' selected card #'+(slot+1)+' in guild '+interaction.guild.id);
         if (slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1] && slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2] && slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]) {
           playerInputs[`${user.tag}`].push(slot);
         }
@@ -705,6 +731,8 @@ async function continueGame(board, curDeck, interaction) {
         if (playerInputs[`${user.tag}`].length >= 3) {
           if (isSet(board[select1],board[select2],board[select3])) {
             setFound = true;
+            let ts = new Date();
+            console.log(ts.toISOString()+' '+user.tag+' found a set in guild '+interaction.guild.id);
             stopsign.reactions.removeAll();
             row1.reactions.removeAll();
             if (board.length >= 6) {
@@ -787,6 +815,8 @@ async function continueGame(board, curDeck, interaction) {
               if(fs.existsSync(`temp/${interaction.guild.id}data.json`)) {
                 fs.unlinkSync(`temp/${interaction.guild.id}data.json`);
               }
+              let ts = new Date();
+              console.log(ts.toISOString()+' game over in guild '+interaction.guild.id);
               interaction.channel.send('Game over!');
               printScores(data, interaction);
             }
@@ -816,6 +846,8 @@ async function continueGame(board, curDeck, interaction) {
           playerInputs[`${user.tag}`] = [];
         }
         let slot = emojiNum(reaction.emoji.name)+14;
+        let ts = new Date();
+        console.log(ts.toISOString()+' '+user.tag+' selected card #'+(slot+1)+' in guild '+interaction.guild.id);
         if (slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-1] && slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-2] && slot !== playerInputs[`${user.tag}`][playerInputs[`${user.tag}`].length-3]) {
           playerInputs[`${user.tag}`].push(slot);
         }
@@ -825,6 +857,8 @@ async function continueGame(board, curDeck, interaction) {
         if (playerInputs[`${user.tag}`].length >= 3) {
           if (isSet(board[select1],board[select2],board[select3])) {
             setFound = true;
+            let ts = new Date();
+            console.log(ts.toISOString()+' '+user.tag+' found a set in guild '+interaction.guild.id);
             stopsign.reactions.removeAll();
             row1.reactions.removeAll();
             if (board.length >= 6) {
@@ -907,6 +941,8 @@ async function continueGame(board, curDeck, interaction) {
               if(fs.existsSync(`temp/${interaction.guild.id}data.json`)) {
                 fs.unlinkSync(`temp/${interaction.guild.id}data.json`);
               }
+              let ts = new Date();
+              console.log(ts.toISOString()+' game over in guild '+interaction.guild.id);
               interaction.channel.send('Game over!');
               printScores(data, interaction);
             }
@@ -924,6 +960,9 @@ async function continueGame(board, curDeck, interaction) {
   };
   const gCollector = stopsign.createReactionCollector({filter: gFilter});
   gCollector.on('collect', (reaction, user) => {
+    let ts = new Date();
+    console.log(ts.toISOString()+' '+interaction.user.tag+' canceled a game in guild '+interaction.guild.id);
+
     stopsign.reactions.removeAll()
     row1.reactions.removeAll()
     if (board.length >= 6) {
@@ -960,6 +999,9 @@ module.exports = {
     .setDescription('Starts a new game of SET'),
   async execute(interaction) {
     if (!fs.existsSync(`temp/${interaction.guild.id}data.json`)) {
+      let ts = new Date();
+      console.log(ts.toISOString()+' '+interaction.user.tag+' started a game in guild '+interaction.guild.id);
+
       //let curDeck = [1111,1112,1113,1121,1122,1123,1131,1132,1133,1211,1212,1213,1221,1222,1223,1231,1232,1233,1311,1312,1313,1321,1322,1323,1331,1332,1333];
       let curDeck = [1111,1112,1113,1121,1122,1123,1131,1132,1133,1211,1212,1213,1221,1222,1223,1231,1232,1233,1311,1312,1313,1321,1322,1323,1331,1332,1333,2111,2112,2113,2121,2122,2123,2131,2132,2133,2211,2212,2213,2221,2222,2223,2231,2232,2233,2311,2312,2313,2321,2322,2323,2331,2332,2333,3111,3112,3113,3121,3122,3123,3131,3132,3133,3211,3212,3213,3221,3222,3223,3231,3232,3233,3311,3312,3313,3321,3322,3323,3331,3332,3333];
       let board = newBoard([], curDeck, interaction.guild.id);
