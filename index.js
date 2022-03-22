@@ -30,7 +30,6 @@ client.once('ready', () => {
       });
     }
   });
-  console.log('Ready!');
 });
 
 client.on('interactionCreate', async interaction => {
