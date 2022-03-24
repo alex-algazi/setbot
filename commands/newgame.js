@@ -6,6 +6,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const images = require('images');
 const fs = require('fs');
+const sqlite3 = require('sqlite3').verbose();
 
 function getRand(d) {
   let rand = Math.floor(Math.random()*d.length);
@@ -151,8 +152,10 @@ function isSet(c1, c2, c3) {
     return false;
 }
 
-function printScores(d, int) {
+function printScores(d, int, can, db) {
   if (Object.keys(d).length !== 0) {
+    // INSERT Game
+
     let sorted = Object.fromEntries(
       Object.entries(d).sort(([,a],[,b]) => b-a)
     );
@@ -169,9 +172,10 @@ function printScores(d, int) {
     scores += '```';
     int.channel.send(scores);
   }
+  // CLOSE DB
 }
 
-async function continueGame(board, curDeck, interaction) {
+async function continueGame(board, curDeck, interaction, db) {
   while (!checkBoardOptimum(board)) {
     addRow(board, curDeck, interaction.guild.id);
   }
@@ -315,7 +319,7 @@ async function continueGame(board, curDeck, interaction) {
             let ts = new Date();
             console.log(ts.toISOString()+' game over in guild '+interaction.guild.id);
             interaction.channel.send('Game over!');
-            printScores(data, interaction);
+            printScores(data, interaction, 0, db);
           }
           else {
             continueGame(board, curDeck, interaction);
@@ -440,7 +444,7 @@ async function continueGame(board, curDeck, interaction) {
               let ts = new Date();
               console.log(ts.toISOString()+' game over in guild '+interaction.guild.id);
               interaction.channel.send('Game over!');
-              printScores(data, interaction);
+              printScores(data, interaction, 0, db);
             }
             else {
               continueGame(board, curDeck, interaction);
@@ -566,7 +570,7 @@ async function continueGame(board, curDeck, interaction) {
               let ts = new Date();
               console.log(ts.toISOString()+' game over in guild '+interaction.guild.id);
               interaction.channel.send('Game over!');
-              printScores(data, interaction);
+              printScores(data, interaction, 0, db);
             }
             else {
               continueGame(board, curDeck, interaction);
@@ -692,7 +696,7 @@ async function continueGame(board, curDeck, interaction) {
               let ts = new Date();
               console.log(ts.toISOString()+' game over in guild '+interaction.guild.id);
               interaction.channel.send('Game over!');
-              printScores(data, interaction);
+              printScores(data, interaction, 0, db);
             }
             else {
               continueGame(board, curDeck, interaction);
@@ -818,7 +822,7 @@ async function continueGame(board, curDeck, interaction) {
               let ts = new Date();
               console.log(ts.toISOString()+' game over in guild '+interaction.guild.id);
               interaction.channel.send('Game over!');
-              printScores(data, interaction);
+              printScores(data, interaction, 0, db);
             }
             else {
               continueGame(board, curDeck, interaction);
@@ -944,7 +948,7 @@ async function continueGame(board, curDeck, interaction) {
               let ts = new Date();
               console.log(ts.toISOString()+' game over in guild '+interaction.guild.id);
               interaction.channel.send('Game over!');
-              printScores(data, interaction);
+              printScores(data, interaction, 0, db);
             }
             else {
               continueGame(board, curDeck, interaction);
@@ -989,7 +993,7 @@ async function continueGame(board, curDeck, interaction) {
       fs.unlinkSync(`temp/${interaction.guild.id}data.json`);
     }
     interaction.channel.send('Game canceled.');
-    printScores(data, interaction);
+    printScores(data, interaction, 1, db);
   });
 }
 
@@ -1016,7 +1020,15 @@ module.exports = {
         }
       });
 
-      continueGame(board, curDeck, interaction);
+      let db = new sqlite3.Database('../database/setbot.db', sqlite3.OPEN_READWRITE, (err) => {
+        if (err) {
+          console.error(err.message);
+        }
+        let ts = new Date();
+        console.log(ts.toISOString()+' game in guild '+interaction.guild.id+' connected to database');
+      });
+
+      continueGame(board, curDeck, interaction, db);
     }
     else {
       await interaction.reply('Game is already active');

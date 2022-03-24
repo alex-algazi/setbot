@@ -12,6 +12,7 @@ CREATE TABLE ServersPlayers (
 CREATE TABLE Games ( 
 	GameUID              integer NOT NULL  PRIMARY KEY AUTOINCREMENT ,
 	ServerID             integer NOT NULL    ,
+	Cancelled            integer NOT NULL    ,
 	GameStart            timestamp NOT NULL    ,
 	GameEnd              timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
  );
