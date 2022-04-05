@@ -8,6 +8,18 @@ https://github.com/alex-algazi/setbot
 
 *Alex Algazi (asa10@hood.edu); Diana Teka (dyt1@hood.edu)*
 
+## WEEKS 6-9 (MAR 7 - APR 4)
+### A. Monthly Accomplishments
+1. Finalized our database schema, and wrote a script that creates the database. (Diana, finished by Alex)
+2. Wrote a script that populates the database with dummy data. (Alex)
+3. Begun to implement the database inserts. As of now, we have the db connection opening and closing, as well as the beginnings of the game ending insert statement. (Alex)
+### B. Problems/Issues
+1. Our original database design had a redundant table, since the Discord API does not allow fetching of server/guild names. We removed the redundant table. (Alex)
+### C. Next Week's Planned Work
+1. Finish implementing the insert statements, in order to have more time this month to work on actually using those stats in meaningful ways using queries. (Alex)
+### D. Time Log
+Alex: 8 hrs
+
 ## WEEK 5 (FEB 28 - MAR 7)
 ### A. Weekly Accomplishments
 1. Implemented optimum pair search. Board is now split into two halves before being operated on, due to a graph theory theorem that shows that a board without sets can be tested in this way. (Alex)
