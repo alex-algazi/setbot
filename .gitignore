@@ -5,3 +5,4 @@ package-lock.json
 config.json
 log.txt
 database/setbot.db
+.DS_Store
