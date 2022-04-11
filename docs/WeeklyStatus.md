@@ -8,7 +8,7 @@ https://github.com/alex-algazi/setbot
 
 *Alex Algazi (asa10@hood.edu); Diana Teka (dyt1@hood.edu)*
 
-## WEEK  ( - )
+## WEEK 10 (APR 4 - APR 11)
 ### A. Weekly Accomplishments
 1. Successfully implemented database inserts for the following tables: Players, ServersPlayers, and Games.
 2. Timestamps are now successfully saved to the database as well.
