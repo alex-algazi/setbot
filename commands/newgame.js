@@ -177,6 +177,8 @@ function printScores(d, int, can, startTime) {
       }
     });
 
+    // insert PlayersGames for loop
+
     let sorted = Object.fromEntries(
       Object.entries(d).sort(([,a],[,b]) => b-a)
     );
