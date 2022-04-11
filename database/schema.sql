@@ -6,7 +6,8 @@ CREATE TABLE Players (
 CREATE TABLE ServersPlayers ( 
 	ServerID             integer NOT NULL    ,
 	PlayerUID            integer NOT NULL    ,
-	FOREIGN KEY ( PlayerUID ) REFERENCES Players( PlayerUID )  
+	FOREIGN KEY ( PlayerUID ) REFERENCES Players( PlayerUID )  ,
+	UNIQUE ( ServerID, PlayerUID )
  );
 
 CREATE TABLE Games ( 

@@ -6,6 +6,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const images = require('images');
 const fs = require('fs');
+const { CommandInteractionOptionResolver } = require('discord.js');
 const sqlite3 = require('sqlite3').verbose();
 
 function getRand(d) {
@@ -152,9 +153,29 @@ function isSet(c1, c2, c3) {
     return false;
 }
 
-function printScores(d, int, can, db) {
+function printScores(d, int, can, startTime) {
   if (Object.keys(d).length !== 0) {
-    // INSERT Game
+    let db = new sqlite3.Database('database/setbot.db', sqlite3.OPEN_READWRITE, (err) => {
+      if (err) {
+        let ts = new Date();
+        console.log(ts.toISOString()+' Could not connect to database', err);
+      }
+      else {
+        let ts = new Date();
+        console.log(ts.toISOString()+' game in guild '+int.guild.id+' connected to database');
+      }
+    });
+
+    db.run('INSERT INTO Games(ServerID, Cancelled, GameStart) VALUES (?,?,?)', [int.guild.id, can, startTime.toISOString().slice(0,19).replace('T',' ')], (err) => {
+      if (err) {
+        let ts = new Date();
+        console.log(ts.toISOString(), err);
+      }
+      else {
+        let ts = new Date();
+        console.log(ts.toISOString()+` Game in guild ${int.guild.id} added to database`);
+      }
+    });
 
     let sorted = Object.fromEntries(
       Object.entries(d).sort(([,a],[,b]) => b-a)
@@ -171,11 +192,12 @@ function printScores(d, int, can, db) {
     }
     scores += '```';
     int.channel.send(scores);
+
+    db.close();
   }
-  // CLOSE DB
 }
 
-async function continueGame(board, curDeck, interaction, db) {
+async function continueGame(board, curDeck, interaction, startTime) {
   while (!checkBoardOptimum(board)) {
     addRow(board, curDeck, interaction.guild.id);
   }
@@ -186,6 +208,17 @@ async function continueGame(board, curDeck, interaction, db) {
 
   let stopsign = await interaction.channel.send(`${curDeck.length} cards remaining. To cancel current game, press the stop sign. (Only the user who started the game can cancel it)`);
   stopsign.react('🛑');
+
+  let db = new sqlite3.Database('database/setbot.db', sqlite3.OPEN_READWRITE, (err) => {
+    if (err) {
+      let ts = new Date();
+      console.log(ts.toISOString()+' Could not connect to database', err);
+    }
+    else {
+      let ts = new Date();
+      console.log(ts.toISOString()+' game in guild '+interaction.guild.id+' connected to database');
+    }
+  });
 
   let row1;
   let row2;
@@ -210,12 +243,27 @@ async function continueGame(board, curDeck, interaction, db) {
     await row1.react('1️⃣');
     await row1.react('2️⃣');
     await row1.react('3️⃣');
-  } catch (error) {
-    console.error('One of the emojis failed to react:', error);
+  } catch (err) {
+    let ts = new Date();
+    console.log(ts.toISOString()+' One of the emojis failed to react:', err);
   }
   collector1 = row1.createReactionCollector({filter});
   collector1.on('collect', (reaction, user) => {
     reaction.users.remove(user.id);
+    db.run('INSERT INTO Players(PlayerName) VALUES (?)', [user.tag], (err) => {
+      if (err) {}
+      else {
+        let ts = new Date();
+        console.log(ts.toISOString()+` User ${user.tag} added to "Players" table`)
+      }
+    });
+    db.run('INSERT INTO ServersPlayers(ServerID, PlayerUID) VALUES (?, (SELECT PlayerUID FROM Players WHERE PlayerName=?))', [interaction.guild.id, user.tag], (err) => {
+      if (err) {}
+      else {
+        let ts = new Date();
+        console.log(ts.toISOString()+` User ${user.tag} in guild ${interaction.guild.id} added to "ServersPlayers" table`)
+      }
+    });
     if (!setFound) {
       if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
         playerInputs[`${user.tag}`] = [];
@@ -267,7 +315,8 @@ async function continueGame(board, curDeck, interaction, db) {
           let str = JSON.stringify(data);
           fs.writeFileSync(`temp/${interaction.guild.id}data.json`, str, err => {
             if (err) {
-              console.log('Error writing file', err);
+              let ts = new Date();
+              console.log(ts.toISOString()+' Error writing file', err);
             }
           });
           interaction.channel.send(`User ${user.tag} found a set!`);
@@ -319,10 +368,11 @@ async function continueGame(board, curDeck, interaction, db) {
             let ts = new Date();
             console.log(ts.toISOString()+' game over in guild '+interaction.guild.id);
             interaction.channel.send('Game over!');
-            printScores(data, interaction, 0, db);
+            printScores(data, interaction, 0, startTime);
           }
           else {
-            continueGame(board, curDeck, interaction);
+            db.close();
+            continueGame(board, curDeck, interaction, startTime);
           }
         }
       }
@@ -335,12 +385,27 @@ async function continueGame(board, curDeck, interaction, db) {
       await row2.react('1️⃣');
       await row2.react('2️⃣');
       await row2.react('3️⃣');
-    } catch (error) {
-      console.error('One of the emojis failed to react:', error);
+    } catch (err) {
+      let ts = new Date();
+      console.log(ts.toISOString()+' One of the emojis failed to react:', err);
     }
     collector2 = row2.createReactionCollector({filter});
     collector2.on('collect', (reaction, user) => {
       reaction.users.remove(user.id);
+      db.run('INSERT INTO Players(PlayerName) VALUES (?)', [user.tag], (err) => {
+        if (err) {}
+        else {
+          let ts = new Date();
+          console.log(ts.toISOString()+` User ${user.tag} added to "Players" table`)
+        }
+      });
+      db.run('INSERT INTO ServersPlayers(ServerID, PlayerUID) VALUES (?, (SELECT PlayerUID FROM Players WHERE PlayerName=?))', [interaction.guild.id, user.tag], (err) => {
+        if (err) {}
+        else {
+          let ts = new Date();
+          console.log(ts.toISOString()+` User ${user.tag} in guild ${interaction.guild.id} added to "ServersPlayers" table`)
+        }
+      });
       if (!setFound) {
         if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
           playerInputs[`${user.tag}`] = [];
@@ -392,7 +457,8 @@ async function continueGame(board, curDeck, interaction, db) {
             let str = JSON.stringify(data);
             fs.writeFileSync(`temp/${interaction.guild.id}data.json`, str, err => {
               if (err) {
-                console.log('Error writing file', err);
+                let ts = new Date();
+                console.log(ts.toISOString()+' Error writing file', err);
               }
             });
             interaction.channel.send(`User ${user.tag} found a set!`);
@@ -444,10 +510,11 @@ async function continueGame(board, curDeck, interaction, db) {
               let ts = new Date();
               console.log(ts.toISOString()+' game over in guild '+interaction.guild.id);
               interaction.channel.send('Game over!');
-              printScores(data, interaction, 0, db);
+              printScores(data, interaction, 0, startTime);
             }
             else {
-              continueGame(board, curDeck, interaction);
+              db.close();
+              continueGame(board, curDeck, interaction, startTime);
             }
           }
         }
@@ -461,12 +528,27 @@ async function continueGame(board, curDeck, interaction, db) {
       await row3.react('1️⃣');
       await row3.react('2️⃣');
       await row3.react('3️⃣');
-    } catch (error) {
-      console.error('One of the emojis failed to react:', error);
+    } catch (err) {
+      let ts = new Date();
+      console.log(ts.toISOString()+' One of the emojis failed to react:', err);
     }
     collector3 = row3.createReactionCollector({filter});
     collector3.on('collect', (reaction, user) => {
       reaction.users.remove(user.id);
+      db.run('INSERT INTO Players(PlayerName) VALUES (?)', [user.tag], (err) => {
+        if (err) {}
+        else {
+          let ts = new Date();
+          console.log(ts.toISOString()+` User ${user.tag} added to "Players" table`)
+        }
+      });
+      db.run('INSERT INTO ServersPlayers(ServerID, PlayerUID) VALUES (?, (SELECT PlayerUID FROM Players WHERE PlayerName=?))', [interaction.guild.id, user.tag], (err) => {
+        if (err) {}
+        else {
+          let ts = new Date();
+          console.log(ts.toISOString()+` User ${user.tag} in guild ${interaction.guild.id} added to "ServersPlayers" table`)
+        }
+      });
       if (!setFound) {
         if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
           playerInputs[`${user.tag}`] = [];
@@ -518,7 +600,8 @@ async function continueGame(board, curDeck, interaction, db) {
             let str = JSON.stringify(data);
             fs.writeFileSync(`temp/${interaction.guild.id}data.json`, str, err => {
               if (err) {
-                console.log('Error writing file', err);
+                let ts = new Date();
+                console.log(ts.toISOString()+' Error writing file', err);
               }
             });
             interaction.channel.send(`User ${user.tag} found a set!`);
@@ -570,10 +653,11 @@ async function continueGame(board, curDeck, interaction, db) {
               let ts = new Date();
               console.log(ts.toISOString()+' game over in guild '+interaction.guild.id);
               interaction.channel.send('Game over!');
-              printScores(data, interaction, 0, db);
+              printScores(data, interaction, 0, startTime);
             }
             else {
-              continueGame(board, curDeck, interaction);
+              db.close();
+              continueGame(board, curDeck, interaction, startTime);
             }
           }
         }
@@ -587,12 +671,27 @@ async function continueGame(board, curDeck, interaction, db) {
       await row4.react('1️⃣');
       await row4.react('2️⃣');
       await row4.react('3️⃣');
-    } catch (error) {
-      console.error('One of the emojis failed to react:', error);
+    } catch (err) {
+      let ts = new Date();
+      console.log(ts.toISOString()+' One of the emojis failed to react:', err);
     }
     collector4 = row4.createReactionCollector({filter});
     collector4.on('collect', (reaction, user) => {
       reaction.users.remove(user.id);
+      db.run('INSERT INTO Players(PlayerName) VALUES (?)', [user.tag], (err) => {
+        if (err) {}
+        else {
+          let ts = new Date();
+          console.log(ts.toISOString()+` User ${user.tag} added to "Players" table`)
+        }
+      });
+      db.run('INSERT INTO ServersPlayers(ServerID, PlayerUID) VALUES (?, (SELECT PlayerUID FROM Players WHERE PlayerName=?))', [interaction.guild.id, user.tag], (err) => {
+        if (err) {}
+        else {
+          let ts = new Date();
+          console.log(ts.toISOString()+` User ${user.tag} in guild ${interaction.guild.id} added to "ServersPlayers" table`)
+        }
+      });
       if (!setFound) {
         if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
           playerInputs[`${user.tag}`] = [];
@@ -644,7 +743,8 @@ async function continueGame(board, curDeck, interaction, db) {
             let str = JSON.stringify(data);
             fs.writeFileSync(`temp/${interaction.guild.id}data.json`, str, err => {
               if (err) {
-                console.log('Error writing file', err);
+                let ts = new Date();
+                console.log(ts.toISOString()+' Error writing file', err);
               }
             });
             interaction.channel.send(`User ${user.tag} found a set!`);
@@ -696,10 +796,11 @@ async function continueGame(board, curDeck, interaction, db) {
               let ts = new Date();
               console.log(ts.toISOString()+' game over in guild '+interaction.guild.id);
               interaction.channel.send('Game over!');
-              printScores(data, interaction, 0, db);
+              printScores(data, interaction, 0, startTime);
             }
             else {
-              continueGame(board, curDeck, interaction);
+              db.close();
+              continueGame(board, curDeck, interaction, startTime);
             }
           }
         }
@@ -713,12 +814,27 @@ async function continueGame(board, curDeck, interaction, db) {
       await row5.react('1️⃣');
       await row5.react('2️⃣');
       await row5.react('3️⃣');
-    } catch (error) {
-      console.error('One of the emojis failed to react:', error);
+    } catch (err) {
+      let ts = new Date();
+      console.log(ts.toISOString()+' One of the emojis failed to react:', err);
     }
     collector5 = row5.createReactionCollector({filter});
     collector5.on('collect', (reaction, user) => {
       reaction.users.remove(user.id);
+      db.run('INSERT INTO Players(PlayerName) VALUES (?)', [user.tag], (err) => {
+        if (err) {}
+        else {
+          let ts = new Date();
+          console.log(ts.toISOString()+` User ${user.tag} added to "Players" table`)
+        }
+      });
+      db.run('INSERT INTO ServersPlayers(ServerID, PlayerUID) VALUES (?, (SELECT PlayerUID FROM Players WHERE PlayerName=?))', [interaction.guild.id, user.tag], (err) => {
+        if (err) {}
+        else {
+          let ts = new Date();
+          console.log(ts.toISOString()+` User ${user.tag} in guild ${interaction.guild.id} added to "ServersPlayers" table`)
+        }
+      });
       if (!setFound) {
         if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
           playerInputs[`${user.tag}`] = [];
@@ -770,7 +886,8 @@ async function continueGame(board, curDeck, interaction, db) {
             let str = JSON.stringify(data);
             fs.writeFileSync(`temp/${interaction.guild.id}data.json`, str, err => {
               if (err) {
-                console.log('Error writing file', err);
+                let ts = new Date();
+                console.log(ts.toISOString()+' Error writing file', err);
               }
             });
             interaction.channel.send(`User ${user.tag} found a set!`);
@@ -822,10 +939,11 @@ async function continueGame(board, curDeck, interaction, db) {
               let ts = new Date();
               console.log(ts.toISOString()+' game over in guild '+interaction.guild.id);
               interaction.channel.send('Game over!');
-              printScores(data, interaction, 0, db);
+              printScores(data, interaction, 0, startTime);
             }
             else {
-              continueGame(board, curDeck, interaction);
+              db.close();
+              continueGame(board, curDeck, interaction, startTime);
             }
           }
         }
@@ -839,12 +957,27 @@ async function continueGame(board, curDeck, interaction, db) {
       await row6.react('1️⃣');
       await row6.react('2️⃣');
       await row6.react('3️⃣');
-    } catch (error) {
-      console.error('One of the emojis failed to react:', error);
+    } catch (err) {
+      let ts = new Date();
+      console.log(ts.toISOString()+' One of the emojis failed to react:', err);
     }
     collector6 = row6.createReactionCollector({filter});
     collector6.on('collect', (reaction, user) => {
       reaction.users.remove(user.id);
+      db.run('INSERT INTO Players(PlayerName) VALUES (?)', [user.tag], (err) => {
+        if (err) {}
+        else {
+          let ts = new Date();
+          console.log(ts.toISOString()+` User ${user.tag} added to "Players" table`)
+        }
+      });
+      db.run('INSERT INTO ServersPlayers(ServerID, PlayerUID) VALUES (?, (SELECT PlayerUID FROM Players WHERE PlayerName=?))', [interaction.guild.id, user.tag], (err) => {
+        if (err) {}
+        else {
+          let ts = new Date();
+          console.log(ts.toISOString()+` User ${user.tag} in guild ${interaction.guild.id} added to "ServersPlayers" table`)
+        }
+      });
       if (!setFound) {
         if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
           playerInputs[`${user.tag}`] = [];
@@ -896,7 +1029,8 @@ async function continueGame(board, curDeck, interaction, db) {
             let str = JSON.stringify(data);
             fs.writeFileSync(`temp/${interaction.guild.id}data.json`, str, err => {
               if (err) {
-                console.log('Error writing file', err);
+                let ts = new Date();
+                console.log(ts.toISOString()+' Error writing file', err);
               }
             });
             interaction.channel.send(`User ${user.tag} found a set!`);
@@ -948,10 +1082,11 @@ async function continueGame(board, curDeck, interaction, db) {
               let ts = new Date();
               console.log(ts.toISOString()+' game over in guild '+interaction.guild.id);
               interaction.channel.send('Game over!');
-              printScores(data, interaction, 0, db);
+              printScores(data, interaction, 0, startTime);
             }
             else {
-              continueGame(board, curDeck, interaction);
+              db.close();
+              continueGame(board, curDeck, interaction, startTime);
             }
           }
         }
@@ -993,7 +1128,7 @@ async function continueGame(board, curDeck, interaction, db) {
       fs.unlinkSync(`temp/${interaction.guild.id}data.json`);
     }
     interaction.channel.send('Game canceled.');
-    printScores(data, interaction, 1, db);
+    printScores(data, interaction, 1, startTime);
   });
 }
 
@@ -1006,8 +1141,8 @@ module.exports = {
       let ts = new Date();
       console.log(ts.toISOString()+' '+interaction.user.tag+' started a game in guild '+interaction.guild.id);
 
-      //let curDeck = [1111,1112,1113,1121,1122,1123,1131,1132,1133,1211,1212,1213,1221,1222,1223,1231,1232,1233,1311,1312,1313,1321,1322,1323,1331,1332,1333];
-      let curDeck = [1111,1112,1113,1121,1122,1123,1131,1132,1133,1211,1212,1213,1221,1222,1223,1231,1232,1233,1311,1312,1313,1321,1322,1323,1331,1332,1333,2111,2112,2113,2121,2122,2123,2131,2132,2133,2211,2212,2213,2221,2222,2223,2231,2232,2233,2311,2312,2313,2321,2322,2323,2331,2332,2333,3111,3112,3113,3121,3122,3123,3131,3132,3133,3211,3212,3213,3221,3222,3223,3231,3232,3233,3311,3312,3313,3321,3322,3323,3331,3332,3333];
+      let curDeck = [1111,1112,1113,1121,1122,1123,1131,1132,1133,1211,1212,1213,1221,1222,1223,1231,1232,1233,1311,1312,1313,1321,1322,1323,1331,1332,1333];
+      //let curDeck = [1111,1112,1113,1121,1122,1123,1131,1132,1133,1211,1212,1213,1221,1222,1223,1231,1232,1233,1311,1312,1313,1321,1322,1323,1331,1332,1333,2111,2112,2113,2121,2122,2123,2131,2132,2133,2211,2212,2213,2221,2222,2223,2231,2232,2233,2311,2312,2313,2321,2322,2323,2331,2332,2333,3111,3112,3113,3121,3122,3123,3131,3132,3133,3211,3212,3213,3221,3222,3223,3231,3232,3233,3311,3312,3313,3321,3322,3323,3331,3332,3333];
       let board = newBoard([], curDeck, interaction.guild.id);
 
       await interaction.reply('New game! For help, use the "/howtoplay" command.');
@@ -1016,19 +1151,13 @@ module.exports = {
       let str = JSON.stringify(gameData);
       fs.writeFileSync(`temp/${interaction.guild.id}data.json`, str, err => {
         if (err) {
-          console.log('Error writing file', err);
+          let ts = new Date();
+          console.log(ts.toISOString()+' Error writing file', err);
         }
       });
 
-      let db = new sqlite3.Database('../database/setbot.db', sqlite3.OPEN_READWRITE, (err) => {
-        if (err) {
-          console.error(err.message);
-        }
-        let ts = new Date();
-        console.log(ts.toISOString()+' game in guild '+interaction.guild.id+' connected to database');
-      });
-
-      continueGame(board, curDeck, interaction, db);
+      let startTime = new Date();
+      continueGame(board, curDeck, interaction, startTime);
     }
     else {
       await interaction.reply('Game is already active');

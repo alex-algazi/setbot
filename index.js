@@ -29,6 +29,8 @@ client.once('ready', () => {
         if (err) throw err;
       });
     }
+    let ts = new Date();
+    console.log(ts.toISOString()+' App started');
   });
 });
 
