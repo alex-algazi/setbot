@@ -8,6 +8,19 @@ https://github.com/alex-algazi/setbot
 
 *Alex Algazi (asa10@hood.edu); Diana Teka (dyt1@hood.edu)*
 
+## WEEK  ( - )
+### A. Weekly Accomplishments
+1. Successfully implemented database inserts for the following tables: Players, ServersPlayers, and Games.
+2. Timestamps are now successfully saved to the database as well.
+3. Games are saved to DB whether they are cancelled or completed, but there is a new boolean variable "Cancelled" (see database/schema.sql) tha denotes this, 0 for completed, 1 for cancelled.
+### B. Problems/Issues
+1. For a while I couldn't figure out how to retrieve the PlayerUID and then use it in a query. Solved by using a select query in place of one of the values of an insert statement. Didn't know you could do that!
+### C. Next Week's Planned Work
+1. Add inserts for PlayersGames with scores. Must be done in a for loop.
+2. Start working on a "/showstats" command that will show relevant info to users.
+### D. Time Log
+Alex: 3 hrs
+
 ## WEEKS 6-9 (MAR 7 - APR 4)
 ### A. Monthly Accomplishments
 1. Finalized our database schema, and wrote a script that creates the database. (Diana, finished by Alex)
