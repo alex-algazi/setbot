@@ -166,7 +166,9 @@ function printScores(d, int, can, startTime) {
       }
     });
 
-    db.run('INSERT INTO Games(ServerID, Cancelled, GameStart) VALUES (?,?,?)', [int.guild.id, can, startTime.toISOString().slice(0,19).replace('T',' ')], (err) => {
+    let convertedTime = startTime.toISOString().slice(0,19).replace('T',' ');
+
+    db.run('INSERT INTO Games(ServerID, Cancelled, GameStart) VALUES (?,?,?)', [int.guild.id, can, convertedTime], (err) => {
       if (err) {
         let ts = new Date();
         console.log(ts.toISOString(), err);
@@ -177,11 +179,25 @@ function printScores(d, int, can, startTime) {
       }
     });
 
-    // insert PlayersGames for loop
-
     let sorted = Object.fromEntries(
       Object.entries(d).sort(([,a],[,b]) => b-a)
     );
+
+    for (let i = 0; i < Object.keys(sorted).length; i++) {
+      Object.keys(sorted)[i]         // username
+      sorted[Object.keys(sorted)[i]] // score
+      db.run('INSERT INTO PlayersGames(PlayerUID, GameUID, Score) VALUES ((SELECT PlayerUID FROM Players WHERE PlayerName=?),(SELECT GameUID FROM Games WHERE ServerID=? AND GameStart=?),?)', [Object.keys(sorted)[i], int.guild.id, convertedTime, sorted[Object.keys(sorted)[i]]], (err) => {
+        if (err) {
+          let ts = new Date();
+          console.log(ts.toISOString(), err);
+        }
+        else {
+          let ts = new Date();
+          console.log(ts.toISOString()+` user ${Object.keys(sorted)[i]} added to table "PlayersScores" with a score of ${sorted[Object.keys(sorted)[i]]}`);
+        }
+      });
+    }
+
     let longestName = 0;
     for (const name in sorted) {
       if (name.length > longestName) {
