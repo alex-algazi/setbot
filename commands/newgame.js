@@ -158,7 +158,7 @@ function printScores(d, int, can, startTime) {
     let db = new sqlite3.Database('database/setbot.db', sqlite3.OPEN_READWRITE, (err) => {
       if (err) {
         let ts = new Date();
-        console.log(ts.toISOString()+' Could not connect to database', err);
+        console.log(ts.toISOString()+' could not connect to database', err);
       }
       else {
         let ts = new Date();
@@ -173,7 +173,7 @@ function printScores(d, int, can, startTime) {
       }
       else {
         let ts = new Date();
-        console.log(ts.toISOString()+` Game in guild ${int.guild.id} added to database`);
+        console.log(ts.toISOString()+` game in guild ${int.guild.id} added to database`);
       }
     });
 
@@ -212,7 +212,7 @@ async function continueGame(board, curDeck, interaction, startTime) {
   let db = new sqlite3.Database('database/setbot.db', sqlite3.OPEN_READWRITE, (err) => {
     if (err) {
       let ts = new Date();
-      console.log(ts.toISOString()+' Could not connect to database', err);
+      console.log(ts.toISOString()+' could not connect to database', err);
     }
     else {
       let ts = new Date();
@@ -245,7 +245,7 @@ async function continueGame(board, curDeck, interaction, startTime) {
     await row1.react('3️⃣');
   } catch (err) {
     let ts = new Date();
-    console.log(ts.toISOString()+' One of the emojis failed to react:', err);
+    console.log(ts.toISOString()+' one of the emojis failed to react:', err);
   }
   collector1 = row1.createReactionCollector({filter});
   collector1.on('collect', (reaction, user) => {
@@ -254,14 +254,14 @@ async function continueGame(board, curDeck, interaction, startTime) {
       if (err) {}
       else {
         let ts = new Date();
-        console.log(ts.toISOString()+` User ${user.tag} added to "Players" table`)
+        console.log(ts.toISOString()+` user ${user.tag} added to "Players" table`)
       }
     });
     db.run('INSERT INTO ServersPlayers(ServerID, PlayerUID) VALUES (?, (SELECT PlayerUID FROM Players WHERE PlayerName=?))', [interaction.guild.id, user.tag], (err) => {
       if (err) {}
       else {
         let ts = new Date();
-        console.log(ts.toISOString()+` User ${user.tag} in guild ${interaction.guild.id} added to "ServersPlayers" table`)
+        console.log(ts.toISOString()+` user ${user.tag} in guild ${interaction.guild.id} added to "ServersPlayers" table`)
       }
     });
     if (!setFound) {
@@ -316,7 +316,7 @@ async function continueGame(board, curDeck, interaction, startTime) {
           fs.writeFileSync(`temp/${interaction.guild.id}data.json`, str, err => {
             if (err) {
               let ts = new Date();
-              console.log(ts.toISOString()+' Error writing file', err);
+              console.log(ts.toISOString()+' error writing file', err);
             }
           });
           interaction.channel.send(`User ${user.tag} found a set!`);
@@ -387,7 +387,7 @@ async function continueGame(board, curDeck, interaction, startTime) {
       await row2.react('3️⃣');
     } catch (err) {
       let ts = new Date();
-      console.log(ts.toISOString()+' One of the emojis failed to react:', err);
+      console.log(ts.toISOString()+' one of the emojis failed to react:', err);
     }
     collector2 = row2.createReactionCollector({filter});
     collector2.on('collect', (reaction, user) => {
@@ -396,14 +396,14 @@ async function continueGame(board, curDeck, interaction, startTime) {
         if (err) {}
         else {
           let ts = new Date();
-          console.log(ts.toISOString()+` User ${user.tag} added to "Players" table`)
+          console.log(ts.toISOString()+` user ${user.tag} added to "Players" table`)
         }
       });
       db.run('INSERT INTO ServersPlayers(ServerID, PlayerUID) VALUES (?, (SELECT PlayerUID FROM Players WHERE PlayerName=?))', [interaction.guild.id, user.tag], (err) => {
         if (err) {}
         else {
           let ts = new Date();
-          console.log(ts.toISOString()+` User ${user.tag} in guild ${interaction.guild.id} added to "ServersPlayers" table`)
+          console.log(ts.toISOString()+` user ${user.tag} in guild ${interaction.guild.id} added to "ServersPlayers" table`)
         }
       });
       if (!setFound) {
@@ -458,7 +458,7 @@ async function continueGame(board, curDeck, interaction, startTime) {
             fs.writeFileSync(`temp/${interaction.guild.id}data.json`, str, err => {
               if (err) {
                 let ts = new Date();
-                console.log(ts.toISOString()+' Error writing file', err);
+                console.log(ts.toISOString()+' error writing file', err);
               }
             });
             interaction.channel.send(`User ${user.tag} found a set!`);
@@ -530,7 +530,7 @@ async function continueGame(board, curDeck, interaction, startTime) {
       await row3.react('3️⃣');
     } catch (err) {
       let ts = new Date();
-      console.log(ts.toISOString()+' One of the emojis failed to react:', err);
+      console.log(ts.toISOString()+' one of the emojis failed to react:', err);
     }
     collector3 = row3.createReactionCollector({filter});
     collector3.on('collect', (reaction, user) => {
@@ -539,14 +539,14 @@ async function continueGame(board, curDeck, interaction, startTime) {
         if (err) {}
         else {
           let ts = new Date();
-          console.log(ts.toISOString()+` User ${user.tag} added to "Players" table`)
+          console.log(ts.toISOString()+` user ${user.tag} added to "Players" table`)
         }
       });
       db.run('INSERT INTO ServersPlayers(ServerID, PlayerUID) VALUES (?, (SELECT PlayerUID FROM Players WHERE PlayerName=?))', [interaction.guild.id, user.tag], (err) => {
         if (err) {}
         else {
           let ts = new Date();
-          console.log(ts.toISOString()+` User ${user.tag} in guild ${interaction.guild.id} added to "ServersPlayers" table`)
+          console.log(ts.toISOString()+` user ${user.tag} in guild ${interaction.guild.id} added to "ServersPlayers" table`)
         }
       });
       if (!setFound) {
@@ -601,7 +601,7 @@ async function continueGame(board, curDeck, interaction, startTime) {
             fs.writeFileSync(`temp/${interaction.guild.id}data.json`, str, err => {
               if (err) {
                 let ts = new Date();
-                console.log(ts.toISOString()+' Error writing file', err);
+                console.log(ts.toISOString()+' error writing file', err);
               }
             });
             interaction.channel.send(`User ${user.tag} found a set!`);
@@ -673,7 +673,7 @@ async function continueGame(board, curDeck, interaction, startTime) {
       await row4.react('3️⃣');
     } catch (err) {
       let ts = new Date();
-      console.log(ts.toISOString()+' One of the emojis failed to react:', err);
+      console.log(ts.toISOString()+' one of the emojis failed to react:', err);
     }
     collector4 = row4.createReactionCollector({filter});
     collector4.on('collect', (reaction, user) => {
@@ -682,14 +682,14 @@ async function continueGame(board, curDeck, interaction, startTime) {
         if (err) {}
         else {
           let ts = new Date();
-          console.log(ts.toISOString()+` User ${user.tag} added to "Players" table`)
+          console.log(ts.toISOString()+` user ${user.tag} added to "Players" table`)
         }
       });
       db.run('INSERT INTO ServersPlayers(ServerID, PlayerUID) VALUES (?, (SELECT PlayerUID FROM Players WHERE PlayerName=?))', [interaction.guild.id, user.tag], (err) => {
         if (err) {}
         else {
           let ts = new Date();
-          console.log(ts.toISOString()+` User ${user.tag} in guild ${interaction.guild.id} added to "ServersPlayers" table`)
+          console.log(ts.toISOString()+` user ${user.tag} in guild ${interaction.guild.id} added to "ServersPlayers" table`)
         }
       });
       if (!setFound) {
@@ -744,7 +744,7 @@ async function continueGame(board, curDeck, interaction, startTime) {
             fs.writeFileSync(`temp/${interaction.guild.id}data.json`, str, err => {
               if (err) {
                 let ts = new Date();
-                console.log(ts.toISOString()+' Error writing file', err);
+                console.log(ts.toISOString()+' error writing file', err);
               }
             });
             interaction.channel.send(`User ${user.tag} found a set!`);
@@ -816,7 +816,7 @@ async function continueGame(board, curDeck, interaction, startTime) {
       await row5.react('3️⃣');
     } catch (err) {
       let ts = new Date();
-      console.log(ts.toISOString()+' One of the emojis failed to react:', err);
+      console.log(ts.toISOString()+' one of the emojis failed to react:', err);
     }
     collector5 = row5.createReactionCollector({filter});
     collector5.on('collect', (reaction, user) => {
@@ -825,14 +825,14 @@ async function continueGame(board, curDeck, interaction, startTime) {
         if (err) {}
         else {
           let ts = new Date();
-          console.log(ts.toISOString()+` User ${user.tag} added to "Players" table`)
+          console.log(ts.toISOString()+` user ${user.tag} added to "Players" table`)
         }
       });
       db.run('INSERT INTO ServersPlayers(ServerID, PlayerUID) VALUES (?, (SELECT PlayerUID FROM Players WHERE PlayerName=?))', [interaction.guild.id, user.tag], (err) => {
         if (err) {}
         else {
           let ts = new Date();
-          console.log(ts.toISOString()+` User ${user.tag} in guild ${interaction.guild.id} added to "ServersPlayers" table`)
+          console.log(ts.toISOString()+` user ${user.tag} in guild ${interaction.guild.id} added to "ServersPlayers" table`)
         }
       });
       if (!setFound) {
@@ -887,7 +887,7 @@ async function continueGame(board, curDeck, interaction, startTime) {
             fs.writeFileSync(`temp/${interaction.guild.id}data.json`, str, err => {
               if (err) {
                 let ts = new Date();
-                console.log(ts.toISOString()+' Error writing file', err);
+                console.log(ts.toISOString()+' error writing file', err);
               }
             });
             interaction.channel.send(`User ${user.tag} found a set!`);
@@ -959,7 +959,7 @@ async function continueGame(board, curDeck, interaction, startTime) {
       await row6.react('3️⃣');
     } catch (err) {
       let ts = new Date();
-      console.log(ts.toISOString()+' One of the emojis failed to react:', err);
+      console.log(ts.toISOString()+' one of the emojis failed to react:', err);
     }
     collector6 = row6.createReactionCollector({filter});
     collector6.on('collect', (reaction, user) => {
@@ -968,14 +968,14 @@ async function continueGame(board, curDeck, interaction, startTime) {
         if (err) {}
         else {
           let ts = new Date();
-          console.log(ts.toISOString()+` User ${user.tag} added to "Players" table`)
+          console.log(ts.toISOString()+` user ${user.tag} added to "Players" table`)
         }
       });
       db.run('INSERT INTO ServersPlayers(ServerID, PlayerUID) VALUES (?, (SELECT PlayerUID FROM Players WHERE PlayerName=?))', [interaction.guild.id, user.tag], (err) => {
         if (err) {}
         else {
           let ts = new Date();
-          console.log(ts.toISOString()+` User ${user.tag} in guild ${interaction.guild.id} added to "ServersPlayers" table`)
+          console.log(ts.toISOString()+` user ${user.tag} in guild ${interaction.guild.id} added to "ServersPlayers" table`)
         }
       });
       if (!setFound) {
@@ -1030,7 +1030,7 @@ async function continueGame(board, curDeck, interaction, startTime) {
             fs.writeFileSync(`temp/${interaction.guild.id}data.json`, str, err => {
               if (err) {
                 let ts = new Date();
-                console.log(ts.toISOString()+' Error writing file', err);
+                console.log(ts.toISOString()+' error writing file', err);
               }
             });
             interaction.channel.send(`User ${user.tag} found a set!`);
@@ -1152,7 +1152,7 @@ module.exports = {
       fs.writeFileSync(`temp/${interaction.guild.id}data.json`, str, err => {
         if (err) {
           let ts = new Date();
-          console.log(ts.toISOString()+' Error writing file', err);
+          console.log(ts.toISOString()+' error writing file', err);
         }
       });
 

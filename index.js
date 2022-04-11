@@ -30,7 +30,7 @@ client.once('ready', () => {
       });
     }
     let ts = new Date();
-    console.log(ts.toISOString()+' App started');
+    console.log(ts.toISOString()+' app started');
   });
 });
 
