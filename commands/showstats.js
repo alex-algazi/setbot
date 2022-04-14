@@ -3,8 +3,8 @@ const sqlite3 = require('sqlite3').verbose();
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName('mystats')
-    .setDescription('Displays statistics for only the user running the command'),
+    .setName('showstats')
+    .setDescription('Displays server-wide statistics'),
   async execute(interaction) {
     let db = new sqlite3.Database('database/setbot.db', sqlite3.OPEN_READWRITE, (err) => {
       if (err) {
@@ -23,9 +23,6 @@ module.exports = {
 
     db.close();
 
-    await interaction.reply({
-      content: stats,
-      ephemeral: true
-    });
+    await interaction.reply(stats);
   }
 };
