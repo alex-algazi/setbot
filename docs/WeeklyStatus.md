@@ -10,13 +10,14 @@ https://github.com/alex-algazi/setbot
 
 ## WEEK 11 (APR 11 - APR 18)
 ### A. Weekly Accomplishments
-1. 
+1. New command, called "/showstats", which can show server stats and individual game stats depending on whether it gets the Game ID as a parameter. (See commands/showstats.js)
 ### B. Problems/Issues
-1. 
+1. Faced a lot of difficulties in constructing the various queries required. In particular, the query for fetching GameUID, cancellation status, time elapsed, and the winner of the game, proved to be very tricky, especially because if multiple users tie for top score, it can be challenging to determine if there was a tie or not. The full query is on line #146 in showstats.js. It is ridiculously long, but so far it seems to be performing as expected. We will have to see if it holds up under more extreme loads with bigger datasets.
 ### C. Next Week's Planned Work
-1. 
+1. Going over the entire program with a fine-toothed comb to ensure this product can be delivered in its current state.
+2. Contact the systems administrator to get a pluto account so that I can be ready to deploy in the coming weeks.
 ### D. Time Log
-Alex:  hrs
+Alex: 10 hrs
 
 ## WEEK 10 (APR 4 - APR 11)
 ### A. Weekly Accomplishments
