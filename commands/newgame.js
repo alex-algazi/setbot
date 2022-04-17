@@ -183,7 +183,7 @@ function printScores(d, int, can, startTime) {
     );
 
     for (let i = 0; i < Object.keys(sorted).length; i++) {
-      db.run('INSERT INTO PlayersGames(PlayerUID, GameUID, Score) VALUES ((SELECT PlayerUID FROM Players WHERE PlayerName=?),(SELECT GameUID FROM Games WHERE ServerID=? AND GameStart=?),?)', [Object.keys(sorted)[i], int.guild.id, convertedTime, sorted[Object.keys(sorted)[i]]], (err) => {
+      db.run('INSERT INTO PlayersGames(PlayerUID, GameUID, Score) VALUES ((SELECT PlayerUID FROM Players WHERE PlayerName=?),(SELECT GameUID FROM Games WHERE ServerID=? ORDER BY GameUID DESC LIMIT 1),?)', [Object.keys(sorted)[i], int.guild.id, sorted[Object.keys(sorted)[i]]], (err) => {
         if (err) {
           let ts = new Date();
           console.log(ts.toISOString(), err);
