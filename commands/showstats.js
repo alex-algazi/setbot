@@ -125,7 +125,7 @@ module.exports = {
       stats += 'Percentage of games cancelled: '+Math.round((cancelled.c/total.c+Number.EPSILON)*100)+'%\n';
       
       const average = await getPromise(db, 'SELECT AVG(STRFTIME("%s", GameEnd) - STRFTIME("%s", GameStart)) AS a FROM Games WHERE ServerID = ?', [interaction.guild.id]);
-      stats += 'Average game length: '+timeFromSeconds(average.a, 0)+'\n';
+      stats += 'Average game length: '+timeFromSeconds(average.a, 0)+'\n\n';
 
       const players = await allPromise(db, 'SELECT Players.PlayerName, CAST(AVG(PlayersGames.Score) AS INT) AS avg FROM (SELECT GameUID FROM Games WHERE ServerID = ? AND Cancelled = 0) AS a INNER JOIN PlayersGames ON a.GameUID = PlayersGames.GameUID INNER JOIN Players ON PlayersGames.PlayerUID = Players.PlayerUID GROUP BY Players.PlayerUID ORDER BY avg DESC LIMIT 5', [interaction.guild.id]);
       let longestName = 0;
@@ -138,7 +138,7 @@ module.exports = {
       for (let i = 0; i < players.length; i++) {
         stats += `${players[i].PlayerName}` + ' '.repeat(longestName-players[i].PlayerName.length+1) + '| ' + ' '.repeat(2-players[i].avg.toString().length) +  `${players[i].avg}\n`;
       }
-      stats += '```';
+      stats += '```\n';
 
       const games = await allPromise(db, 'SELECT Games.GameUID, Games.Cancelled, (STRFTIME("%s", Games.GameEnd) - STRFTIME("%s", Games.GameStart)) AS t, a.c, a.PlayerName FROM Games INNER JOIN (SELECT t1.GameUID, Players.PlayerName, t1.c FROM (SELECT a.PlayerUID, a.GameUID, COUNT(*) as c FROM PlayersGames AS a LEFT OUTER JOIN PlayersGames AS b ON a.GameUID = b.GameUID AND a.Score < b.Score WHERE b.GameUID IS NULL GROUP BY a.GameUID) AS t1 INNER JOIN Players ON t1.PlayerUID = Players.PlayerUID) AS a ON Games.GameUID = a.GameUID WHERE Games.ServerID = ? GROUP BY Games.GameUID ORDER BY Games.GameUID DESC LIMIT 10', [interaction.guild.id]);
       longestName = 0;
@@ -180,7 +180,7 @@ module.exports = {
         }
         stats += '\n';
       }
-      stats += '```You can use the "/showstats" command to show\ndata on a particular game! Just type the GameID\nafter the command, like this: "/showstats <GameID>"\n(GameID is the "#" column in the above table)';
+      stats += '```\nYou can use the "/showstats" command to show\ndata on a particular game! Just type the GameID\nafter the command, like this: "/showstats <GameID>"\n(GameID is the "#" column in the above table)';
     }
 
     db.close();
