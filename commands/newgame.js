@@ -1,8 +1,3 @@
-// NUM one two thr
-// SHD sol str opn
-// COL red grn blu
-// SHP ovl sqg dmd
-
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const images = require('images');
 const fs = require('fs');
@@ -36,17 +31,6 @@ function checkBoardBruteForce(b) {
         if (isSet(b[i],b[j],b[k])) {
           return true;
         }
-      }
-    }
-  }
-  return false;
-}
-
-function checkBoardBetterBruteForce(b) {
-  for (let i = 0; i < b.length; i++) {
-    for (let j = i+1; j < b.length; j++) {
-      if (isSet(b[i],b[j],thirdCard(b[i],b[j]))) {
-        return true;
       }
     }
   }
@@ -265,6 +249,19 @@ async function continueGame(board, curDeck, interaction, startTime) {
   collector1 = row1.createReactionCollector({filter});
   collector1.on('collect', (reaction, user) => {
     reaction.users.remove(user.id);
+    let raw = fs.readFileSync(`temp/${interaction.guild.id}data.json`);
+    let data = JSON.parse(raw);
+    if (!data.hasOwnProperty(`${user.tag}`)) {
+      data[`${user.tag}`] = 0;
+    }
+    let str = JSON.stringify(data);
+    fs.writeFileSync(`temp/${interaction.guild.id}data.json`, str, err => {
+      if (err) {
+        let ts = new Date();
+        console.log(ts.toISOString()+' error writing file', err);
+      }
+    });
+
     db.run('INSERT INTO Players(PlayerName) VALUES (?)', [user.tag], (err) => {
       if (err) {}
       else {
@@ -321,12 +318,7 @@ async function continueGame(board, curDeck, interaction, startTime) {
             .save(`temp/${interaction.guild.id}set.jpeg`);
           let raw = fs.readFileSync(`temp/${interaction.guild.id}data.json`);
           let data = JSON.parse(raw);
-          if (!data.hasOwnProperty(`${user.tag}`)) {
-            data[`${user.tag}`] = 1;
-          }
-          else {
-            data[`${user.tag}`] += 1;
-          }
+          data[`${user.tag}`] += 1;
           let str = JSON.stringify(data);
           fs.writeFileSync(`temp/${interaction.guild.id}data.json`, str, err => {
             if (err) {
@@ -407,6 +399,19 @@ async function continueGame(board, curDeck, interaction, startTime) {
     collector2 = row2.createReactionCollector({filter});
     collector2.on('collect', (reaction, user) => {
       reaction.users.remove(user.id);
+      let raw = fs.readFileSync(`temp/${interaction.guild.id}data.json`);
+      let data = JSON.parse(raw);
+      if (!data.hasOwnProperty(`${user.tag}`)) {
+        data[`${user.tag}`] = 0;
+      }
+      let str = JSON.stringify(data);
+      fs.writeFileSync(`temp/${interaction.guild.id}data.json`, str, err => {
+        if (err) {
+          let ts = new Date();
+          console.log(ts.toISOString()+' error writing file', err);
+        }
+      });
+  
       db.run('INSERT INTO Players(PlayerName) VALUES (?)', [user.tag], (err) => {
         if (err) {}
         else {
@@ -463,12 +468,7 @@ async function continueGame(board, curDeck, interaction, startTime) {
               .save(`temp/${interaction.guild.id}set.jpeg`);
             let raw = fs.readFileSync(`temp/${interaction.guild.id}data.json`);
             let data = JSON.parse(raw);
-            if (!data.hasOwnProperty(`${user.tag}`)) {
-              data[`${user.tag}`] = 1;
-            }
-            else {
-              data[`${user.tag}`] += 1;
-            }
+            data[`${user.tag}`] += 1;
             let str = JSON.stringify(data);
             fs.writeFileSync(`temp/${interaction.guild.id}data.json`, str, err => {
               if (err) {
@@ -550,6 +550,19 @@ async function continueGame(board, curDeck, interaction, startTime) {
     collector3 = row3.createReactionCollector({filter});
     collector3.on('collect', (reaction, user) => {
       reaction.users.remove(user.id);
+      let raw = fs.readFileSync(`temp/${interaction.guild.id}data.json`);
+      let data = JSON.parse(raw);
+      if (!data.hasOwnProperty(`${user.tag}`)) {
+        data[`${user.tag}`] = 0;
+      }
+      let str = JSON.stringify(data);
+      fs.writeFileSync(`temp/${interaction.guild.id}data.json`, str, err => {
+        if (err) {
+          let ts = new Date();
+          console.log(ts.toISOString()+' error writing file', err);
+        }
+      });
+  
       db.run('INSERT INTO Players(PlayerName) VALUES (?)', [user.tag], (err) => {
         if (err) {}
         else {
@@ -606,12 +619,7 @@ async function continueGame(board, curDeck, interaction, startTime) {
               .save(`temp/${interaction.guild.id}set.jpeg`);
             let raw = fs.readFileSync(`temp/${interaction.guild.id}data.json`);
             let data = JSON.parse(raw);
-            if (!data.hasOwnProperty(`${user.tag}`)) {
-              data[`${user.tag}`] = 1;
-            }
-            else {
-              data[`${user.tag}`] += 1;
-            }
+            data[`${user.tag}`] += 1;
             let str = JSON.stringify(data);
             fs.writeFileSync(`temp/${interaction.guild.id}data.json`, str, err => {
               if (err) {
@@ -693,6 +701,19 @@ async function continueGame(board, curDeck, interaction, startTime) {
     collector4 = row4.createReactionCollector({filter});
     collector4.on('collect', (reaction, user) => {
       reaction.users.remove(user.id);
+      let raw = fs.readFileSync(`temp/${interaction.guild.id}data.json`);
+      let data = JSON.parse(raw);
+      if (!data.hasOwnProperty(`${user.tag}`)) {
+        data[`${user.tag}`] = 0;
+      }
+      let str = JSON.stringify(data);
+      fs.writeFileSync(`temp/${interaction.guild.id}data.json`, str, err => {
+        if (err) {
+          let ts = new Date();
+          console.log(ts.toISOString()+' error writing file', err);
+        }
+      });
+  
       db.run('INSERT INTO Players(PlayerName) VALUES (?)', [user.tag], (err) => {
         if (err) {}
         else {
@@ -749,12 +770,7 @@ async function continueGame(board, curDeck, interaction, startTime) {
               .save(`temp/${interaction.guild.id}set.jpeg`);
             let raw = fs.readFileSync(`temp/${interaction.guild.id}data.json`);
             let data = JSON.parse(raw);
-            if (!data.hasOwnProperty(`${user.tag}`)) {
-              data[`${user.tag}`] = 1;
-            }
-            else {
-              data[`${user.tag}`] += 1;
-            }
+            data[`${user.tag}`] += 1;
             let str = JSON.stringify(data);
             fs.writeFileSync(`temp/${interaction.guild.id}data.json`, str, err => {
               if (err) {
@@ -836,6 +852,19 @@ async function continueGame(board, curDeck, interaction, startTime) {
     collector5 = row5.createReactionCollector({filter});
     collector5.on('collect', (reaction, user) => {
       reaction.users.remove(user.id);
+      let raw = fs.readFileSync(`temp/${interaction.guild.id}data.json`);
+      let data = JSON.parse(raw);
+      if (!data.hasOwnProperty(`${user.tag}`)) {
+        data[`${user.tag}`] = 0;
+      }
+      let str = JSON.stringify(data);
+      fs.writeFileSync(`temp/${interaction.guild.id}data.json`, str, err => {
+        if (err) {
+          let ts = new Date();
+          console.log(ts.toISOString()+' error writing file', err);
+        }
+      });
+  
       db.run('INSERT INTO Players(PlayerName) VALUES (?)', [user.tag], (err) => {
         if (err) {}
         else {
@@ -892,12 +921,7 @@ async function continueGame(board, curDeck, interaction, startTime) {
               .save(`temp/${interaction.guild.id}set.jpeg`);
             let raw = fs.readFileSync(`temp/${interaction.guild.id}data.json`);
             let data = JSON.parse(raw);
-            if (!data.hasOwnProperty(`${user.tag}`)) {
-              data[`${user.tag}`] = 1;
-            }
-            else {
-              data[`${user.tag}`] += 1;
-            }
+            data[`${user.tag}`] += 1;
             let str = JSON.stringify(data);
             fs.writeFileSync(`temp/${interaction.guild.id}data.json`, str, err => {
               if (err) {
@@ -979,6 +1003,19 @@ async function continueGame(board, curDeck, interaction, startTime) {
     collector6 = row6.createReactionCollector({filter});
     collector6.on('collect', (reaction, user) => {
       reaction.users.remove(user.id);
+      let raw = fs.readFileSync(`temp/${interaction.guild.id}data.json`);
+      let data = JSON.parse(raw);
+      if (!data.hasOwnProperty(`${user.tag}`)) {
+        data[`${user.tag}`] = 0;
+      }
+      let str = JSON.stringify(data);
+      fs.writeFileSync(`temp/${interaction.guild.id}data.json`, str, err => {
+        if (err) {
+          let ts = new Date();
+          console.log(ts.toISOString()+' error writing file', err);
+        }
+      });
+  
       db.run('INSERT INTO Players(PlayerName) VALUES (?)', [user.tag], (err) => {
         if (err) {}
         else {
@@ -1035,12 +1072,7 @@ async function continueGame(board, curDeck, interaction, startTime) {
               .save(`temp/${interaction.guild.id}set.jpeg`);
             let raw = fs.readFileSync(`temp/${interaction.guild.id}data.json`);
             let data = JSON.parse(raw);
-            if (!data.hasOwnProperty(`${user.tag}`)) {
-              data[`${user.tag}`] = 1;
-            }
-            else {
-              data[`${user.tag}`] += 1;
-            }
+            data[`${user.tag}`] += 1;
             let str = JSON.stringify(data);
             fs.writeFileSync(`temp/${interaction.guild.id}data.json`, str, err => {
               if (err) {

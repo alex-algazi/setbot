@@ -100,7 +100,6 @@ module.exports = {
         stats += '\n';
 
         const scores = await allPromise(db, 'SELECT a.PlayerName, b.Score FROM Players AS a INNER JOIN PlayersGames AS b ON a.PlayerUID = b.PlayerUID WHERE b.GameUID = ? ORDER BY b.Score DESC', [gameuid]);
-        console.log(scores.length);
         let longestName = 0;
         for (let i = 0; i < scores.length; i++) {
           if (scores[i].PlayerName.length > longestName) {
@@ -118,8 +117,6 @@ module.exports = {
       }
     }
     else {
-
-
       const completed = await getPromise(db, 'SELECT COUNT(*) AS c FROM Games WHERE ServerID = ? AND Cancelled = 0', [interaction.guild.id]);
       stats += 'Number of games completed: '+completed.c+'\n';
 
@@ -137,7 +134,7 @@ module.exports = {
           longestName = players[i].PlayerName.length;
         }
       }
-      stats += 'Top players:\n```User' + ' '.repeat(longestName-3) + '| Avg score' + '\n' + '-'.repeat(longestName+1) + '+----------\n';
+      stats += 'Top players (completed games only):\n```User' + ' '.repeat(longestName-3) + '| Avg score' + '\n' + '-'.repeat(longestName+1) + '+----------\n';
       for (let i = 0; i < players.length; i++) {
         stats += `${players[i].PlayerName}` + ' '.repeat(longestName-players[i].PlayerName.length+1) + '| ' + ' '.repeat(2-players[i].avg.toString().length) +  `${players[i].avg}\n`;
       }
@@ -154,7 +151,11 @@ module.exports = {
           longestID = games[i].GameUID.toString().length;
         }
       }
-      stats += 'Recent games: (X = cancelled)\n```# | X | Length   | Winner' + '\n' + '--+---+----------+' + '-'.repeat(longestName+1) + '\n';
+      stats += 'Recent games (X = cancelled):\n```' + ' '.repeat(Math.floor(longestID/2)) + '#' + ' '.repeat(Math.floor(longestID/2));
+      if (longestID%2 !== 0) {
+        stats += ' ';
+      }
+      stats += '| X | Length   | Winner' + '\n' + '-'.repeat(longestID+1) + '+---+----------+' + '-'.repeat(longestName+1) + '\n';
       for (let i = 0; i < games.length; i++) {
         stats += ' '.repeat(longestID-games[i].GameUID.toString().length) + games[i].GameUID + ' | ';
         if (games[i].Cancelled) {
@@ -179,7 +180,7 @@ module.exports = {
         }
         stats += '\n';
       }
-      stats += '```You can use the "/showstats" command to show data on a particular game! Just type the Game ID after the command, like this: "/showstats <GameID>"';
+      stats += '```You can use the "/showstats" command to show\ndata on a particular game! Just type the GameID\nafter the command, like this: "/showstats <GameID>"\n(GameID is the "#" column in the above table)';
     }
 
     db.close();
