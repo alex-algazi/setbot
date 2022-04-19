@@ -125,7 +125,7 @@ module.exports = {
       stats += 'Percentage of games cancelled: '+Math.round((cancelled.c/total.c+Number.EPSILON)*100)+'%\n';
       
       const average = await getPromise(db, 'SELECT AVG(STRFTIME("%s", GameEnd) - STRFTIME("%s", GameStart)) AS a FROM Games WHERE ServerID = ?', [interaction.guild.id]);
-      stats += 'Average game length: '+timeFromSeconds(average.a, 0)+'\n\n';
+      stats += 'Average game length: '+timeFromSeconds(average.a, 0)+'\n';
 
       const players = await allPromise(db, 'SELECT Players.PlayerName, CAST(AVG(PlayersGames.Score) AS INT) AS avg FROM (SELECT GameUID FROM Games WHERE ServerID = ? AND Cancelled = 0) AS a INNER JOIN PlayersGames ON a.GameUID = PlayersGames.GameUID INNER JOIN Players ON PlayersGames.PlayerUID = Players.PlayerUID GROUP BY Players.PlayerUID ORDER BY avg DESC LIMIT 5', [interaction.guild.id]);
       let longestName = 0;
