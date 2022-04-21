@@ -136,7 +136,7 @@ function isSet(c1, c2, c3) {
     return false;
 }
 
-function printScores(d, int, can, startTime) {
+async function printScores(d, int, can, startTime) {
   if (Object.keys(d).length !== 0) {
     let db = new sqlite3.Database('database/setbot.db', sqlite3.OPEN_READWRITE, (err) => {
       if (err) {
@@ -151,32 +151,14 @@ function printScores(d, int, can, startTime) {
 
     let convertedTime = startTime.toISOString().slice(0,19).replace('T',' ');
 
-    db.run('INSERT INTO Games(ServerID, Cancelled, GameStart) VALUES (?,?,?)', [int.guild.id, can, convertedTime], (err) => {
-      if (err) {
-        let ts = new Date();
-        console.log(ts.toISOString(), err);
-      }
-      else {
-        let ts = new Date();
-        console.log(ts.toISOString()+` game in guild ${int.guild.id} added to database`);
-      }
-    });
+    await runPromise(db, `game in guild ${int.guild.id} added to database`, 'INSERT INTO Games(ServerID, Cancelled, GameStart) VALUES (?,?,?)', [int.guild.id, can, convertedTime]);
 
     let sorted = Object.fromEntries(
       Object.entries(d).sort(([,a],[,b]) => b-a)
     );
 
     for (let i = 0; i < Object.keys(sorted).length; i++) {
-      db.run('INSERT INTO PlayersGames(PlayerUID, GameUID, Score) VALUES ((SELECT PlayerUID FROM Players WHERE PlayerName=?),(SELECT GameUID FROM Games WHERE ServerID=? ORDER BY GameUID DESC LIMIT 1),?)', [Object.keys(sorted)[i], int.guild.id, sorted[Object.keys(sorted)[i]]], (err) => {
-        if (err) {
-          let ts = new Date();
-          console.log(ts.toISOString(), err);
-        }
-        else {
-          let ts = new Date();
-          console.log(ts.toISOString()+` user ${Object.keys(sorted)[i]} added to table "PlayersScores" with a score of ${sorted[Object.keys(sorted)[i]]}`);
-        }
-      });
+      await runPromise(db, `user ${Object.keys(sorted)[i]} added to table "PlayersScores" with a score of ${sorted[Object.keys(sorted)[i]]}`, 'INSERT INTO PlayersGames(PlayerUID, GameUID, Score) VALUES ((SELECT PlayerUID FROM Players WHERE PlayerName=?),(SELECT GameUID FROM Games WHERE ServerID=? ORDER BY GameUID DESC LIMIT 1),?)', [Object.keys(sorted)[i], int.guild.id, sorted[Object.keys(sorted)[i]]]);
     }
 
     let longestName = 0;
@@ -194,6 +176,21 @@ function printScores(d, int, can, startTime) {
 
     db.close();
   }
+}
+
+function runPromise(db, str, query, params) {
+  return new Promise((resolve, reject) => {
+    db.run(query, params, (err, rows) => {
+      if (err) {
+        reject(err);
+      }
+      else {
+        let ts = new Date();
+        console.log(ts.toISOString()+' '+str);
+        resolve(rows);
+      }
+    });
+  });
 }
 
 async function continueGame(board, curDeck, interaction, startTime) {
