@@ -202,7 +202,7 @@ async function continueGame(board, curDeck, interaction, startTime) {
     await interaction.channel.send({files: [`temp/${interaction.guild.id}set.jpeg`]});
   }
 
-  let stopsign = await interaction.channel.send(`${curDeck.length} cards remaining. To cancel current game, press the stop sign. (Only the user who started the game can cancel it)`);
+  let stopsign = await interaction.channel.send(`${curDeck.length} cards remaining. To cancel current game, press the stop sign.\n(Only the user who started the game can cancel it)`);
   stopsign.react('🛑');
 
   let db = new sqlite3.Database('database/setbot.db', sqlite3.OPEN_READWRITE, (err) => {
