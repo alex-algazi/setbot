@@ -233,6 +233,7 @@ async function continueGame(board, curDeck, interaction, startTime) {
   };
   let playerInputs = {}
   let setFound = false;
+  let cancelled = false;
 
   row1 = await interaction.channel.send({files: [`temp/${interaction.guild.id}row1.jpeg`]});
   try {
@@ -273,7 +274,7 @@ async function continueGame(board, curDeck, interaction, startTime) {
         console.log(ts.toISOString()+` user ${user.tag} in guild ${interaction.guild.id} added to "ServersPlayers" table`)
       }
     });
-    if (!setFound) {
+    if (!setFound && !cancelled) {
       if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
         playerInputs[`${user.tag}`] = [];
       }
@@ -423,7 +424,7 @@ async function continueGame(board, curDeck, interaction, startTime) {
           console.log(ts.toISOString()+` user ${user.tag} in guild ${interaction.guild.id} added to "ServersPlayers" table`)
         }
       });
-      if (!setFound) {
+      if (!setFound && !cancelled) {
         if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
           playerInputs[`${user.tag}`] = [];
         }
@@ -574,7 +575,7 @@ async function continueGame(board, curDeck, interaction, startTime) {
           console.log(ts.toISOString()+` user ${user.tag} in guild ${interaction.guild.id} added to "ServersPlayers" table`)
         }
       });
-      if (!setFound) {
+      if (!setFound && !cancelled) {
         if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
           playerInputs[`${user.tag}`] = [];
         }
@@ -725,7 +726,7 @@ async function continueGame(board, curDeck, interaction, startTime) {
           console.log(ts.toISOString()+` user ${user.tag} in guild ${interaction.guild.id} added to "ServersPlayers" table`)
         }
       });
-      if (!setFound) {
+      if (!setFound && !cancelled) {
         if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
           playerInputs[`${user.tag}`] = [];
         }
@@ -876,7 +877,7 @@ async function continueGame(board, curDeck, interaction, startTime) {
           console.log(ts.toISOString()+` user ${user.tag} in guild ${interaction.guild.id} added to "ServersPlayers" table`)
         }
       });
-      if (!setFound) {
+      if (!setFound && !cancelled) {
         if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
           playerInputs[`${user.tag}`] = [];
         }
@@ -1027,7 +1028,7 @@ async function continueGame(board, curDeck, interaction, startTime) {
           console.log(ts.toISOString()+` user ${user.tag} in guild ${interaction.guild.id} added to "ServersPlayers" table`)
         }
       });
-      if (!setFound) {
+      if (!setFound && !cancelled) {
         if (!playerInputs.hasOwnProperty(`${user.tag}`)) {
           playerInputs[`${user.tag}`] = [];
         }
@@ -1143,6 +1144,8 @@ async function continueGame(board, curDeck, interaction, startTime) {
   };
   const gCollector = stopsign.createReactionCollector({filter: gFilter});
   gCollector.on('collect', (reaction, user) => {
+    cancelled = true;
+
     let ts = new Date();
     console.log(ts.toISOString()+' '+interaction.user.tag+' canceled a game in guild '+interaction.guild.id);
 
