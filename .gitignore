@@ -1,6 +1,5 @@
 node_modules
-temp/*
-!temp/.gitkeep
+temp
 package-lock.json
 config.json
 log.txt
