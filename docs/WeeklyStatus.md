@@ -8,6 +8,20 @@ https://github.com/alex-algazi/setbot
 
 *Alex Algazi (asa10@hood.edu); Diana Teka (dyt1@hood.edu)*
 
+## WEEK 12 (APR 18 - 25)
+### A. Weekly Accomplishments
+1. Users can now have a score of zero, since the player data is recorded upon pressing a button rather than on getting a set.
+2. Made a promise wrapper function for several insert statements so that they can be executed in a sequential manner, thus avoiding synchronicity issues.
+3. Got a user account on pluto, thanks to the sysadmin.
+### B. Problems/Issues
+1. Sometimes, a player's score would not be recorded because the query for inserting the record would be executed before the query that adds the game itself to the Games table. Fixed by using a promise wrapper function.
+2. Node.js is still not installed on pluto. Going to have to bug Rob about it this week.
+### C. Next Week's Planned Work
+1. Continue to test and optimize the game while we have the chance.
+2. Try and push to get Node installed on pluto so we can start the next phase of deployment.
+### D. Time Log
+Alex: 8 hrs
+
 ## WEEK 11 (APR 11 - APR 18)
 ### A. Weekly Accomplishments
 1. New command, called "/showstats", which can show server stats and individual game stats depending on whether it gets the Game ID as a parameter. (See commands/showstats.js)
