@@ -3,8 +3,10 @@ const images = require('images');
 const fs = require('fs');
 const sqlite3 = require('sqlite3').verbose();
 
-/*
+/**
  * Returns a random card code from the cards remaining in the deck
+ * @param {number[]} d - the current decklist
+ * @returns {number} the output card, randomly selected
  */
 function getRand(d) {
   let rand = Math.floor(Math.random()*d.length);
@@ -13,8 +15,12 @@ function getRand(d) {
   return card;
 }
 
-/*
- * Generates a new board of 12 cards and generates row images in temp/
+/**
+ * Generates a new board of 12 cards and generates row images in the temp directory
+ * @param {number[]} b - the current board
+ * @param {number[]} d - the current decklist
+ * @param {string} id - guild/server ID
+ * @returns {number[]} the new board, without the removed cards
  */
 function newBoard(b, d, id) {
   for (let i = 0; i < 4; i++) {
@@ -30,8 +36,10 @@ function newBoard(b, d, id) {
   return b;
 }
 
-/*
+/**
  * Old check board algorithm, time complexity O(n^3)
+ * @param {number[]} b - the current board
+ * @returns {boolean} true if there is a set, false if no set
  */
 function checkBoardBruteForce(b) {
   for (let i = 0; i < b.length; i++) {
@@ -46,9 +54,10 @@ function checkBoardBruteForce(b) {
   return false;
 }
 
-/*
- * New check board algorithm, which utilizes Turán's Theorem
- * (source: http://pbg.cs.illinois.edu/papers/set.pdf)
+/**
+ * New check board algorithm, which utilizes Turán's Theorem (source: http://pbg.cs.illinois.edu/papers/set.pdf)
+ * @param {number[]} b - the current board
+ * @returns {boolean} true if there is a set, false if no set
  */
 function checkBoardOptimum(b) {
   let half = Math.ceil(b.length/2);
@@ -71,8 +80,11 @@ function checkBoardOptimum(b) {
   return false;
 }
 
-/*
+/**
  * Given two cards, finds the card code of the third card which would make a set
+ * @param {number} c1 - first input card
+ * @param {number} c2 - second input card
+ * @returns {number} the third card that makes a set with c1 and c2
  */
 function thirdCard(c1, c2) {
   let total = c1+c2;
@@ -124,8 +136,11 @@ function thirdCard(c1, c2) {
   return parseInt(result);
 }
 
-/*
+/**
  * Adds three cards to the board from the deck, generates a new row image
+ * @param {number[]} b - the current board
+ * @param {number[]} d - the current decklist
+ * @param {string} id - guild/server ID
  */
 function addRow(b, d, id) {
   b.push(getRand(d));
@@ -138,8 +153,10 @@ function addRow(b, d, id) {
     .save(`temp/${id}row${b.length/3}.jpeg`);
 }
 
-/*
+/**
  * Simply transforms the emojis 1️⃣ 2️⃣ and 3️⃣ into numbers
+ * @param {string} e - the emoji to be translated
+ * @returns {number} the number, translated from emoji
  */
 function emojiNum(e) {
   if (e === '1️⃣') return 1;
@@ -147,8 +164,12 @@ function emojiNum(e) {
   if (e === '3️⃣') return 3;
 }
 
-/*
+/**
  * Using modulo arithmetic, checks to see if the three provided cards are a set
+ * @param {number} c1 - first input card
+ * @param {number} c2 - second input card
+ * @param {number} c3 - third input card
+ * @returns {boolean} true if c1, c2, and c3 are a set, false if no set
  */
 function isSet(c1, c2, c3) {
   let total = c1+c2+c3;
@@ -161,8 +182,12 @@ function isSet(c1, c2, c3) {
     return false;
 }
 
-/*
+/**
  * Prints and saves the scores recorded for a given game
+ * @param {number[]} d - the current decklist
+ * @param {Object} int - the discord interaction object
+ * @param {number} can - boolean for cancellation. 1 for cancelled, 0 for not cancelled
+ * @param {string} startTime - ISO string representing a timestamp of when the game started
  */
 async function printScores(d, int, can, startTime) {
   if (Object.keys(d).length !== 0) {
@@ -206,8 +231,13 @@ async function printScores(d, int, can, startTime) {
   }
 }
 
-/*
+/**
  * A promise-based run function for sqlite3
+ * @param {Object} db - the database connection object
+ * @param {string} str - the message to be logged upon completion
+ * @param {string} query - the query string to be executed
+ * @param {string[]} params - the input parameters of the query
+ * @returns {Promise} the promise function for db.run
  */
 function runPromise(db, str, query, params) {
   return new Promise((resolve, reject) => {
@@ -224,8 +254,12 @@ function runPromise(db, str, query, params) {
   });
 }
 
-/*
+/**
  * The core game loop, which contains recirsive calls
+ * @param {number[]} board - the current board
+ * @param {number[]} curDeck - the current decklist
+ * @param {number[]} interaction - the discord interaction object
+ * @param {string} startTime - ISO string representing a timestamp of when the game started
  */
 async function continueGame(board, curDeck, interaction, startTime) {
   while (!checkBoardOptimum(board)) {   // while no set on board, add rows
@@ -1227,10 +1261,7 @@ async function continueGame(board, curDeck, interaction, startTime) {
   });
 }
 
-/*
- * The entry point for the program
- */
-module.exports = {
+module.exports = { // The entry point for the game, starting from a newgame interaction
   data: new SlashCommandBuilder()
     .setName('newgame')
     .setDescription('Starts a new game of SET'),

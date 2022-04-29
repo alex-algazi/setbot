@@ -1,6 +1,13 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const sqlite3 = require('sqlite3').verbose();
 
+/**
+ * A promise-based get function for sqlite3
+ * @param {Object} db - the database connection object
+ * @param {string} query - the query string to be executed
+ * @param {string[]} params - the input parameters of the query
+ * @returns {Promise} the promise function for db.get
+ */
 function getPromise(db, query, params) {
   return new Promise((resolve, reject) => {
     db.get(query, params, (err, rows) => {
@@ -14,6 +21,13 @@ function getPromise(db, query, params) {
   });
 }
 
+/**
+ * A promise-based get-all function for sqlite3
+ * @param {Object} db - the database connection object
+ * @param {string} query - the query string to be executed
+ * @param {string[]} params - the input parameters of the query
+ * @returns {Promise} the promise function for db.all
+ */
 function allPromise(db, query, params) {
   return new Promise((resolve, reject) => {
     db.all(query, params, (err, rows) => {
@@ -27,6 +41,12 @@ function allPromise(db, query, params) {
   });
 }
 
+/**
+ * A function which takes a time in seconds and turns it into a meaningful interval of time
+ * @param {number} s - the time in seconds to be converted
+ * @param {number} short - boolean determining whether or not the output is shortened
+ * @returns {string} a meaningful length of time in minutes, hours, days, weeks, months, or years
+ */
 function timeFromSeconds(s, short) {
   const mins = Math.floor(s/60);
   if (mins == 0) {
@@ -79,10 +99,10 @@ module.exports = {
         console.log(ts.toISOString()+' serverstats in guild '+interaction.guild.id+' connected to database');
       }
     });
-    let stats = '';
-    const gameuid = interaction.options.getInteger('gameid');
+    let stats = '';   // the final printed object, starting as an empty string
+    const gameuid = interaction.options.getInteger('gameid');   // get game UID input
 
-    if (gameuid) {
+    if (gameuid) {    // if game UID is specified, add stats from that particular game to the string
       const game = await getPromise(db, 'SELECT Cancelled, STRFTIME("%s", GameStart) AS Start, STRFTIME("%s", GameEnd) AS End FROM Games WHERE GameUID = ? AND ServerID = ?', [gameuid, interaction.guild.id]);
       if (game) {
         stats += 'Game #'+gameuid;
@@ -116,7 +136,7 @@ module.exports = {
         stats += 'No record of game #'+gameuid+' in this server';
       }
     }
-    else {
+    else {    // if no game UID was given, add overall guild/server stats to the string
       const completed = await getPromise(db, 'SELECT COUNT(*) AS c FROM Games WHERE ServerID = ? AND Cancelled = 0', [interaction.guild.id]);
       stats += 'Number of games completed: '+completed.c+'\n';
 
@@ -184,6 +204,6 @@ module.exports = {
     }
 
     db.close();
-    await interaction.reply(stats);
+    await interaction.reply(stats);   // send reply to user with completed output string
   }
 };
