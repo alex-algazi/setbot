@@ -8,6 +8,17 @@ https://github.com/alex-algazi/setbot
 
 *Alex Algazi (asa10@hood.edu); Diana Teka (dyt1@hood.edu)*
 
+## WEEK 13 (APR 25 - May 2)
+### A. Weekly Accomplishments
+1. Successfully generated documentation (hooray!). Now there is a descriptive html document that details the various functions in the program.
+2. Re-generated the card images to look more like the original game. (I did this after stumbling uppon my real world copy of the game, and realizing that the colors were off)
+### B. Problems/Issues
+1. Apparently, we broke the pluto web server! So it looks like we won't be able to get the bot running in the cloud as early as we had hoped. We will worry about this come the summertime, and if for some reason things don't work out, we will go back to plan A and find a hosting platform.
+### C. Next Week's Planned Work
+1. There is no next week. I'm free!
+### D. Time Log
+Alex: 5 hrs
+
 ## WEEK 12 (APR 18 - 25)
 ### A. Weekly Accomplishments
 1. Users can now have a score of zero, since the player data is recorded upon pressing a button rather than on getting a set.
