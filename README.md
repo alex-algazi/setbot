@@ -1,3 +1,5 @@
+*In loving memory of Diana Teka*
+
 # Discord SET Bot
 This is the repository for our Discord bot, which facilitates a multiplayer game of "SET".
 
