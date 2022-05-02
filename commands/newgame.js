@@ -266,6 +266,10 @@ async function continueGame(board, curDeck, interaction, startTime) {
     await interaction.channel.send({files: [`temp/${interaction.guild.id}set.jpeg`]});
   }
 
+  joinImages.joinImages(['images/borders/1111.jpeg','images/borders/1111.jpeg','images/borders/1111.jpeg'],{direction: 'horizontal', offset: 5}).then((img) => {
+    img.toFile(`temp/${interaction.guild.id}set.jpeg`);
+  });
+
   let stopsign = await interaction.channel.send(`${curDeck.length} cards remaining. To cancel current game, press the stop sign.\n(Only the user who started the game can cancel it)`);
   stopsign.react('🛑');
 
