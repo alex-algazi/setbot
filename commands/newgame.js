@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const images = require('images');
+const joinImages = require('join-images');
 const fs = require('fs');
 const sqlite3 = require('sqlite3').verbose();
 
@@ -27,11 +27,9 @@ function newBoard(b, d, id) {
     b.push(getRand(d));
     b.push(getRand(d));
     b.push(getRand(d));
-    images(910,225)
-      .draw(images(`images/${b[i*3]}.jpeg`),0,0)
-      .draw(images(`images/${b[i*3+1]}.jpeg`),305,0)
-      .draw(images(`images/${b[i*3+2]}.jpeg`),610,0)
-      .save(`temp/${id}row${i+1}.jpeg`);
+    joinImages.joinImages([`images/${b[i*3]}.jpeg`,`images/${b[i*3+1]}.jpeg`,`images/${b[i*3+2]}.jpeg`],{direction: 'horizontal', offset: 5}).then((img) => {
+      img.toFile(`temp/${id}row${i+1}.jpeg`);
+    });
   }
   return b;
 }
@@ -146,11 +144,9 @@ function addRow(b, d, id) {
   b.push(getRand(d));
   b.push(getRand(d));
   b.push(getRand(d));
-  images(910,225)
-    .draw(images(`images/${b[(b.length/3-1)*3]}.jpeg`),0,0)
-    .draw(images(`images/${b[(b.length/3-1)*3+1]}.jpeg`),305,0)
-    .draw(images(`images/${b[(b.length/3-1)*3+2]}.jpeg`),610,0)
-    .save(`temp/${id}row${b.length/3}.jpeg`);
+  joinImages.joinImages([`images/${b[(b.length/3-1)*3]}.jpeg`,`images/${b[(b.length/3-1)*3+1]}.jpeg`,`images/${b[(b.length/3-1)*3+2]}.jpeg`],{direction: 'horizontal', offset: 5}).then((img) => {
+    img.toFile(`temp/${id}row${b.length/3}.jpeg`);
+  });
 }
 
 /**
@@ -391,11 +387,9 @@ async function continueGame(board, curDeck, interaction, startTime) {
           if (board.length >= 18) {
             row6.reactions.removeAll();
           }
-          images(910,225)   // generate the image that shows the set found
-            .draw(images(`images/borders/${board[select3]}.jpeg`),0,0)
-            .draw(images(`images/borders/${board[select2]}.jpeg`),305,0)
-            .draw(images(`images/borders/${board[select1]}.jpeg`),610,0)
-            .save(`temp/${interaction.guild.id}set.jpeg`);
+          joinImages.joinImages([`images/borders/${board[select3]}.jpeg`,`images/borders/${board[select2]}.jpeg`,`images/borders/${board[select1]}.jpeg`],{direction: 'horizontal', offset: 5}).then((img) => {
+            img.toFile(`temp/${interaction.guild.id}set.jpeg`);
+          });   // generate the image that shows the set found
           let raw = fs.readFileSync(`temp/${interaction.guild.id}data.json`);
           let data = JSON.parse(raw);
           data[`${user.tag}`] += 1;   // add one point to the user's score
@@ -426,11 +420,9 @@ async function continueGame(board, curDeck, interaction, startTime) {
               }
             }
             for (let i = 0; i < 4; i++) {   // regenerate board rows
-              images(910,225)
-                .draw(images(`images/${board[i*3]}.jpeg`),0,0)
-                .draw(images(`images/${board[i*3+1]}.jpeg`),305,0)
-                .draw(images(`images/${board[i*3+2]}.jpeg`),610,0)
-                .save(`temp/${interaction.guild.id}row${i+1}.jpeg`);
+              joinImages.joinImages([`images/${board[i*3]}.jpeg`,`images/${board[i*3+1]}.jpeg`,`images/${board[i*3+2]}.jpeg`],{direction: 'horizontal', offset: 5}).then((img) => {
+                img.toFile(`temp/${interaction.guild.id}row${i+1}.jpeg`);
+              });
             }
           }
           else {    // if no cards in deck
@@ -439,11 +431,9 @@ async function continueGame(board, curDeck, interaction, startTime) {
             board.splice(cards[1],1);
             board.splice(cards[2],1);
             for (let i = 0; i < board.length/3; i++) {
-              images(910,225)
-                .draw(images(`images/${board[i*3]}.jpeg`),0,0)
-                .draw(images(`images/${board[i*3+1]}.jpeg`),305,0)
-                .draw(images(`images/${board[i*3+2]}.jpeg`),610,0)
-                .save(`temp/${interaction.guild.id}row${i+1}.jpeg`);
+              joinImages.joinImages([`images/${board[i*3]}.jpeg`,`images/${board[i*3+1]}.jpeg`,`images/${board[i*3+2]}.jpeg`],{direction: 'horizontal', offset: 5}).then((img) => {
+                img.toFile(`temp/${interaction.guild.id}row${i+1}.jpeg`);
+              });
             }
           }
           if (curDeck.length === 0 && !checkBoardOptimum(board)) {    // if no cards and no sets...
@@ -541,11 +531,9 @@ async function continueGame(board, curDeck, interaction, startTime) {
             if (board.length >= 18) {
               row6.reactions.removeAll();
             }
-            images(910,225)
-              .draw(images(`images/borders/${board[select3]}.jpeg`),0,0)
-              .draw(images(`images/borders/${board[select2]}.jpeg`),305,0)
-              .draw(images(`images/borders/${board[select1]}.jpeg`),610,0)
-              .save(`temp/${interaction.guild.id}set.jpeg`);
+            joinImages.joinImages([`images/borders/${board[select3]}.jpeg`,`images/borders/${board[select2]}.jpeg`,`images/borders/${board[select1]}.jpeg`],{direction: 'horizontal', offset: 5}).then((img) => {
+              img.toFile(`temp/${interaction.guild.id}set.jpeg`);
+            });
             let raw = fs.readFileSync(`temp/${interaction.guild.id}data.json`);
             let data = JSON.parse(raw);
             data[`${user.tag}`] += 1;
@@ -576,11 +564,9 @@ async function continueGame(board, curDeck, interaction, startTime) {
                 }
               }
               for (let i = 0; i < 4; i++) {
-                images(910,225)
-                  .draw(images(`images/${board[i*3]}.jpeg`),0,0)
-                  .draw(images(`images/${board[i*3+1]}.jpeg`),305,0)
-                  .draw(images(`images/${board[i*3+2]}.jpeg`),610,0)
-                  .save(`temp/${interaction.guild.id}row${i+1}.jpeg`);
+                joinImages.joinImages([`images/${board[i*3]}.jpeg`,`images/${board[i*3+1]}.jpeg`,`images/${board[i*3+2]}.jpeg`],{direction: 'horizontal', offset: 5}).then((img) => {
+                  img.toFile(`temp/${interaction.guild.id}row${i+1}.jpeg`);
+                });
               }
             }
             else {
@@ -589,11 +575,9 @@ async function continueGame(board, curDeck, interaction, startTime) {
               board.splice(cards[1],1);
               board.splice(cards[2],1);
               for (let i = 0; i < board.length/3; i++) {
-                images(910,225)
-                  .draw(images(`images/${board[i*3]}.jpeg`),0,0)
-                  .draw(images(`images/${board[i*3+1]}.jpeg`),305,0)
-                  .draw(images(`images/${board[i*3+2]}.jpeg`),610,0)
-                  .save(`temp/${interaction.guild.id}row${i+1}.jpeg`);
+                joinImages.joinImages([`images/${board[i*3]}.jpeg`,`images/${board[i*3+1]}.jpeg`,`images/${board[i*3+2]}.jpeg`],{direction: 'horizontal', offset: 5}).then((img) => {
+                  img.toFile(`temp/${interaction.guild.id}row${i+1}.jpeg`);
+                });
               }
             }
             if (curDeck.length === 0 && !checkBoardOptimum(board)) {
@@ -692,11 +676,9 @@ async function continueGame(board, curDeck, interaction, startTime) {
             if (board.length >= 18) {
               row6.reactions.removeAll();
             }
-            images(910,225)
-              .draw(images(`images/borders/${board[select3]}.jpeg`),0,0)
-              .draw(images(`images/borders/${board[select2]}.jpeg`),305,0)
-              .draw(images(`images/borders/${board[select1]}.jpeg`),610,0)
-              .save(`temp/${interaction.guild.id}set.jpeg`);
+            joinImages.joinImages([`images/borders/${board[select3]}.jpeg`,`images/borders/${board[select2]}.jpeg`,`images/borders/${board[select1]}.jpeg`],{direction: 'horizontal', offset: 5}).then((img) => {
+              img.toFile(`temp/${interaction.guild.id}set.jpeg`);
+            });
             let raw = fs.readFileSync(`temp/${interaction.guild.id}data.json`);
             let data = JSON.parse(raw);
             data[`${user.tag}`] += 1;
@@ -727,11 +709,9 @@ async function continueGame(board, curDeck, interaction, startTime) {
                 }
               }
               for (let i = 0; i < 4; i++) {
-                images(910,225)
-                  .draw(images(`images/${board[i*3]}.jpeg`),0,0)
-                  .draw(images(`images/${board[i*3+1]}.jpeg`),305,0)
-                  .draw(images(`images/${board[i*3+2]}.jpeg`),610,0)
-                  .save(`temp/${interaction.guild.id}row${i+1}.jpeg`);
+                joinImages.joinImages([`images/${board[i*3]}.jpeg`,`images/${board[i*3+1]}.jpeg`,`images/${board[i*3+2]}.jpeg`],{direction: 'horizontal', offset: 5}).then((img) => {
+                  img.toFile(`temp/${interaction.guild.id}row${i+1}.jpeg`);
+                });
               }
             }
             else {
@@ -740,11 +720,9 @@ async function continueGame(board, curDeck, interaction, startTime) {
               board.splice(cards[1],1);
               board.splice(cards[2],1);
               for (let i = 0; i < board.length/3; i++) {
-                images(910,225)
-                  .draw(images(`images/${board[i*3]}.jpeg`),0,0)
-                  .draw(images(`images/${board[i*3+1]}.jpeg`),305,0)
-                  .draw(images(`images/${board[i*3+2]}.jpeg`),610,0)
-                  .save(`temp/${interaction.guild.id}row${i+1}.jpeg`);
+                joinImages.joinImages([`images/${board[i*3]}.jpeg`,`images/${board[i*3+1]}.jpeg`,`images/${board[i*3+2]}.jpeg`],{direction: 'horizontal', offset: 5}).then((img) => {
+                  img.toFile(`temp/${interaction.guild.id}row${i+1}.jpeg`);
+                });
               }
             }
             if (curDeck.length === 0 && !checkBoardOptimum(board)) {
@@ -843,11 +821,9 @@ async function continueGame(board, curDeck, interaction, startTime) {
             if (board.length >= 18) {
               row6.reactions.removeAll();
             }
-            images(910,225)
-              .draw(images(`images/borders/${board[select3]}.jpeg`),0,0)
-              .draw(images(`images/borders/${board[select2]}.jpeg`),305,0)
-              .draw(images(`images/borders/${board[select1]}.jpeg`),610,0)
-              .save(`temp/${interaction.guild.id}set.jpeg`);
+            joinImages.joinImages([`images/borders/${board[select3]}.jpeg`,`images/borders/${board[select2]}.jpeg`,`images/borders/${board[select1]}.jpeg`],{direction: 'horizontal', offset: 5}).then((img) => {
+              img.toFile(`temp/${interaction.guild.id}set.jpeg`);
+            });
             let raw = fs.readFileSync(`temp/${interaction.guild.id}data.json`);
             let data = JSON.parse(raw);
             data[`${user.tag}`] += 1;
@@ -878,11 +854,9 @@ async function continueGame(board, curDeck, interaction, startTime) {
                 }
               }
               for (let i = 0; i < 4; i++) {
-                images(910,225)
-                  .draw(images(`images/${board[i*3]}.jpeg`),0,0)
-                  .draw(images(`images/${board[i*3+1]}.jpeg`),305,0)
-                  .draw(images(`images/${board[i*3+2]}.jpeg`),610,0)
-                  .save(`temp/${interaction.guild.id}row${i+1}.jpeg`);
+                joinImages.joinImages([`images/${board[i*3]}.jpeg`,`images/${board[i*3+1]}.jpeg`,`images/${board[i*3+2]}.jpeg`],{direction: 'horizontal', offset: 5}).then((img) => {
+                  img.toFile(`temp/${interaction.guild.id}row${i+1}.jpeg`);
+                });
               }
             }
             else {
@@ -891,11 +865,9 @@ async function continueGame(board, curDeck, interaction, startTime) {
               board.splice(cards[1],1);
               board.splice(cards[2],1);
               for (let i = 0; i < board.length/3; i++) {
-                images(910,225)
-                  .draw(images(`images/${board[i*3]}.jpeg`),0,0)
-                  .draw(images(`images/${board[i*3+1]}.jpeg`),305,0)
-                  .draw(images(`images/${board[i*3+2]}.jpeg`),610,0)
-                  .save(`temp/${interaction.guild.id}row${i+1}.jpeg`);
+                joinImages.joinImages([`images/${board[i*3]}.jpeg`,`images/${board[i*3+1]}.jpeg`,`images/${board[i*3+2]}.jpeg`],{direction: 'horizontal', offset: 5}).then((img) => {
+                  img.toFile(`temp/${interaction.guild.id}row${i+1}.jpeg`);
+                });
               }
             }
             if (curDeck.length === 0 && !checkBoardOptimum(board)) {
@@ -994,11 +966,9 @@ async function continueGame(board, curDeck, interaction, startTime) {
             if (board.length >= 18) {
               row6.reactions.removeAll();
             }
-            images(910,225)
-              .draw(images(`images/borders/${board[select3]}.jpeg`),0,0)
-              .draw(images(`images/borders/${board[select2]}.jpeg`),305,0)
-              .draw(images(`images/borders/${board[select1]}.jpeg`),610,0)
-              .save(`temp/${interaction.guild.id}set.jpeg`);
+            joinImages.joinImages([`images/borders/${board[select3]}.jpeg`,`images/borders/${board[select2]}.jpeg`,`images/borders/${board[select1]}.jpeg`],{direction: 'horizontal', offset: 5}).then((img) => {
+              img.toFile(`temp/${interaction.guild.id}set.jpeg`);
+            });
             let raw = fs.readFileSync(`temp/${interaction.guild.id}data.json`);
             let data = JSON.parse(raw);
             data[`${user.tag}`] += 1;
@@ -1029,11 +999,9 @@ async function continueGame(board, curDeck, interaction, startTime) {
                 }
               }
               for (let i = 0; i < 4; i++) {
-                images(910,225)
-                  .draw(images(`images/${board[i*3]}.jpeg`),0,0)
-                  .draw(images(`images/${board[i*3+1]}.jpeg`),305,0)
-                  .draw(images(`images/${board[i*3+2]}.jpeg`),610,0)
-                  .save(`temp/${interaction.guild.id}row${i+1}.jpeg`);
+                joinImages.joinImages([`images/${board[i*3]}.jpeg`,`images/${board[i*3+1]}.jpeg`,`images/${board[i*3+2]}.jpeg`],{direction: 'horizontal', offset: 5}).then((img) => {
+                  img.toFile(`temp/${interaction.guild.id}row${i+1}.jpeg`);
+                });
               }
             }
             else {
@@ -1042,11 +1010,9 @@ async function continueGame(board, curDeck, interaction, startTime) {
               board.splice(cards[1],1);
               board.splice(cards[2],1);
               for (let i = 0; i < board.length/3; i++) {
-                images(910,225)
-                  .draw(images(`images/${board[i*3]}.jpeg`),0,0)
-                  .draw(images(`images/${board[i*3+1]}.jpeg`),305,0)
-                  .draw(images(`images/${board[i*3+2]}.jpeg`),610,0)
-                  .save(`temp/${interaction.guild.id}row${i+1}.jpeg`);
+                joinImages.joinImages([`images/${board[i*3]}.jpeg`,`images/${board[i*3+1]}.jpeg`,`images/${board[i*3+2]}.jpeg`],{direction: 'horizontal', offset: 5}).then((img) => {
+                  img.toFile(`temp/${interaction.guild.id}row${i+1}.jpeg`);
+                });
               }
             }
             if (curDeck.length === 0 && !checkBoardOptimum(board)) {
@@ -1145,11 +1111,9 @@ async function continueGame(board, curDeck, interaction, startTime) {
             if (board.length >= 18) {
               row6.reactions.removeAll();
             }
-            images(910,225)
-              .draw(images(`images/borders/${board[select3]}.jpeg`),0,0)
-              .draw(images(`images/borders/${board[select2]}.jpeg`),305,0)
-              .draw(images(`images/borders/${board[select1]}.jpeg`),610,0)
-              .save(`temp/${interaction.guild.id}set.jpeg`);
+            joinImages.joinImages([`images/borders/${board[select3]}.jpeg`,`images/borders/${board[select2]}.jpeg`,`images/borders/${board[select1]}.jpeg`],{direction: 'horizontal', offset: 5}).then((img) => {
+              img.toFile(`temp/${interaction.guild.id}set.jpeg`);
+            });
             let raw = fs.readFileSync(`temp/${interaction.guild.id}data.json`);
             let data = JSON.parse(raw);
             data[`${user.tag}`] += 1;
@@ -1180,11 +1144,9 @@ async function continueGame(board, curDeck, interaction, startTime) {
                 }
               }
               for (let i = 0; i < 4; i++) {
-                images(910,225)
-                  .draw(images(`images/${board[i*3]}.jpeg`),0,0)
-                  .draw(images(`images/${board[i*3+1]}.jpeg`),305,0)
-                  .draw(images(`images/${board[i*3+2]}.jpeg`),610,0)
-                  .save(`temp/${interaction.guild.id}row${i+1}.jpeg`);
+                joinImages.joinImages([`images/${board[i*3]}.jpeg`,`images/${board[i*3+1]}.jpeg`,`images/${board[i*3+2]}.jpeg`],{direction: 'horizontal', offset: 5}).then((img) => {
+                  img.toFile(`temp/${interaction.guild.id}row${i+1}.jpeg`);
+                });
               }
             }
             else {
@@ -1193,11 +1155,9 @@ async function continueGame(board, curDeck, interaction, startTime) {
               board.splice(cards[1],1);
               board.splice(cards[2],1);
               for (let i = 0; i < board.length/3; i++) {
-                images(910,225)
-                  .draw(images(`images/${board[i*3]}.jpeg`),0,0)
-                  .draw(images(`images/${board[i*3+1]}.jpeg`),305,0)
-                  .draw(images(`images/${board[i*3+2]}.jpeg`),610,0)
-                  .save(`temp/${interaction.guild.id}row${i+1}.jpeg`);
+                joinImages.joinImages([`images/${board[i*3]}.jpeg`,`images/${board[i*3+1]}.jpeg`,`images/${board[i*3+2]}.jpeg`],{direction: 'horizontal', offset: 5}).then((img) => {
+                  img.toFile(`temp/${interaction.guild.id}row${i+1}.jpeg`);
+                });
               }
             }
             if (curDeck.length === 0 && !checkBoardOptimum(board)) {
