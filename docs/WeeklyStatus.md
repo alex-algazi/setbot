@@ -12,8 +12,10 @@ https://github.com/alex-algazi/setbot
 ### A. Weekly Accomplishments
 1. Successfully generated documentation (hooray!). Now there is a descriptive html document that details the various functions in the program.
 2. Re-generated the card images to look more like the original game. (I did this after stumbling uppon my real world copy of the game, and realizing that the colors were off)
+3. Replaced one image stitching library with another. This is because 'images.js' did not work on pluto for whatever reason, and all the documentation and support for this package was in Japanese! Now the program uses 'join-images.js' since it acomplishes essentially the same task, and it works on our target platform.
 ### B. Problems/Issues
 1. Apparently, we broke the pluto web server! So it looks like we won't be able to get the bot running in the cloud as early as we had hoped. We will worry about this come the summertime, and if for some reason things don't work out, we will go back to plan A and find a hosting platform.
+2. 'images.js' doesn't work on pluto! Luckily, there are several other image libraries available, and I chose 'join-images.js' because it is easy to use and the documentation and support is in English.
 ### C. Next Week's Planned Work
 1. There is no next week. I'm free!
 ### D. Time Log
