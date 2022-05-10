@@ -137,70 +137,81 @@ module.exports = {
       }
     }
     else {    // if no game UID was given, add overall guild/server stats to the string
-      const completed = await getPromise(db, 'SELECT COUNT(*) AS c FROM Games WHERE ServerID = ? AND Cancelled = 0', [interaction.guild.id]);
-      stats += 'Number of games completed: '+completed.c+'\n';
-
-      const cancelled = await getPromise(db, 'SELECT COUNT(*) AS c FROM Games WHERE ServerID = ? AND Cancelled = 1', [interaction.guild.id]);
       const total = await getPromise(db, 'SELECT COUNT(*) AS c FROM Games WHERE ServerID = ?', [interaction.guild.id], interaction.guild.id);
-      stats += 'Percentage of games cancelled: '+Math.round((cancelled.c/total.c+Number.EPSILON)*100)+'%\n';
-      
-      const average = await getPromise(db, 'SELECT AVG(STRFTIME("%s", GameEnd) - STRFTIME("%s", GameStart)) AS a FROM Games WHERE ServerID = ?', [interaction.guild.id]);
-      stats += 'Average game length: '+timeFromSeconds(average.a, 0)+'\n';
 
-      const players = await allPromise(db, 'SELECT Players.PlayerName, CAST(AVG(PlayersGames.Score) AS INT) AS avg FROM (SELECT GameUID FROM Games WHERE ServerID = ? AND Cancelled = 0) AS a INNER JOIN PlayersGames ON a.GameUID = PlayersGames.GameUID INNER JOIN Players ON PlayersGames.PlayerUID = Players.PlayerUID GROUP BY Players.PlayerUID ORDER BY avg DESC LIMIT 5', [interaction.guild.id]);
-      let longestName = 0;
-      for (let i = 0; i < players.length; i++) {
-        if (players[i].PlayerName.length > longestName) {
-          longestName = players[i].PlayerName.length;
-        }
+      if (total.c === 0) {
+        stats += 'No games recorded in this server';
       }
-      stats += 'Top players (completed games only):\n```User' + ' '.repeat(longestName-3) + '| Avg score' + '\n' + '-'.repeat(longestName+1) + '+----------\n';
-      for (let i = 0; i < players.length; i++) {
-        stats += `${players[i].PlayerName}` + ' '.repeat(longestName-players[i].PlayerName.length+1) + '| ' + ' '.repeat(2-players[i].avg.toString().length) +  `${players[i].avg}\n`;
-      }
-      stats += '```\n';
+      else {
+        const completed = await getPromise(db, 'SELECT COUNT(*) AS c FROM Games WHERE ServerID = ? AND Cancelled = 0', [interaction.guild.id]);
+        stats += 'Number of games completed: '+completed.c+'\n';
 
-      const games = await allPromise(db, 'SELECT Games.GameUID, Games.Cancelled, (STRFTIME("%s", Games.GameEnd) - STRFTIME("%s", Games.GameStart)) AS t, a.c, a.PlayerName FROM Games INNER JOIN (SELECT t1.GameUID, Players.PlayerName, t1.c FROM (SELECT a.PlayerUID, a.GameUID, COUNT(*) as c FROM PlayersGames AS a LEFT OUTER JOIN PlayersGames AS b ON a.GameUID = b.GameUID AND a.Score < b.Score WHERE b.GameUID IS NULL GROUP BY a.GameUID) AS t1 INNER JOIN Players ON t1.PlayerUID = Players.PlayerUID) AS a ON Games.GameUID = a.GameUID WHERE Games.ServerID = ? GROUP BY Games.GameUID ORDER BY Games.GameUID DESC LIMIT 10', [interaction.guild.id]);
-      longestName = 0;
-      longestID = 0;
-      for (let i = 0; i < games.length; i++) {
-        if (games[i].PlayerName.length > longestName) {
-          longestName = games[i].PlayerName.length;
+        const cancelled = await getPromise(db, 'SELECT COUNT(*) AS c FROM Games WHERE ServerID = ? AND Cancelled = 1', [interaction.guild.id]);
+
+        stats += 'Percentage of games cancelled: '+Math.round((cancelled.c/total.c+Number.EPSILON)*100)+'%\n';
+
+        const average = await getPromise(db, 'SELECT AVG(STRFTIME("%s", GameEnd) - STRFTIME("%s", GameStart)) AS a FROM Games WHERE ServerID = ?', [interaction.guild.id]);
+        stats += 'Average game length: '+timeFromSeconds(average.a, 0)+'\n';
+
+        if (completed.c !== 0) {
+          const players = await allPromise(db, 'SELECT Players.PlayerName, CAST(AVG(PlayersGames.Score) AS INT) AS avg FROM (SELECT GameUID FROM Games WHERE ServerID = ? AND Cancelled = 0) AS a INNER JOIN PlayersGames ON a.GameUID = PlayersGames.GameUID INNER JOIN Players ON PlayersGames.PlayerUID = Players.PlayerUID GROUP BY Players.PlayerUID ORDER BY avg DESC LIMIT 5', [interaction.guild.id]);
+          let longestName = 0;
+          for (let i = 0; i < players.length; i++) {
+            if (players[i].PlayerName.length > longestName) {
+              longestName = players[i].PlayerName.length;
+            }
+          }
+          stats += 'Top players (completed games only):\n```User' + ' '.repeat(longestName-3) + '| Avg score' + '\n' + '-'.repeat(longestName+1) + '+----------\n';
+          for (let i = 0; i < players.length; i++) {
+            stats += `${players[i].PlayerName}` + ' '.repeat(longestName-players[i].PlayerName.length+1) + '| ' + ' '.repeat(2-players[i].avg.toString().length) +  `${players[i].avg}\n`;
+          }
+          stats += '```';
         }
-        if (games[i].GameUID.toString().length > longestID) {
-          longestID = games[i].GameUID.toString().length;
-        }
-      }
-      stats += 'Recent games (X = cancelled):\n```' + ' '.repeat(Math.floor(longestID/2)) + '#' + ' '.repeat(Math.floor(longestID/2));
-      if (longestID%2 !== 0) {
-        stats += ' ';
-      }
-      stats += '| X | Length   | Winner' + '\n' + '-'.repeat(longestID+1) + '+---+----------+' + '-'.repeat(longestName+1) + '\n';
-      for (let i = 0; i < games.length; i++) {
-        stats += ' '.repeat(longestID-games[i].GameUID.toString().length) + games[i].GameUID + ' | ';
-        if (games[i].Cancelled) {
-          stats += '* | ';
-        }
-        else {
-          stats += '  | ';
-        }
-        let time = timeFromSeconds(games[i].t, 1);
-        let c = time.charAt(1);
-        let timeLength = time.length;
-        if (c < '0' || c > '9') {
-          stats += ' ';
-          timeLength++;
-        }
-        stats += time + ' '.repeat(8-timeLength) + ' | ';
-        if (games[i].c === 1) {
-          stats += games[i].PlayerName;
-        }
-        else {
-          stats += '[Tie]';
-        }
+
         stats += '\n';
+
+        const games = await allPromise(db, 'SELECT Games.GameUID, Games.Cancelled, (STRFTIME("%s", Games.GameEnd) - STRFTIME("%s", Games.GameStart)) AS t, a.c, a.PlayerName FROM Games INNER JOIN (SELECT t1.GameUID, Players.PlayerName, t1.c FROM (SELECT a.PlayerUID, a.GameUID, COUNT(*) as c FROM PlayersGames AS a LEFT OUTER JOIN PlayersGames AS b ON a.GameUID = b.GameUID AND a.Score < b.Score WHERE b.GameUID IS NULL GROUP BY a.GameUID) AS t1 INNER JOIN Players ON t1.PlayerUID = Players.PlayerUID) AS a ON Games.GameUID = a.GameUID WHERE Games.ServerID = ? GROUP BY Games.GameUID ORDER BY Games.GameUID DESC LIMIT 10', [interaction.guild.id]);
+        longestName = 0;
+        longestID = 0;
+        for (let i = 0; i < games.length; i++) {
+          if (games[i].PlayerName.length > longestName) {
+            longestName = games[i].PlayerName.length;
+          }
+          if (games[i].GameUID.toString().length > longestID) {
+            longestID = games[i].GameUID.toString().length;
+          }
+        }
+        stats += 'Recent games (X = cancelled):\n```' + ' '.repeat(Math.floor(longestID/2)) + '#' + ' '.repeat(Math.floor(longestID/2));
+        if (longestID%2 !== 0) {
+          stats += ' ';
+        }
+        stats += '| X | Length   | Winner' + '\n' + '-'.repeat(longestID+1) + '+---+----------+' + '-'.repeat(longestName+1) + '\n';
+        for (let i = 0; i < games.length; i++) {
+          stats += ' '.repeat(longestID-games[i].GameUID.toString().length) + games[i].GameUID + ' | ';
+          if (games[i].Cancelled) {
+            stats += '* | ';
+          }
+          else {
+            stats += '  | ';
+          }
+          let time = timeFromSeconds(games[i].t, 1);
+          let c = time.charAt(1);
+          let timeLength = time.length;
+          if (c < '0' || c > '9') {
+            stats += ' ';
+            timeLength++;
+          }
+          stats += time + ' '.repeat(8-timeLength) + ' | ';
+          if (games[i].c === 1) {
+            stats += games[i].PlayerName;
+          }
+          else {
+            stats += '[Tie]';
+          }
+          stats += '\n';
+        }
+        stats += '```\nYou can use the "/showstats" command to show\ndata on a particular game! Just type the GameID\nafter the command, like this: "/showstats <GameID>"\n(GameID is the "#" column in the above table)';
       }
-      stats += '```\nYou can use the "/showstats" command to show\ndata on a particular game! Just type the GameID\nafter the command, like this: "/showstats <GameID>"\n(GameID is the "#" column in the above table)';
     }
 
     db.close();
