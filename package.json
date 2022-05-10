@@ -1,4 +1,15 @@
 {
+  "name": "setbot",
+  "description": "A Discord bot for playing the card game SET",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alex-algazi/setbot.git"
+  },
   "dependencies": {
     "@discordjs/builders": "^0.12.0",
     "@discordjs/rest": "^0.3.0",
